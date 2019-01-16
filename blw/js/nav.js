@@ -1,0 +1,1 @@
+function fontSi(){document.documentElement.style.fontSize=document.documentElement.clientWidth/8+"px"}window.onload=fontSi;var a1=document.querySelectorAll("ul li a");console.log(a1);for(var i=0;i<a1.length;i++)a1[i].index=i,a1[i].onclick=function(){for(var e=(this.index,0);e<a1.length;e++)a1[e].className="";this.className="active"};

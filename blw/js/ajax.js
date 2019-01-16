@@ -1,0 +1,1 @@
+var nr=document.querySelector(".nr"),url="index.json";console.log(url);

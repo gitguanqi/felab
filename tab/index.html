@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="author" content="guanqi">
+    <title>选项卡实例</title>
+    <link rel="shortcut icon" href="image/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body>
+    <h2>选项卡实例：</h2>
+    <div class="box">
+        <!-- 点击的按钮 -->
+        <p class="btn">
+            <span class="b_active">选项一</span>
+            <span>选项二</span>
+            <span>选项三</span>
+        </p>
+        <!-- 切换的内容 -->
+        <div class="content">
+            <div class="c_active">选项一内容</div>
+            <div>选项二内容</div>
+            <div>选项三内容</div>
+        </div>
+    </div>
+    <script src="js/main.js"></script>
+    <script>
+        // 首先，你要获取到这个点击元素和内容元素
+        var btns = document.querySelectorAll('.btn span');
+        var content = document.querySelectorAll('.content div');
+        // 其次，引入tab对象，然后new一下
+        var tab = new Tab(btns, content);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,391 @@
+@charset "UTF-8";
+/*
+ *公共样式
+ *  
+*/
+body {
+  margin: 0;
+  padding: 0; }
+
+ul, li {
+  margin: 0;
+  padding: 0;
+  border: none;
+  list-style: none; }
+
+a {
+  text-decoration: none; }
+button{
+	border: none;
+}
+/*
+ * 头部样式
+ */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  margin: 0;
+  width: 100%;
+  height: 5rem;
+  z-index: 99;
+  /*信息类*/
+  /*导航类*/
+  /*header结束*/ }
+  header .info {
+    position: relative;
+    box-sizing: border-box;
+    padding: 0.2rem 0;
+    width: 100%;
+    height: 1rem;
+    background: #fff; }
+    header .info a {
+      display: inline-block;
+      box-sizing: border-box;
+      float: left; }
+    header .info .logo {
+      margin-left: 0.4rem;
+      width: 1.4rem;
+      height: 0.6rem; }
+      header .info .logo img {
+        box-sizing: border-box;
+        display: block;
+        width: 1.4rem;
+        height: 0.6rem; }
+    header .info .search {
+      position: absolute;
+      left: 4rem;
+      width: 0.6rem;
+      height: 0.6rem;
+      background: url(../img/search48.png) no-repeat center;
+      background-size: 0.5rem; }
+    header .info .face {
+      position: absolute;
+      left: 5rem;
+      top: 0.23rem;
+      width: 0.53rem;
+      height: 0.53rem;
+      background: url(../img/noface.gif) no-repeat center;
+      background-size: 0.6rem;
+      border-radius: 1rem; }
+    header .info .download {
+      position: absolute;
+      top: 0.24rem;
+      right: 0.3rem;
+      width: 1.5rem;
+      height: 0.5rem;
+      line-height: 0.5rem;
+      font-size: 0.25rem;
+      text-align: center;
+      background: #fb7299;
+      color: #fff;
+      border-radius: 0.1rem; }
+  header nav {
+    position: relative;
+    width: 100%;
+    height: 1rem;
+    background: #fff; }
+    header nav ul {
+      padding-left: 0.35em;
+      width: 280%;
+      height: 1rem;
+      overflow: hidden;
+      z-index: 1; }
+      header nav ul li {
+        position: relative;
+        float: left;
+        width: 1.45rem;
+        height: 1rem;
+        line-height: 1rem; }
+      header nav ul a {
+        position: absolute;
+        box-sizing: border-box;
+        text-align: center;
+        display: inline-block;
+        width: 100%;
+        height: 1rem;
+        line-height: 1rem;
+        font-size: 0.3rem;
+        background: #fff;
+        color: #CCCCCC; }
+      header nav ul:ative {
+        color: #fb7299; }
+    header nav .more {
+      position: absolute;
+      top: 0.2rem;
+      right: 0.12rem;
+      display: inline-block;
+      width: 0.6rem;
+      height: 0.6rem;
+      background: url(../img/arrow-bottom.png) no-repeat center;
+      background-size: 0.3rem;
+      z-index: 9; }
+  header .navlist {
+    display: none;
+    position: absolute;
+    top: 1rem;
+    width: 100%;
+    height: 3rem;
+    z-index: 99; }
+    header .navlist ul {
+      padding: 0;
+      width: 100%;
+      height: 3.5rem;
+      background: #fff; }
+      header .navlist ul li {
+        float: left;
+        width: 16%;
+        height: 1rem;
+        line-height: 1rem; }
+        header .navlist ul li a {
+          color: #000;
+          font-size: .3rem; }
+    header .navlist .back {
+      position: absolute;
+      top: 2.8rem;
+      right: 3.5rem;
+      display: inline-block;
+      width: 0.6rem;
+      height: 0.6rem;
+      background: url(../img/arrow-bottom.png) no-repeat center;
+      background-size: 0.3rem; }
+  header .wrapper {
+    position: relative;
+    top: 0;
+    left: 0;
+    right: 0;
+    overflow: hidden;
+    z-index: 4;
+    height: .8rem;
+    border-bottom: 1px solid #000000;
+    background: #F9F9F9; }
+    header .wrapper .scroller {
+      position: absolute;
+      z-index: 1;
+      width: 10rem;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-transform: translateZ(0);
+      -moz-transform: translateZ(0);
+      -ms-transform: translateZ(0);
+      -o-transform: translateZ(0);
+      transform: translateZ(0);
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      -webkit-text-size-adjust: none;
+      -moz-text-size-adjust: none;
+      -ms-text-size-adjust: none;
+      -o-text-size-adjust: none;
+      text-size-adjust: none; }
+      header .wrapper .scroller ul {
+        height: .8rem; }
+        header .wrapper .scroller ul li {
+          box-sizing: border-box;
+          float: left;
+          width: 2rem;
+          height: .8rem;
+          border-right: 1px solid #fff;
+          line-height: 0.8rem;
+          text-align: center;
+          font-size: .3rem;
+          color: #000000; }
+
+.reg img {
+  width: 100%; }
+
+.regg {
+  position: absolute;
+  top: 2rem;
+  left: 3rem;
+  opacity: .9; }
+
+.regg button {
+  width: 1rem;
+  height: .6rem; }
+.regg button:first-child a{
+    color: #333;
+    }
+.regg button:last-child a{
+    color: #fff;
+    }
+/*
+ 内容样式
+ * */
+section {
+  position: relative;
+  float: left;
+  width: 100%;
+  background: #eee;
+  top: 2.8rem; }
+  section .ranking {
+    position: relative;
+    width: 100%;
+    height: 9rem; }
+    section .ranking .ranking-title {
+      width: 100%;
+      height: 1.2rem; }
+      section .ranking .ranking-title .rt-left {
+        box-sizing: border-box;
+        display: block;
+        float: left;
+        margin-left: 0.3rem;
+        padding-left: 0.6rem;
+        width: 2.5rem;
+        height: 1.2rem;
+        line-height: 1.2rem;
+        font-size: 0.33rem; }
+      section .ranking .ranking-title .icon01 {
+        background: url(../img/hot.png) no-repeat left center;
+        background-size: 0.5rem; }
+      section .ranking .ranking-title .icon02 {
+        background: url(../img/donghua.png) no-repeat left center;
+        background-size: 0.5rem; }
+      section .ranking .ranking-title .icon03 {
+        background: url(../img/fanju.png) no-repeat left center;
+        background-size: 0.5rem; }
+      section .ranking .ranking-title .icon04 {
+        background: url(../img/guochuang.png) no-repeat left center;
+        background-size: 0.5rem; }
+      section .ranking .ranking-title .icon05 {
+        background: url(../img/music.png) no-repeat left center;
+        background-size: 0.5rem; }
+      section .ranking .ranking-title .icon06 {
+        background: url(../img/wudao.png) no-repeat left center;
+        background-size: 0.5rem; }
+      section .ranking .ranking-title .icon07 {
+        background: url(../img/keji.png) no-repeat left center;
+        background-size: 0.5rem; }
+      section .ranking .ranking-title .icon08 {
+        background: url(../img/game.png) no-repeat left center;
+        background-size: 0.5rem; }
+      section .ranking .ranking-title .icon09 {
+        background: url(../img/yule.png) no-repeat left center;
+        background-size: 0.5rem; }
+      section .ranking .ranking-title .icon10 {
+        background: url(../img/guichu.png) no-repeat left center;
+        background-size: 0.5rem; }
+      section .ranking .ranking-title .icon11 {
+        background: url(../img/dianying.png) no-repeat left center;
+        background-size: 0.5rem; }
+      section .ranking .ranking-title .icon12 {
+        background: url(../img/dsj.png) no-repeat left center;
+        background-size: 0.5rem; }
+      section .ranking .ranking-title .icon13 {
+        background: url(../img/sh.png) no-repeat left center;
+        background-size: 0.5rem; }
+      section .ranking .ranking-title .icon14 {
+        background: url(../img/fashion.png) no-repeat left center;
+        background-size: 0.5rem; }
+      section .ranking .ranking-title .icon15 {
+        background: url(../img/ad.png) no-repeat left center;
+        background-size: 0.5rem; }
+      section .ranking .ranking-title .rt-right {
+        box-sizing: border-box;
+        display: block;
+        float: right;
+        padding-left: 0.5rem;
+        width: 2rem;
+        height: 1.2rem;
+        line-height: 1.2rem;
+        font-size: 0.3rem;
+        background: url(../img/top.png) no-repeat left center;
+        background-size: 0.38rem; }
+      section .ranking .ranking-title .phb {
+        position: absolute;
+        top: 0.18rem;
+        right: 0.1rem;
+        display: inline-block;
+        width: 0.4rem;
+        height: 0.8rem;
+        line-height: 0.8rem;
+        color: #333;
+        font-size: 0.4rem; }
+      section .ranking .ranking-title .lookmore {
+        position: absolute;
+        top: 0.18rem;
+        right: 0.1rem;
+        display: inline-block;
+        width: 1.6rem;
+        height: 0.8rem;
+        line-height: 0.8rem;
+        color: #333;
+        font-size: 0.3rem; }
+    section .ranking .ranking-content {
+      box-sizing: border-box;
+      position: relative;
+      padding-bottom: 0.4rem;
+      width: 100%;
+      height: 7.8rem; }
+      section .ranking .ranking-content .rc-block {
+        position: relative;
+        box-sizing: border-box;
+        display: inline-block;
+        padding: 0.25rem;
+        float: left;
+        width: 50%;
+        height: 3.7rem;
+        lien-height: 3.7rem;
+        font-size: 0.2rem; }
+        section .ranking .ranking-content .rc-block img {
+          display: block;
+          position: absolute;
+          top: 0.2rem;
+          left: 0.2rem;
+          width: 90%;
+          height: 2.3rem;
+          background-color: #fff;
+          border-radius: 0.2rem; }
+        section .ranking .ranking-content .rc-block .rcb-des {
+          position: absolute;
+          top: 2.6rem;
+          margin: 0;
+          padding: 0;
+          width: 90%;
+          height: 0.4rem;
+          font-size: 0.28rem;
+          color: #212121; }
+
+.historyread {
+  width: 100%;
+  height: 6rem;
+  background: url(../img/43a8877514a8911757904b62eda6492fd9a6d660.jpg@339w_212h.webp) no-repeat;
+  position: relative;
+  top: 2.7rem; }
+
+/*
+ 脚本样式
+ * */
+footer {
+  position: relative;
+  box-sizing: border-box;
+  padding-top: 0.7rem;
+  float: left;
+  width: 100%;
+  height: 3rem;
+  background: #f6f6f6;
+  border-top: 0.03125rem solid #e7e7e7;
+  top: 2.8rem; }
+  footer p {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 0.8rem;
+    line-height: 0.8rem;
+    font-size: 0.28rem;
+    text-align: center;
+    color: #999; }
+
+.totop {
+  display: none;
+  position: fixed;
+  bottom: 1rem;
+  right: 0.5rem;
+  width: 0.8rem;
+  height: 0.8rem;
+  background: url(../img/totop.png) no-repeat center;
+  background-size: 0.8rem;
+  border-radius: 1rem;
+  cursor: pointer; }

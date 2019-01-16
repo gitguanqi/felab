@@ -1,0 +1,64 @@
+.movie {
+    margin-top: 1.2rem;
+}
+.top{
+    position: relative;
+    width: 100%;
+    height: auto;
+}
+.fonts{
+    color: #333;
+}
+.fonts:hover{
+    text-decoration: none;
+}
+.bus{
+    position: relative;
+    width: 100%;
+    height: 39rem;
+}
+.bus h2{
+    position: absolute;
+    top: 0;
+    left: 0.3rem;
+    margin: 0.5rem auto;
+    padding-left: 0.2rem;
+    border-left: 0.1rem solid #2aa221;
+    width: 90%;
+    height: 0.5rem;
+    line-height: 0.5rem;
+    font-size: 0.35rem;
+}
+.bus .bus-content{
+    position: absolute;
+    top: 1rem;
+    left: 0.1rem;
+    width: 100%;
+}
+.block{
+    float: left;
+    margin: 0.15rem 0.15rem;
+    width: 27%;
+    height: 5rem;
+    border: 0.03rem solid #f8f8f8;
+}
+.block .bimg{
+    width: 100%;
+    height: 3.5rem;
+}
+.block .bmname{
+    display: block;
+    margin: 0.05rem auto 0 auto;
+   width: 90%;
+   height: 0.8rem;
+   font-size: 0.3rem;
+   text-align: center;
+}
+.block .bmo{
+    display: block;
+    margin-bottom: 0.3rem;
+   width: 90%;
+   height: 0.5rem;
+   font-size: 0.3rem;
+   text-align: center;
+}

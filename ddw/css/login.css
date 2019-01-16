@@ -1,0 +1,38 @@
+/*
+ 公共样式
+ * */
+body{margin: 0;padding: 0;}
+/* * 
+ * 头部样式
+ */
+.head-info{margin:10px auto;width: 100%;height: 80px;background: #fff;}
+.head-inner{margin:20px auto 18px;width: 1200px;height: 60px;}
+.head-inner img{float: left;}
+.user-agree{display:block;float:right;margin-top:35px;width: 135px;height: 20px;line-height:20px;color: #666;font-size: 12px;}
+.user-agree img{width: 16px;height: 16px;line-height: 20px;}
+.user-agree:hover{text-decoration: underline;color: #666;}
+/*
+ 登录样式
+ * */
+.login{width: 100%;height: 590px;background: #fff;}
+.login-inner{margin: 0 auto;width: 1200px;height: 590px;}
+.ad{float:left;width: 700px;height: 590px;}
+.ad img{width: 700px;height: 590px;}
+.login-info{position:relative;float:right;margin-top:90px;padding:10px;width: 300px;height: 297px;background:#FFF;border: 1px solid #eef2f4;box-shadow: 0px 1px 2px #eee;}
+.login-info-inner{position:absolute;width: 300px;height: 330px;}
+.pwd{width: 290px;margin-top:5px;padding-left:10px;height: 30px;line-height: 30px;font-size: 18px;color: #282828;text-align: left;}
+.user,.password{margin:20px auto;padding-left:10px;width: 290px;height: 50px;}
+.user input[type="text"],.password input[type="password"]{width: 248px;height: 36px;border: 1px solid #e6e6e6;border-left: none;}
+.user-icon,.pwd-icon{display: block;float:left;width: 38px;height: 38px;border: 1px solid #e6e6e6;border-right: none;}
+.user-icon{background: url(../img/login/login.png)no-repeat center;background-size: 20px 20px;}
+.pwd-icon{background: url(../img/login/pwd.png)no-repeat center;background-size: 20px 20px;}
+.choice{margin: 5px auto;padding-left:10px;width: 290px;height: 10px;font-size: 12px;color: #666;}
+.login-btn{position:absolute;top:200px;margin: 20px auto;padding-left: 10px;width: 290px;height: 70px;}
+.login-btn input[type="submit"]{width: 290px;height: 45px;border: 1px solid #FF2830;border-radius:5px;background: #FF2830;color: #fff;font-size: 18px;font-weight:400;text-align: center;letter-spacing: 10px;}
+.fast-reg{display:block;float:right;font-size: 12px;color: #666;margin-top: 3px;}
+#un-msg,#pw-msg{display: block;width:150px;height:18px;line-height:38px;font-size: 13px;color: #000;}
+form>input.texterrows{border:1px solid #f00;}
+/*
+ 版权样式
+ * */
+.foot{width: 100%;height: 313px;background: #ccc;}

@@ -1,0 +1,171 @@
+body {
+  margin: 0;
+  padding: 0; }
+
+ul, li {
+  margin: 0;
+  padding: 0;
+  border: none;
+  list-style: none; }
+
+a {
+  text-decoration: none; }
+
+.backto {
+  position: relative;
+  top: -0.05rem;
+  left: 0.4rem;
+  display: block;
+  float: left;
+  width: 0.3rem;
+  height: 0.6rem;
+  line-height: 0.6rem;
+  background: url(../img/phbarrow.png) no-repeat left center;
+  color: #fb7299;
+  background-size: 0.5rem; }
+
+.phb-title {
+  position: absolute;
+  right: 3rem;
+  display: inline-block;
+  width: 2rem;
+  height: 0.6rem;
+  font-size: 0.35rem;
+  color: #fb7299;
+  text-align: center; }
+
+.download-phb {
+  position: absolute;
+  top: 0.2rem;
+  right: 0.3rem;
+  width: 1.5rem;
+  height: 0.6rem;
+  line-height: 0.6rem;
+  font-size: 0.25rem;
+  text-align: center;
+  background: #fff;
+  color: #fb7299;
+  border-radius: 0.1rem;
+  border: 0.01rem solid #fb7299; }
+
+nav ul {
+  position: absolute;
+  padding: 0; }
+  nav ul li {
+    width: 1.38rem; }
+
+.z-rank {
+  position: relative;
+  margin-top: 0.5rem;
+  padding: 0 0.3rem;
+  width: 100%; }
+  .z-rank .zranka {
+    position: relative;
+    display: block;
+    margin: 0.5rem 0.5rem 0 0;
+    width: 93%;
+    height: 2rem; }
+    .z-rank .zranka .rank-num {
+      display: block;
+      position: absolute;
+      left: 0;
+      top: 0;
+      padding-left: 0.2rem;
+      width: 1rem;
+      height: 2rem;
+      line-height: 2rem;
+      text-align: left; }
+    .z-rank .zranka .rank-num01 {
+      background: url(../img/rank1.png) no-repeat left center;
+      background-size: 0.4rem; }
+    .z-rank .zranka .rank-num02 {
+      background: url(../img/rank2.png) no-repeat left center;
+      background-size: 0.4rem; }
+    .z-rank .zranka .rank-num03 {
+      background: url(../img/rank3.png) no-repeat left center;
+      background-size: 0.4rem; }
+    .z-rank .zranka .norank {
+      background: none;
+      font-size: 0.3rem;
+      color: #999; }
+    .z-rank .zranka img {
+      display: block;
+      position: absolute;
+      left: 0.88rem;
+      top: 0.2rem;
+      width: 2.5rem;
+      height: 1.6rem;
+      border-radius: 0.2rem; }
+    .z-rank .zranka .rank-phbt {
+      display: block;
+      position: absolute;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      left: 3.6rem;
+      top: 0.2rem;
+      width: 3.8rem;
+      height: 0.8rem;
+      line-height: 0.4rem;
+      font-size: 0.28rem;
+      color: #555;
+      text-align: left;
+      font-weight: 600; }
+    .z-rank .zranka .rank-author {
+      display: block;
+      position: absolute;
+      left: 3.7rem;
+      top: 1.1rem;
+      padding-left: 0.34rem;
+      width: 3.5rem;
+      height: 0.3rem;
+      line-height: 0.3rem;
+      font-size: 0.28rem;
+      color: #777;
+      text-align: left;
+      background: url(../img/ico_up.png) no-repeat left center;
+      background-size: 0.3rem; }
+    .z-rank .zranka .rank-play {
+      display: block;
+      position: absolute;
+      left: 3.7rem;
+      top: 1.5rem;
+      padding-left: 0.34rem;
+      width: 3.5rem;
+      height: 0.3rem;
+      line-height: 0.3rem;
+      font-size: 0.28rem;
+      color: #777;
+      text-align: left;
+      background: url(../img/ico_play.png) no-repeat left center;
+      background-size: 0.3rem; }
+    .z-rank .zranka .rp-right {
+      left: 5.5rem;
+      background: url(../img/ico_danmu.png) no-repeat left center;
+      background-size: 0.3rem; }
+
+.loadapp {
+  display: inline-block;
+  position: relative;
+  top: 0.2rem;
+  left: 0.3rem;
+  margin-bottom: 0.3rem;
+  width: 93%;
+  height: 0.8rem;
+  line-height: 0.8rem;
+  font-size: 0.28rem;
+  text-align: center;
+  background: #fb7299;
+  border-radius: 0.1rem;
+  color: #fff; }
+
+.phbtotop {
+  display: block;
+  position: fixed;
+  bottom: 1.2rem;
+  right: 0.5rem;
+  width: 0.8rem;
+  height: 0.8rem;
+  background: #fff url(../img/totop.png) no-repeat center;
+  background-size: 0.8rem;
+  border-radius: 1rem;
+  cursor: pointer; }

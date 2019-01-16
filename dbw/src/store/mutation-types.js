@@ -1,0 +1,7 @@
+const GET_ADS_DATA = 'GET_ADS_DATA'
+const ADD_SAVE = 'ADD_SAVE'
+
+export {
+	GET_ADS_DATA,
+	ADD_SAVE
+}

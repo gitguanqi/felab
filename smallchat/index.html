@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>模拟聊天室</title>
+  <style>
+    #box {
+      padding: 10px 15px;
+      width: 250px;
+      height: 400px;
+      background-color: #f9f9f9;
+      border: 1px solid #eee;
+      overflow: auto;
+    }
+    #con {
+      margin: 10px 0;
+      padding: 0 10px;  
+      width: 200px;
+      height: 30px;
+      line-height: 30px;
+      color: #333;
+    }
+    #send {
+      position: relative;
+      top: 2px;
+      width: 50px;
+      height: 35px;
+      line-height: 35px;
+      border: none;
+      border: 1px solid #f8f8f8;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="box"></div>
+  <input type="text" name="con" id="con" placeholder="请输入聊天内容">
+  <button id="send">发送</button>
+  <script src="../public/js/event.js"></script>
+  <script>
+    var box = document.getElementById('box');
+    var con = document.getElementById('con');
+    var send = document.getElementById('send');
+
+    uniHandler.add(send,'click',sendCon,false);
+    function sendCon() {
+      if (con.value == '') { 
+        alert('请输入内容！');
+        return; 
+      }
+      box.innerHTML += '<p style="margin:2px auto;">' + con.value + '</p><br>'
+      con.value = '';
+    }
+
+    uniHandler.add(con,'keypress',sendKey,false);
+    function sendKey(e) {  
+      var e = e || window.event;
+      var code = e.code;
+      if (con.value == '') { 
+        alert('请输入内容！');
+        return; 
+      }
+      if (code == 'Enter') {
+        box.innerHTML += '<p style="margin:2px auto;">' + con.value + '</p><br>'
+        con.value = '';
+      }
+    }
+
+  </script>
+</body>
+</html>

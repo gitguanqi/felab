@@ -46,18 +46,21 @@
 	    <li><a href="#menu3" target="_blank">菜单3</a></li>
 	    <li><a href="#menu4" target="_blank">菜单4</a></li>
 	</ul>
+	<script src="../public/js/event.js"></script>
 	<script>
 		var uls = document.getElementById('list');
-		document.oncontextmenu = function(e) {
-			var e = e || window.event;
-			e.preventDefault();
+		
+		uniHandler.add(document,'contextmenu',function (e) {
+		  uniHandler.prevent(e);
+			uniHandler.stoppro(e);
 			uls.style.left = e.clientX + 'px';
 			uls.style.top = e.clientY + 'px';
 			uls.style.display = 'block';
-		}
-		document.onclick = function() {
+		},false);
+		uniHandler.add(document,'click',function () {  
 			uls.style.display = 'none';
-		}
+		},false);
 	</script>
 </body>
+
 </html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>拖拽元素案例</title>
+  <link rel="shortcut icon" type="image/x-icon" href="../../public/img/favicon.ico" />
+  <style>
+    .box {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 150px;
+      height: 150px;
+      line-height: 150px;
+      background-color: #f00;
+      color: #fff;
+      font-size: 20px;
+      text-align: center;
+    }
+    .box1 {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 150px;
+      height: 150px;
+      line-height: 150px;
+      background-color: #ff0;
+      color: #fff;
+      font-size: 20px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">拖拽</div>
+  <div class="box1">拖拽</div>
+  <script src="../../public/js/drag.js"></script>
+  <script>
+    var box = document.querySelector('.box');
+    var box1 = document.querySelector('.box1');
+    new DragElement(box);
+    new DragElement(box1);
+  </script>
+</body>
+</html>

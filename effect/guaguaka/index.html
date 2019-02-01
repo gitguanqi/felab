@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>刮刮卡</title>
+		<link rel="shortcut icon" type="image/x-icon" href="../../public/img/favicon.ico" />
+	</head>
+	<body>
+		<canvas id="canvas" style="border:  1px solid #eee;"></canvas>
+		<script>
+			var canvas = document.getElementById('canvas');
+			var cxt = canvas.getContext('2d');
+			
+			//0.随机背景
+			var srcArr = ['img/p_0.jpg','img/p_1.jpg'];
+			var index = Math.floor(Math.random()*2);
+			var src = srcArr[index];
+			var radius = 30;
+			//console.log(src);
+			
+			//0.canvas的宽高要 = 图片的真实宽高
+			var image = new Image();
+			image.src = src;
+			image.onload = function(){
+					canvas.width = this.width;
+					canvas.height = this.height;
+				//1.添加背景
+				canvas.style.background = "url("+ src +")";
+				
+				
+				//2.绘制矩形
+				drawRect();
+				
+				cxt.globalCompositeOperation = 'destination-out';
+				
+				//3.鼠标按下画圆
+				canvas.onmousedown = function(e){
+						e=e || window.event;
+						drawArc(e);
+					   document.onmousemove= function(e){
+						  drawArc(e);
+				     	}
+					document.onmouseup = function(){
+						document.onmousemove = null;
+						document.onmouseup = null;
+					}
+			   }
+		   }	
+			
+			
+			//2.绘制蒙版矩形
+			function drawRect(){
+				cxt.fillStyle = '#ccc'
+			   cxt.fillRect(0,0,canvas.width,canvas.height);
+			}
+			
+			//3.画圆
+			function drawArc(e){
+			   var   pointer = windowTocanvas(e);
+						cxt.beginPath();
+						cxt.fillStyle = '#fff'
+						cxt.arc(pointer.x,pointer.y,radius,0,Math.PI*2,false);
+						cxt.fill();
+			}
+			
+			//window -> canvas
+			function windowTocanvas(e){
+				var rectA = canvas.getBoundingClientRect();
+				return {
+					x: e.clientX - rectA.left,
+					y: e.clientY - rectA.top,
+				}
+			}
+			
+			/*
+			 * 1.灰色蒙版
+			 *    rect()
+			 * 2.随机背景
+			 *    canvas.style.background = ''
+			 *    随机：
+			 *    arr = [src1,src2]
+			 *    arr[Math.floor(Math.random()*2))]
+			 * 3.鼠标按下 画圆
+			 *    arc
+			 *    
+			 *    全局组合  destination-out
+			 */
+		</script>
+	</body>
+</html>

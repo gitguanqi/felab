@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>自定义右击菜单</title>
+	<link rel="shortcut icon" type="image/x-icon" href="../../public/img/favicon.ico" />
+	<style>
+		#list {
+			display: none;
+			position: absolute;
+			top: 0;
+			left: 0;
+			margin: 0;
+			padding: 0;
+			width: 150px;
+			height: 240px;
+			border: 1px solid #eee;
+			box-shadow: 1px 1px 5px #eee;
+			list-style: none;
+		}
+		#list li {
+			width: 150px;
+			height: 60px;
+			line-height: 60px;
+			text-align: center;
+		}
+		#list li:hover {
+			background-color: #ddd;
+		}
+		#list li:hover a {
+			color: #333;
+		}
+		#list li a {
+			display: inline-block;
+			width: 100%;
+			color: #666;
+			text-decoration: none;
+		}
+	</style>
+</head>
+<body>
+	<ul id="list">
+	    <li><a href="#menu1" target="_blank">菜单1</a></li>
+	    <li><a href="#menu2" target="_blank">菜单2</a></li>
+	    <li><a href="#menu3" target="_blank">菜单3</a></li>
+	    <li><a href="#menu4" target="_blank">菜单4</a></li>
+	</ul>
+	<script src="../../public/js/event.js"></script>
+	<script>
+		var uls = document.getElementById('list');
+		
+		uniHandler.add(document,'contextmenu',function (e) {
+		  uniHandler.prevent(e);
+			uniHandler.stoppro(e);
+			uls.style.left = e.clientX + 'px';
+			uls.style.top = e.clientY + 'px';
+			uls.style.display = 'block';
+		},false);
+		uniHandler.add(document,'click',function () {  
+			uls.style.display = 'none';
+		},false);
+	</script>
+</body>
+
+</html>

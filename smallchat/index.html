@@ -59,16 +59,15 @@
     function sendKey(e) {  
       var e = e || window.event;
       var code = e.code;
-      if (con.value == '') { 
-        alert('请输入内容！');
-        return; 
-      }
       if (code == 'Enter') {
+        if (con.value == '') { 
+          alert('请输入内容！');
+          return; 
+        }
         box.innerHTML += '<p style="margin:2px auto;">' + con.value + '</p><br>'
         con.value = '';
       }
     }
-
   </script>
 </body>
 </html>

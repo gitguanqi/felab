@@ -62,7 +62,7 @@
 						<h2 class="about-title">关于作者</h2>
 						<p class="about-des">
 							<img class="about-img" src="public/img/user.jpg" alt="aboutme">
-							<cite>我是一名web前端发烧友，从事前端一年多，积累了不少的经验。目前是自由职业，关注前端技术发展！</cite>
+							<cite>我叫<strong>观奇笔记</strong>，是一名web前端发烧友，从事前端一年多，积累了不少的经验，从移动端和pc端都擅长。目前是自由职业，关注前端技术发展！</cite>
 						</p>
 					</article>
 					<article class="about">
@@ -79,11 +79,29 @@
 		<footer>
 			<p>&copy;2019 <a href="/demo">Demo</a>All Reserved Right.</p>
 		</footer>
+		<div class="music">
+			<audio id="audio-music" src="public/media/沙漠骆驼.mp3"></audio>
+			<button id="mysong" class="music-btn start-btn"></button>
+		</div>
 		<script src="public/js/tab.js"></script>
+		<script src="public/js/event.js"></script>
 		<script>
 				var lis = document.querySelectorAll('.nav-index li');
+				var mysong = document.querySelector('#mysong');
+				var audioMusic = document.querySelector('#audio-music');
 				lis[0].className = 'active';
 				new Tab(lis);
+				uniHandler.add(mysong,'click',function (e) {
+					var clsname = e.target.className;
+					clsname = clsname.split(' ');
+					if (clsname[1] == 'start-btn') {
+						mysong.className = 'music-btn pause-btn';
+						audioMusic.play();
+					} else {
+						mysong.className = 'music-btn start-btn';
+						audioMusic.pause();
+					}
+				},false);
 			</script>
 	</body>
 </html>

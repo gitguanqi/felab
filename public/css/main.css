@@ -199,6 +199,43 @@ footer a {
   margin: 0 5px;
   color: #2b6ac8;
 }
+/* 音乐 */
+.music {
+  position: fixed;
+  bottom: 100px;
+  right: -50px;
+  width: 60px;
+  height: 60px;
+  border: 1px solid #ccc;
+  border-radius: 5px 0 0 5px;
+  box-shadow: 2px 2px 2px #ccc;
+  transition: all 0.3s;
+  border-left: 10px solid #2b6ac8;
+  background-color: #fff;
+}
+.music:hover {
+  right: 0;
+  border-left: 4px solid #2b6ac8;
+}
+.music-btn {
+  position: relative;
+  top: 10px;
+  left: 15px;
+  display: block;
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+  outline: none;
+  border: none;
+}
+.start-btn {
+  background: url('../img/start.png') no-repeat;
+  background-size: 100%;
+}
+.pause-btn {
+  background: url('../img/pause.png') no-repeat;
+  background-size: 100%;
+}
 @media all and (max-width:750px) and (min-width:319px) {
   .icon {
     top: 3px;
@@ -302,7 +339,7 @@ footer a {
   }
   .about-des {
     padding: 0.625rem;
-    width: 240px;
+    width: 90%;
     line-height: 1.875rem;
     font-size: 0.875rem;
   }
@@ -336,5 +373,26 @@ footer a {
   }
   footer a {
     margin: 0 0.3125rem;
+  }
+  /* 音乐 */
+  .music {
+    bottom: 6.25rem;
+    right: -3.125rem;
+    width: 3.75rem;
+    height: 3.75rem;
+    border: 0.0625rem solid #ccc;
+    border-radius: 0.3125rem 0 0 0.3125rem;
+    box-shadow: 0.125rem 0.125rem 0.125rem #ccc;
+    border-left: 0.625rem solid #2b6ac8;
+  }
+  .music:hover {
+    right: 0;
+    border-left: 0.25rem solid #2b6ac8;
+  }
+  .music-btn {
+    top: 0.625rem;
+    left: 0.9375rem;
+    width: 2.1875rem;
+    height: 2.1875rem;
   }
 }

@@ -20,47 +20,58 @@
 			<a class="logo" href="/demo">Demo</a>
 			<nav>
 				<ul class="nav-index">
-					<li><a href="/demo">首页</a></li>
-					<li><a href="/demo/project">项目</a></li>
-					<li><a href="/demo/example">案例</a></li>
-					<li><a href="/demo/about">关于</a></li>
+					<li><a href="https://github.com/gitguanqi" target="_blank">Github</a></li>
 				</ul>
 			</nav>
 		</header>
 		<main class="clearfix">
 			<section>
 				<article class="post">
-					<h2 class="post-title">案例列表</h2>
+					<h2 class="post-title">项目列表</h2>
 					<ul class="post-content">
-						<li><i class="icon icon-t"></i><a href="">案例1</a><span class="update">2019/2/19</span></li>
+						<li><i class="icon icon-t"></i><a href="case/ddw/">【原生开发】pc端当当网</a><span class="update">2019/2/19</span></li>
+						<li><i class="icon icon-t"></i><a href="case/blw/">【原生开发】移动端B站</a><span class="update">2019/1/19</span></li>
+						<li><i class="icon icon-t"></i><a href="case/dbw/">【Vue栈】移动端豆瓣网</a><span class="update">2019/1/12</span></li>
 					</ul>
 				</article>
 				<article class="post">
-					<h2 class="post-title">项目列表</h2>
+					<h2 class="post-title">PC端案例</h2>
 					<ul class="post-content">
-						<li><i class="icon icon-t"></i><a href="">项目1</a><span class="update">2019/2/19</span></li>
-						<li><i class="icon icon-t"></i><a href="">项目2</a></li>
-						<li><i class="icon icon-t"></i><a href="">项目3</a></li>
-						<li><i class="icon icon-t"></i><a href="">项目4</a></li>
-						<li><i class="icon icon-t"></i><a href="">项目5</a></li>
+						<li><i class="icon icon-js"></i><a href="effect/banner/">banner轮播图</a><span class="update">2019/2/19</span></li>
+						<li><i class="icon icon-html"></i><a href="effect/chart/">canvas例子图表</a><span class="update">2019/2/19</span></li>
+						<li><i class="icon icon-html"></i><a href="effect/clock/">canvas例子钟表</a><span class="update">2019/2/19</span></li>
+						<li><i class="icon icon-css"></i><a href="effect/dice/">flex布局之骰子</a><span class="update">2019/2/19</span></li>
+						<li><i class="icon icon-js"></i><a href="effect/drag/">js动效之拖拽</a><span class="update">2019/2/19</span></li>
+						<li><i class="icon icon-js"></i><a href="effect/gifts/">css3之妈妈的礼物</a><span class="update">2019/2/19</span></li>
+						<li><i class="icon icon-js"></i><a href="effect/guaguaka/">js动效之刮刮卡</a><span class="update">2019/2/19</span></li>
+						<li><i class="icon icon-js"></i><a href="effect/magnifier/">js动效之放大镜</a><span class="update">2019/2/19</span></li>
+						<li><i class="icon icon-html"></i><a href="effect/psd2html/">psd转html页面</a><span class="update">2019/2/19</span></li>
+						<li><i class="icon icon-html"></i><a href="effect/sacon/">仿帅康企业官网</a><span class="update">2019/2/19</span></li>
+						<li><i class="icon icon-js"></i><a href="effect/sacon/">js动效之自定义菜单</a><span class="update">2019/2/19</span></li>
 					</ul>
 				</article>
+				<article class="post">
+						<h2 class="post-title">移动端案例<small class="post-small-title">请在移动端查看</small> </h2>
+						<ul class="post-content">
+							<li><i class="icon icon-js"></i><a href="effect/58/">58同城首页+我的页面</a><span class="update">2019/2/19</span></li>
+						</ul>
+					</article>
 			</section>
 			<aside>
 				<article class="about">
 						<h2 class="about-title">关于作者</h2>
 						<p class="about-des">
-							我是一名web前端发烧友，从事前端一年多，积累了不少的经验。
+							<img class="about-img" src="public/img/user.jpg" alt="aboutme">
+							<cite>我是一名web前端发烧友，从事前端一年多，积累了不少的经验。目前是自由职业，关注前端技术发展！</cite>
 						</p>
 					</article>
 					<article class="about">
 						<h2 class="about-title">友情链接</h2>
-						<ul class="about-content">
-							<li><i class="icon icon-e"></i><a href="">链接1</a></li>
-							<li><i class="icon icon-e"></i><a href="">链接2</a></li>
-							<li><i class="icon icon-e"></i><a href="">链接3</a></li>
-							<li><i class="icon icon-e"></i><a href="">链接4</a></li>
-							<li><i class="icon icon-e"></i><a href="">链接5</a></li>
+						<ul class="about-content about-link clearfix">
+							<li><i class="icon icon-e"></i><a href="/">个人博客</a></li>
+							<li><i class="icon icon-e"></i><a href="http://www.cnblogs.com/guanqiweb">博客园</a></li>
+							<li><i class="icon icon-e"></i><a href="https://www.zhihu.com/people/jcguanqi">知乎</a></li>
+							<li><i class="icon icon-e"></i><a href="https://www.jianshu.com/u/9104414d732c">简书</a></li>
 						</ul>
 					</article>
 			</aside>
@@ -68,5 +79,11 @@
 		<footer>
 			<p>&copy;2019 <a href="/demo">Demo</a>All Reserved Right.</p>
 		</footer>
+		<script src="public/js/tab.js"></script>
+		<script>
+				var lis = document.querySelectorAll('.nav-index li');
+				lis[0].className = 'active';
+				new Tab(lis);
+			</script>
 	</body>
 </html>

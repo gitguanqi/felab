@@ -17,67 +17,57 @@
 	</head>
 	<body>
 		<header>
-			<a class="logo" href="/demo">Demo</a>
+			<a class="logo" href="/demo" id="mytitle"></a>
 			<nav>
-				<ul class="nav-index">
-					<li><a href="https://github.com/gitguanqi" target="_blank">Github</a></li>
-				</ul>
+				<ul class="nav-index" id="mynav"></ul>
+					<!-- <li><a href="/demo" target="_blank">首页</a></li>
+					<li><a href="https://github.com/gitguanqi" target="_blank">Github</a></li> -->
 			</nav>
 		</header>
 		<main class="clearfix">
 			<section>
 				<article class="post">
-					<h2 class="post-title">项目列表</h2>
-					<ul class="post-content">
-						<li><i class="icon icon-t"></i><a href="case/ddw/">【原生开发】pc端当当网</a><span class="update">2019/2/19</span></li>
-						<li><i class="icon icon-t"></i><a href="case/blw/">【原生开发】移动端B站</a><span class="update">2019/1/19</span></li>
-						<li><i class="icon icon-t"></i><a href="case/dbw/">【Vue栈】移动端豆瓣网</a><span class="update">2019/1/12</span></li>
-					</ul>
+					<h2 class="post-title">前端项目<small class="post-small-title">原生、框架等前端项目(<strong class="count"></strong>)</small></h2>
+					<ul class="post-content" id="myfront"></ul>
 				</article>
 				<article class="post">
-					<h2 class="post-title">PC端案例</h2>
-					<ul class="post-content">
-						<li><i class="icon icon-js"></i><a href="effect/banner/">banner轮播图</a><span class="update">2019/2/19</span></li>
-						<li><i class="icon icon-html"></i><a href="effect/chart/">canvas例子图表</a><span class="update">2019/2/19</span></li>
-						<li><i class="icon icon-html"></i><a href="effect/clock/">canvas例子钟表</a><span class="update">2019/2/19</span></li>
-						<li><i class="icon icon-css"></i><a href="effect/dice/">flex布局之骰子</a><span class="update">2019/2/19</span></li>
-						<li><i class="icon icon-js"></i><a href="effect/drag/">js动效之拖拽</a><span class="update">2019/2/19</span></li>
-						<li><i class="icon icon-js"></i><a href="effect/gifts/">css3之妈妈的礼物</a><span class="update">2019/2/19</span></li>
-						<li><i class="icon icon-js"></i><a href="effect/guaguaka/">js动效之刮刮卡</a><span class="update">2019/2/19</span></li>
-						<li><i class="icon icon-js"></i><a href="effect/magnifier/">js动效之放大镜</a><span class="update">2019/2/19</span></li>
-						<li><i class="icon icon-html"></i><a href="effect/psd2html/">psd转html页面</a><span class="update">2019/2/19</span></li>
-						<li><i class="icon icon-html"></i><a href="effect/sacon/">仿帅康企业官网</a><span class="update">2019/2/19</span></li>
-						<li><i class="icon icon-js"></i><a href="effect/sacon/">js动效之自定义菜单</a><span class="update">2019/2/19</span></li>
-					</ul>
+					<h2 class="post-title">后端项目<small class="post-small-title">Nodejs等后台管理项目(<strong class="count"></strong>)</small></h2>
+					<ul class="post-content" id="myback"></ul>
 				</article>
 				<article class="post">
-						<h2 class="post-title">移动端案例<small class="post-small-title">请在移动端查看</small> </h2>
-						<ul class="post-content">
-							<li><i class="icon icon-js"></i><a href="effect/58/">58同城首页+我的页面</a><span class="update">2019/2/19</span></li>
-						</ul>
+						<h2 class="post-title">App项目<small class="post-small-title">Android、ios等app应用项目(<strong class="count"></strong>)</small></h2>
+						<ul class="post-content" id="myapp"></ul>
+					</article>
+				<article class="post">
+					<h2 class="post-title">PC端案例<small class="post-small-title">只适用于pc端的网页(<strong class="count"></strong>)</small></h2>
+					<ul class="post-content" id="mypc"></ul>
+				</article>
+				<article class="post">
+					<h2 class="post-title">移动端案例<small class="post-small-title">只适用于移动端的网页(<strong class="count"></strong>)</small></h2>
+					<ul class="post-content" id="mywap"></ul>
+				</article>
+				<article class="post">
+						<h2 class="post-title">响应式案例<small class="post-small-title">适用于各种设备的网页(<strong class="count"></strong>)</small></h2>
+						<ul class="post-content" id="myrem"></ul>
 					</article>
 			</section>
 			<aside>
 				<article class="about">
 						<h2 class="about-title">关于作者</h2>
-						<p class="about-des">
-							<img class="about-img" src="public/img/user.jpg" alt="aboutme">
-							<cite>我叫<strong>观奇笔记</strong>，是一名web前端发烧友，从事前端一年多，积累了不少的经验，从移动端和pc端都擅长。目前是自由职业，关注前端技术发展！</cite>
-						</p>
+						<p class="about-des" id="mydes"></p>
 					</article>
 					<article class="about">
+							<h2 class="about-title">Demo归档</h2>
+							<ul class="about-content" id="mydoc"></ul>
+						</article>
+					<article class="about">
 						<h2 class="about-title">友情链接</h2>
-						<ul class="about-content about-link clearfix">
-							<li><i class="icon icon-e"></i><a href="/">个人博客</a></li>
-							<li><i class="icon icon-e"></i><a href="http://www.cnblogs.com/guanqiweb">博客园</a></li>
-							<li><i class="icon icon-e"></i><a href="https://www.zhihu.com/people/jcguanqi">知乎</a></li>
-							<li><i class="icon icon-e"></i><a href="https://www.jianshu.com/u/9104414d732c">简书</a></li>
-						</ul>
+						<ul id="mylink" class="about-content about-link clearfix"></ul>
 					</article>
 			</aside>
 		</main>
 		<footer>
-			<p>&copy;2019 <a href="/demo">Demo</a>All Reserved Right.</p>
+			<p id="myfoot"></p>
 		</footer>
 		<div class="music">
 			<audio id="audio-music" src="public/media/沙漠骆驼.mp3"></audio>
@@ -85,23 +75,7 @@
 		</div>
 		<script src="public/js/tab.js"></script>
 		<script src="public/js/event.js"></script>
-		<script>
-				var lis = document.querySelectorAll('.nav-index li');
-				var mysong = document.querySelector('#mysong');
-				var audioMusic = document.querySelector('#audio-music');
-				lis[0].className = 'active';
-				new Tab(lis);
-				uniHandler.add(mysong,'click',function (e) {
-					var clsname = e.target.className;
-					clsname = clsname.split(' ');
-					if (clsname[1] == 'start-btn') {
-						mysong.className = 'music-btn pause-btn';
-						audioMusic.play();
-					} else {
-						mysong.className = 'music-btn start-btn';
-						audioMusic.pause();
-					}
-				},false);
-			</script>
+		<script src="public/js/ajax.js"></script>
+		<script src="public/js/main.js"></script>
 	</body>
 </html>

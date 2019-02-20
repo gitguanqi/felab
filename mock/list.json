@@ -25,7 +25,8 @@
       {"id":20190020,"name":"网页换肤","url":"effect/skinchange/","type":"pc,js","create_time":"2019/1/16","update_time":"2019/2/20"},
       {"id":20190021,"name":"58同城首页+我的页面","url":"effect/58/","type":"wap,js","create_time":"2019/1/16","update_time":"2019/2/20"},
       {"id":20190022,"name":"选项卡切换","url":"effect/tab/","type":"rem,js,tab","create_time":"2019/1/16","update_time":"2019/2/20"},
-      {"id":20190023,"name":"表单验证","url":"effect/validate","type":"rem,js,form","create_time":"2019/1/16","update_time":"2019/2/20"}
+      {"id":20190023,"name":"表单验证","url":"effect/validate","type":"rem,js,form","create_time":"2019/1/16","update_time":"2019/2/20"},
+      {"id":20190024,"name":"表单登录","url":"effect/login","type":"rem,js,form","create_time":"2019/1/16","update_time":"2019/2/20"}
     ],
     "link": [
       {"id":201901,"name":"个人博客","url":"/","type":"link","create_time":"2019/1/16","update_time":"2019/2/20"},

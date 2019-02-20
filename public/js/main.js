@@ -3,17 +3,14 @@
  * date:2019.2.20,
  * content: js
 */
-//获取元素
-function $id(name) {
-  return document.getElementById(name);
-}
-function $cls(name) {
-  return document.getElementsByClassName(name);
-}
+document.body.style.overflow = 'hidden';
+$g.eid('loadimg').style.display = 'block';
 //获取数据
-GHTTP.getText('mock/list.json',function(res){
+$g.getText('mock/list.json',function(res){
   if (res.msg == 'get_succ') {
     showData(res.data);
+    $g.eid('loadimg').style.display = 'none';
+    document.body.style.overflow = 'auto';
   } else {
     errorData();
   }
@@ -35,12 +32,12 @@ function showData(data) {
 }
 //显示列表
 function showList(listdata) {
-  var myfront = $id('myfront');
-  var myback = $id('myback');
-  var myapp = $id('myapp');
-  var mypc = $id('mypc');
-  var mywap = $id('mywap');
-  var myrem = $id('myrem');
+  var myfront = $g.eid('myfront');
+  var myback = $g.eid('myback');
+  var myapp = $g.eid('myapp');
+  var mypc = $g.eid('mypc');
+  var mywap = $g.eid('mywap');
+  var myrem = $g.eid('myrem');
   var mydata = {
     front: [],
     back: [],
@@ -133,20 +130,20 @@ function showList(listdata) {
 }
 //显示计数
 function showCount(mydata,mycount) {  
-  $cls('count')[0].innerText = mydata.front.length;
-  $cls('count')[1].innerText = mydata.back.length;
-  $cls('count')[2].innerText = mydata.app.length;
-  $cls('count')[3].innerText = mydata.pc.length;
-  $cls('count')[4].innerText = mydata.wap.length;
-  $cls('count')[5].innerText = mydata.rem.length;
-  $cls('count-part')[0].innerText = mycount.html;
-  $cls('count-part')[1].innerText = mycount.css;
-  $cls('count-part')[2].innerText = mycount.js;
-  $id('mydoc').innerHTML = '<li><i class="icon icon-e"></i>前端项目('+ mydata.front.length +')</li><li><i class="icon icon-e"></i>后端项目('+ mydata.back.length +')</li><li><i class="icon icon-e"></i>App项目('+ mydata.app.length +')</li><li><i class="icon icon-e"></i>PC端案例('+ mydata.pc.length +')</li><li><i class="icon icon-e"></i>移动端案例('+ mydata.wap.length +')</li><li><i class="icon icon-e"></i>响应式案例('+ mydata.rem.length +')</li>';
+  $g.ecls('count')[0].innerText = mydata.front.length;
+  $g.ecls('count')[1].innerText = mydata.back.length;
+  $g.ecls('count')[2].innerText = mydata.app.length;
+  $g.ecls('count')[3].innerText = mydata.pc.length;
+  $g.ecls('count')[4].innerText = mydata.wap.length;
+  $g.ecls('count')[5].innerText = mydata.rem.length;
+  $g.ecls('count-part')[0].innerText = mycount.html;
+  $g.ecls('count-part')[1].innerText = mycount.css;
+  $g.ecls('count-part')[2].innerText = mycount.js;
+  $g.eid('mydoc').innerHTML = '<li><i class="icon icon-e"></i>前端项目('+ mydata.front.length +')</li><li><i class="icon icon-e"></i>后端项目('+ mydata.back.length +')</li><li><i class="icon icon-e"></i>App项目('+ mydata.app.length +')</li><li><i class="icon icon-e"></i>PC端案例('+ mydata.pc.length +')</li><li><i class="icon icon-e"></i>移动端案例('+ mydata.wap.length +')</li><li><i class="icon icon-e"></i>响应式案例('+ mydata.rem.length +')</li>';
 }
 //显示简介
 function showDes(data) {  
-  $id('mydes').innerHTML =  '<img class="about-img" src="'+ data.img +'" title="'+ data.des +'">' + data.des;
+  $g.eid('mydes').innerHTML =  '<img class="about-img" src="'+ data.img +'" title="'+ data.des +'">' + data.des;
 }
 //显示友链
 function showLink(linkdata) {  
@@ -156,45 +153,72 @@ function showLink(linkdata) {
     for(var i=0;i<linkdata.length;i++) {
       linkstr += '<li><i class="icon icon-e"></i><a href="'+ linkdata[i].url +'?from=demo" target="_blank">'+ linkdata[i].name +'</a></li>'
     }
-    $id('mylink').innerHTML = linkstr;
+    $g.eid('mylink').innerHTML = linkstr;
   }
 }
 //显示网页信息
 function showSite(site) {
   document.title = site.title || 'Demo';
-  $id('mytitle').innerText = site.title || 'Demo';
-  $id('myfoot').innerHTML = site.foot || '&copy;2019 <a href="/demo">Demo</a>';
+  $g.eid('mytitle').innerText = site.title || 'Demo';
+  $g.eid('myfoot').innerHTML = site.foot || '&copy;2019 <a href="/demo">Demo</a>';
   //分解菜单
   if (site.navs.length > 0) {
     var navstr = '';
     for(var i=0;i<site.navs.length;i++) {
       navstr += '<li><a href="'+ site.navs[i].url + '" target="'+ (site.navs[i].name == 'Github' ? "_blank" : "_self") +'">'+ site.navs[i].name +'</a></li>'
     }
-    $id('mynav').innerHTML = navstr;
+    $g.eid('mynav').innerHTML = navstr;
+    $g.eid('mynava').innerHTML = navstr;
     changeNav();
   }
 }
 //显示错误
 function errorData() {
-  $id('myfront').innerHTML = '<li><i class="icon icon-t"></i><a href="#no">暂无数据</a></li>';
-  $id('myback').innerHTML = '<li><i class="icon icon-t"></i><a href="#no">暂无数据</a></li>';
-  $id('myapp').innerHTML = '<li><i class="icon icon-t"></i><a href="#no">暂无数据</a></li>';
-  $id('mypc').innerHTML = '<li><i class="icon icon-t"></i><a href="#no">暂无数据</a></li>';
-  $id('mywap').innerHTML = '<li><i class="icon icon-t"></i><a href="#no">暂无数据</a></li>';
-  $id('myrem').innerHTML = '<li><i class="icon icon-t"></i><a href="#no">暂无数据</a></li>';
-  $id('mydes').innerHTML = '<p>暂无数据</p>'
-  $id('mylink').innerHTML = '<li><i class="icon icon-e"></i><a href="#nolink">暂无友链</a></li>';
+  $g.eid('myfront').innerHTML = '<li><i class="icon icon-t"></i><a href="#no">暂无数据</a></li>';
+  $g.eid('myback').innerHTML = '<li><i class="icon icon-t"></i><a href="#no">暂无数据</a></li>';
+  $g.eid('myapp').innerHTML = '<li><i class="icon icon-t"></i><a href="#no">暂无数据</a></li>';
+  $g.eid('mypc').innerHTML = '<li><i class="icon icon-t"></i><a href="#no">暂无数据</a></li>';
+  $g.eid('mywap').innerHTML = '<li><i class="icon icon-t"></i><a href="#no">暂无数据</a></li>';
+  $g.eid('myrem').innerHTML = '<li><i class="icon icon-t"></i><a href="#no">暂无数据</a></li>';
+  $g.eid('mydes').innerHTML = '<p>暂无数据</p>'
+  $g.eid('mylink').innerHTML = '<li><i class="icon icon-e"></i><a href="#nolink">暂无友链</a></li>';
 }
 //切换菜单
 function changeNav() {
-  var lis = document.querySelectorAll('.nav-index li');
+  var lis = $g.eall('.nav-index li');
   lis[0].className = 'active';
-  new Tab(lis);
+  new $g.Tab(lis);
 }
+var navwap = $g.eone('#navwap');
+var mywapnav = $g.eone('#mywapnav');
+var container = $g.eone('.container');
+var wnavbg = $g.eone('.wnav-bg');
+$g.addEvent(navwap,'click',function (e) {
+  if (mywapnav.className == 'wnav-index') {
+    mywapnav.className = 'wnav-index fixed-nav';
+    document.body.style.overflow = 'hidden';
+    container.style.opacity = '0.88';
+    wnavbg.style.display = 'block';
+  }
+},false);
+$g.addEvent(mywapnav,'click',function () {
+  return false;
+},false);
+$g.addEvent(document,'click',function (e) {
+  if (e.target.className != 'wnav-index fixed-nav' && e.target.className !=  'load-box' 
+    && e.target.className !=   'load' && e.target.className != 'rect1' 
+    && e.target.className != 'rect2' && e.target.className != 'rect3' 
+    && e.target.className != 'rect4' && e.target.className !=  'rect5') {
+    mywapnav.className = 'wnav-index';
+    document.body.style.overflow = 'auto';
+    container.style.opacity = '1';
+    wnavbg.style.display = 'none';
+  }
+},true);
 //播放歌曲
-var mysong = document.querySelector('#mysong');
-var audioMusic = document.querySelector('#audio-music');
-uniHandler.add(mysong,'click',function (e) {
+var mysong = $g.eid('mysong');
+var audioMusic = $g.eid('audio-music');
+$g.addEvent(mysong,'click',function (e) {
   var clsname = e.target.className;
   clsname = clsname.split(' ');
   var numindex = 0;
@@ -209,4 +233,26 @@ uniHandler.add(mysong,'click',function (e) {
     mysong.className = 'music-btn start-btn';
     audioMusic.pause();
   }
+},false);
+// 到顶部
+var arrow = $g.eone('.arrow');
+$g.addEvent(window,'scroll',function(e){
+  var top = document.documentElement.scrollTop || document.body.scrollTop;
+  if (top > 280) {
+    arrow.style.display = 'block';
+  } else {
+    arrow.style.display = 'none';
+  }
+},false);
+$g.addEvent(arrow,'click',function (e) {
+  var timer = setInterval(function () {
+    var top = document.documentElement.scrollTop || document.body.scrollTop;
+    if (top > 0) {
+      var speed = Math.floor(-top / 6);
+    }
+    if (top == 0) {
+      clearInterval(timer);
+    }
+    document.documentElement.scrollTop = document.body.scrollTop = top + speed;
+  }, 10);
 },false);

@@ -4,6 +4,10 @@ date:2019.2.19;
 content: 重置样式;
 */
 /* 公共部分 */
+.container {
+  width: 100%;
+  height: 100%;
+}
 header,main,footer {
   margin: 0 auto;
   width: 960px;
@@ -54,6 +58,25 @@ header {
 nav,.nav-index {
   float: right;
   margin-right: 10px;
+}
+#mywapnav,.wnav-bg {
+  display: none;
+}
+.arrow {
+  display: none;
+  position: fixed;
+  right: 12%;
+  bottom: 60px;
+  width: 35px;
+  height: 35px;
+  border: 1px solid #ccc;
+  box-shadow: 1px 1px 1px #ccc;
+  background: #fff url('../img/arrow.png') no-repeat;
+  background-size: 100%;
+  transition: all 0.2s;
+}
+.arrow:hover {
+  cursor: pointer;
 }
 .nav-index li {
   float: left;
@@ -244,6 +267,67 @@ footer a {
   background: url('../img/pause.png') no-repeat;
   background-size: 100%;
 }
+/* 加载特效 */
+.load-box {
+  position: absolute;
+  top:0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  opacity: 0.93;
+}
+.load {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -25px;
+  margin-top: -30px;
+  width: 50px;
+  height: 60px;
+  text-align: center;
+  font-size: 10px;
+}
+.load > div {
+  display: inline-block;
+  height: 100%;
+  width: 6px;
+  background-color: #67CF22;
+  -webkit-animation: stretchdelay 1.2s infinite ease-in-out;
+  animation: stretchdelay 1.2s infinite ease-in-out;
+}
+.load .rect2 {
+  -webkit-animation-delay: -1.1s;
+  animation-delay: -1.1s;
+}
+.load .rect3 {
+  -webkit-animation-delay: -1.0s;
+  animation-delay: -1.0s;
+}
+.load .rect4 {
+  -webkit-animation-delay: -0.9s;
+  animation-delay: -0.9s;
+}
+.load .rect5 {
+  -webkit-animation-delay: -0.8s;
+  animation-delay: -0.8s;
+}
+@-webkit-keyframes stretchdelay {
+  0%, 40%, 100% { -webkit-transform: scaleY(0.4) }
+  20% { -webkit-transform: scaleY(1.0) }
+}
+@keyframes stretchdelay {
+  0%, 40%, 100% {
+    transform: scaleY(0.4);
+    -webkit-transform: scaleY(0.4);
+  } 
+  20% {
+    transform: scaleY(1.0);
+    -webkit-transform: scaleY(1.0);
+  }
+}
 @media all and (max-width:750px) and (min-width:319px) {
   .icon {
     top: 3px;
@@ -269,17 +353,104 @@ footer a {
     width: 100%;
   }
   header {
+    position: relative;
     margin-bottom: 1.25rem;
     height: 3.75rem;
     line-height: 3.75rem;
-    border-bottom: 0.125rem solid #2b6ac8
+    border-bottom: 0.125rem solid #2b6ac8;
+    text-align: center;
   }
   .logo {
     padding-left: 0.625rem;
     font-size: 1.625rem;
   }
+  #mywapnav {
+    display: block;
+  }
+  #navwap {
+    position: absolute;
+    top: 0.9375rem;
+    left: 0.625rem;
+    display: block;
+    width: 1.875rem;
+    height: 1.875rem;
+    background: url('../img/menu.png') no-repeat;
+    background-size: 100%;
+  }
+  .wnav-index {
+    position: absolute;
+    top: 0;
+    left: -101%;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(43, 106, 200, 0.95);
+    border-right: 1px solid #ccc;
+    box-shadow: 1px 1px 1px #ccc;
+    z-index: 10;
+    transition: all 0.3s;
+  }
+  .wnav-bg {
+    display: none;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 8;
+  }
+  .nav-indexa {
+    position: relative;
+    top: 3rem;
+    left: 7.5rem;
+    box-sizing: border-box;
+    padding: 10px;
+    width: 10rem;
+    height: 24rem;
+  }
+  .nav-indexa li {
+    width: 100%;
+    height: 3.75rem;
+    line-height: 3.75rem;
+    text-align: center;
+    border-bottom: 0.0625rem solid #f8f8f8;
+  }
+  .nav-indexa li a {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    color: #fff;
+  }
+  .silder-head {
+    position: relative;
+    top: 0.5rem;
+    left: 7.5rem;
+    box-sizing: border-box;
+    padding: 10px;
+    width: 10rem;
+    height: 3rem;
+    line-height: 3rem;
+    color: #fff;
+    text-align: center;
+  }
+  .silder-foot {
+    position: relative;
+    top: 4rem;
+    left: 7.5rem;
+    box-sizing: border-box;
+    padding: 10px;
+    width: 10rem;
+    height: 3rem;
+    line-height: 3rem;
+    color: #fff;
+    text-align: center;
+  }
+  .fixed-nav {
+    left: -25%;
+  }
   nav,.nav-index {
-    float: right;
+    display: none;
     margin-right: 0.625rem;
   }
   .nav-index li {
@@ -410,5 +581,26 @@ footer a {
     left: 0.9375rem;
     width: 2.1875rem;
     height: 2.1875rem;
+  }
+  /* 加载特效 */
+  .load {
+    margin-left: -1.5625rem;
+    margin-top: -1.875rem;
+    width: 3.125rem;
+    height: 3.75rem;
+    font-size: 0.625re;
+  }
+  .load > div {
+    width: 0.375rem;
+  }
+  /* goto */
+  .arrow {
+    right: 12%;
+    bottom: 3.75rem;
+    width: 2.1875rem;
+    height: 2.1875rem;
+    border:  0.0625rem solid #ccc;
+    box-shadow: 0.0625rem 0.0625rem 0.0625rem #ccc;
+    z-index: 4;
   }
 }

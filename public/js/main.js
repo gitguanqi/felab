@@ -197,6 +197,11 @@ var audioMusic = document.querySelector('#audio-music');
 uniHandler.add(mysong,'click',function (e) {
   var clsname = e.target.className;
   clsname = clsname.split(' ');
+  var numindex = 0;
+  if (numindex == 0) {
+    numindex = 1;
+    audioMusic.setAttribute('src','public/media/沙漠骆驼.mp3');
+  }
   if (clsname[1] == 'start-btn') {
     mysong.className = 'music-btn pause-btn';
     audioMusic.play();

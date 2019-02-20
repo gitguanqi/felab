@@ -143,7 +143,9 @@ function showCount(mydata,mycount) {
 }
 //显示简介
 function showDes(data) {  
-  $g.eid('mydes').innerHTML =  '<img class="about-img" src="'+ data.img +'" title="'+ data.des +'">' + data.des;
+  $g.ecls('about-img')[0].src = data.img;
+  $g.ecls('about-img')[0].title = data.des;
+  $g.ecls('about-des-content')[0].innerHTML = data.des;
 }
 //显示友链
 function showLink(linkdata) {  
@@ -192,13 +194,10 @@ function changeNav() {
 var navwap = $g.eone('#navwap');
 var mywapnav = $g.eone('#mywapnav');
 var container = $g.eone('.container');
-var wnavbg = $g.eone('.wnav-bg');
 $g.addEvent(navwap,'click',function (e) {
   if (mywapnav.className == 'wnav-index') {
     mywapnav.className = 'wnav-index fixed-nav';
-    document.body.style.overflow = 'hidden';
     container.style.opacity = '0.88';
-    wnavbg.style.display = 'block';
   }
 },false);
 $g.addEvent(mywapnav,'click',function () {
@@ -210,9 +209,7 @@ $g.addEvent(document,'click',function (e) {
     && e.target.className != 'rect2' && e.target.className != 'rect3' 
     && e.target.className != 'rect4' && e.target.className !=  'rect5') {
     mywapnav.className = 'wnav-index';
-    document.body.style.overflow = 'auto';
     container.style.opacity = '1';
-    wnavbg.style.display = 'none';
   }
 },true);
 //播放歌曲
@@ -236,12 +233,15 @@ $g.addEvent(mysong,'click',function (e) {
 },false);
 // 到顶部
 var arrow = $g.eone('.arrow');
+var header = $g.eone('header');
 $g.addEvent(window,'scroll',function(e){
   var top = document.documentElement.scrollTop || document.body.scrollTop;
   if (top > 280) {
     arrow.style.display = 'block';
+    header.className = 'header-fixed';
   } else {
     arrow.style.display = 'none';
+    header.className = '';
   }
 },false);
 $g.addEvent(arrow,'click',function (e) {
@@ -256,3 +256,17 @@ $g.addEvent(arrow,'click',function (e) {
     document.documentElement.scrollTop = document.body.scrollTop = top + speed;
   }, 10);
 },false);
+// 点击关闭灯箱
+var picclose = $g.eone('.pic-close');
+var picbox = $g.eone('.pic-box');
+$g.addEvent(picclose,'click',function(){
+  picbox.style.display = 'none';
+},false);
+var aimgs = $g.etag('img');
+var picimg = $g.eone('.pic-img');
+for(var k=0;k<aimgs.length;k++) {
+  $g.addEvent(aimgs[k],'click',function(){
+    picimg.src = this.src;
+    picbox.style.display = 'block';
+  },false);
+}

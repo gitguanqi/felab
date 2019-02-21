@@ -138,8 +138,7 @@ $g.supportDom = function (name, version) {
     return false;
   }
 }
-// 事件监听合成
-$g.event = {};
+// 事件监听
 if (document.addEventListener) {
   $g.addEvent = function (elem, eventType, handleEvent, isCapture) {
     elem.addEventListener(eventType, handleEvent, isCapture);
@@ -167,7 +166,7 @@ if (document.addEventListener) {
     e.returnValue = false;
   }
 } else {
-  uniHandler.eventOrigin = function (elem, eventType, handleEvent) {
+  $g.unevent = function (elem, eventType, handleEvent) {
     elem.eventType = handleEvent;
   }
 }

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,6 +20,7 @@
       font-size: 20px;
       text-align: center;
     }
+
     .box1 {
       position: absolute;
       left: 0;
@@ -33,15 +35,17 @@
     }
   </style>
 </head>
+
 <body>
   <div class="box">拖拽</div>
   <div class="box1">拖拽</div>
-  <script src="../../public/js/drag.js"></script>
+  <script src="../../public/js/gjs.min.js"></script>
   <script>
-    var box = document.querySelector('.box');
-    var box1 = document.querySelector('.box1');
-    new DragElement(box);
-    new DragElement(box1);
+    var box = $g.eone('.box');
+    var box1 = $g.eone('.box1');
+    new $g.Drag(box);
+    new $g.Drag(box1);
   </script>
 </body>
+
 </html>

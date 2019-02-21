@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,6 +13,7 @@
     }
   </style>
 </head>
+
 <body>
   <h2>表单验证案例</h2>
   <p>这是一个验证表单内容的案例！</p>
@@ -71,25 +73,24 @@
       <input type="submit" name="submit" value="提交">
     </p>
   </form>
-  <script src="../../public/js/event.js"></script>
-  <script src="../../public/js/dom.js"></script>
+  <script src="../../public/js/gjs.min.js"></script>
   <script>
     //禁止默认提交
-    function returnForm() {  
+    function returnForm() {
       return false;
     }
     //确定重置提示
-    function confirmForm() {  
+    function confirmForm() {
       var reset = confirm('你确定要清空所有输入的内容吗？');
       return reset;
     }
 
     //验证表单内容
-    var tips = domSet.getElem('.tips','span');
+    var tips = $g.ecls('tips');
     var btn = document.myform.submit;
-    uniHandler.add(btn,'click',checkFrom,false);
+    $g.addEvent(btn, 'click', checkFrom, false);
 
-    function checkFrom() {  
+    function checkFrom() {
       //正则表达式
       var formreg = /\w{5,}/;
       //表单元素
@@ -130,7 +131,7 @@
         flag = false;
       }
       var isChecked;
-      for(var i=0;i<hobbies.length;i++) {
+      for (var i = 0; i < hobbies.length; i++) {
         var checked = hobbies[i].checked;
         if (checked) {
           isChecked = true;
@@ -168,4 +169,5 @@
     }
   </script>
 </body>
+
 </html>

@@ -1,71 +1,91 @@
-body{
-	margin: 0;padding: 0;
+body {
+	margin: 0;
+	padding: 0;
 }
-li{
+
+li {
 	list-style: none;
 }
-.hidden{
+
+.hidden {
 	display: none;
 }
-.wrap{
+
+.wrap {
 	margin: 50px auto;
 	width: 1000px;
 }
-.content,.content-s,.content-b{
+
+.content,
+.content-s,
+.content-b {
 	float: left;
 }
-.content-m{
+
+.content-m {
 	position: relative;
 	width: 400px;
 	height: 400px;
 }
-.content-m img{
+
+.content-m img {
 	display: block;
-	width: 100%;height: auto;
+	width: 100%;
+	height: auto;
 }
-.magnifier{
+
+.magnifier {
 	position: absolute;
-	top: 100px;left: 100px;
+	top: 100px;
+	left: 100px;
 	width: 200px;
 	height: 200px;
 	background: url(../img/dot.png) repeat left top;
 }
-.content-s{
+
+.content-s {
 	margin-top: 5px;
 	height: 80px;
 }
-.content-s img{
+
+.content-s img {
 	box-sizing: border-box;
 	float: left;
 	width: 76px;
 	height: 76px;
 	margin-right: 5px;
 }
-.content-s img.active,.carousel-right img.active{
+
+.content-s img.active,
+.carousel-right img.active {
 	border: 3px solid #f00;
 }
-.content-b{
+
+.content-b {
 	position: relative;
 	margin-left: 5px;
 	width: 400px;
 	height: 400px;
 	overflow: hidden;
 }
-.img-b{
+
+.img-b {
 	position: absolute;
 	width: 800px;
 	height: 800px;
 }
-.modal{
+
+.modal {
 	z-index: 9999;
 	position: fixed;
 	left: 0;
 	right: 0;
 	top: 0;
 	bottom: 0;
-	background: rgba(0,0,0,.2);
+	background: rgba(0, 0, 0, .2);
 }
-.carousel{
+
+.carousel {
 	position: absolute;
 	left: 50%;
 	top: 50%;
@@ -78,8 +98,9 @@ li{
 	overflow: hidden;
 	background: #000;
 }
-.carousel-left{
-	float: left;	
+
+.carousel-left {
+	float: left;
 	width: 800px;
 	height: 100%;
 	background-image: url(../img/b01.png);
@@ -87,7 +108,8 @@ li{
 	background-position: center;
 	background-size: contain;
 }
-.arrow{
+
+.arrow {
 	position: absolute;
 	top: 50%;
 	margin-top: -25px;
@@ -98,23 +120,27 @@ li{
 	font-family: "宋体";
 	font-size: 50px;
 	font-weight: 600;
-	color: rgba(255,255,255,.6);
+	color: rgba(255, 255, 255, .6);
 	cursor: pointer;
 }
-.arrow-left{
+
+.arrow-left {
 	left: 0;
 }
-.arrow-right{
+
+.arrow-right {
 	right: 180px;
 }
-.carousel-right{
+
+.carousel-right {
 	float: right;
 	margin: -50px -20px;
 	width: 160px;
 	height: 630px;
 	background: #fff;
 }
-.carousel-right img{
+
+.carousel-right img {
 	box-sizing: border-box;
 	width: 70px;
 	border: 5px solid #fff;

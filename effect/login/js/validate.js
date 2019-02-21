@@ -6,6 +6,7 @@ comment:验证表单样式;
 'use strict';
 var btn = document.querySelector('.btn');
 var tip = document.querySelectorAll('.tip');
+
 function checkForm() {
 	if (document.login.username.value == '') {
 		tip[0].style.display = 'block';

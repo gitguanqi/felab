@@ -27,13 +27,13 @@
             <div>选项三内容</div>
         </div>
     </div>
-    <script src="js/main.js"></script>
+    <script src="../../public/js/gjs.min.js"></script>
     <script>
         // 首先，你要获取到这个点击元素和内容元素
-        var btns = document.querySelectorAll('.btn span');
-        var content = document.querySelectorAll('.content div');
+        var btns = $g.eall('.btn span');
+        var content = $g.eall('.content div');
         // 其次，引入tab对象，然后new一下
-        var tab = new Tab(btns, content);
+        var tab = new $g.Tabcon(btns, content, 'b_active', 'c_active');
     </script>
 </body>
 

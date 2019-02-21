@@ -1,33 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width,initial-scale=1">
-		<title>表单登录案例</title>
-		<meta name="keyword" content="html,html表单练习">
-		<meta name="description" content="html表单是html的内容。">
-		<link rel="shortcut icon" type="image/x-icon" href="../../public/img/favicon.ico">
-		<link rel="stylesheet" type="text/css" href="css/form.css">
-	</head>
-	<body>
-		<form name="login" class="form" action="https://www.guanqi.xyz/demo/login/admin/login.php" method="post" accept-charset="utf-8" onsubmit="return checkForm();">
-			<h3>用户登录</h3>
-			<p class="row">
-				<label for="username">用户：</label><input type="text" name="username" id="username" placeholder="用户名"><br>
-			</p>
-			<p class="tip">
-				<span>用户名错误</span>
-			</p>
-			<p class="row">
-				<label for="password">密码：</label><input type="password" name="password" id="password" placeholder="密码"><br>
-			</p>
-			<p class="tip">
-				<span>密码错误</span>
-			</p>
-			<p class="row">
-				<input id="btn" type="submit" value="登录">
-			</p>
-		</form>
-		<script src="js/validate.js"></script>
-	</body>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>表单登录案例</title>
+	<meta name="keyword" content="html,html表单练习">
+	<meta name="description" content="html表单是html的内容。">
+	<link rel="shortcut icon" type="image/x-icon" href="../../public/img/favicon.ico">
+	<link rel="stylesheet" type="text/css" href="css/form.css">
+</head>
+
+<body>
+	<form name="login" class="form" action="https://www.guanqi.xyz/demo/login/admin/login.php" method="post"
+	 accept-charset="utf-8" onsubmit="return checkForm();">
+		<h3>用户登录</h3>
+		<p class="row">
+			<label for="username">用户：</label><input type="text" name="username" id="username" placeholder="用户名"><br>
+		</p>
+		<p class="tip">
+			<span>用户名错误</span>
+		</p>
+		<p class="row">
+			<label for="password">密码：</label><input type="password" name="password" id="password" placeholder="密码"><br>
+		</p>
+		<p class="tip">
+			<span>密码错误</span>
+		</p>
+		<p class="row">
+			<input id="btn" type="submit" value="登录">
+		</p>
+	</form>
+	<script src="js/validate.js"></script>
+</body>
+
 </html>

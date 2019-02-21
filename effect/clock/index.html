@@ -1,156 +1,156 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<title>案例:钟表</title>
-		<link rel="shortcut icon" type="image/x-icon" href="../../public/img/favicon.ico" />
-	</head>
-	<body>
-		<canvas id="canvas" style="border: 1px solid #eee;">
-			您的游览器不支持canvas!
-		</canvas>
-		<script>
-			var canvas = document.getElementById('canvas'),
-			    cxt = canvas.getContext('2d');
-			canvas.width = 800
-			canvas.height = 600
-			
-			
-			
-			
+
+<head>
+	<meta charset="UTF-8">
+	<title>案例:钟表</title>
+	<link rel="shortcut icon" type="image/x-icon" href="../../public/img/favicon.ico" />
+</head>
+
+<body>
+	<canvas id="canvas" style="border: 1px solid #eee;">
+		您的游览器不支持canvas!
+	</canvas>
+	<script>
+		var canvas = document.getElementById('canvas'),
+			cxt = canvas.getContext('2d');
+		canvas.width = 800
+		canvas.height = 600
+
+
+
+
+		drawClockLine();
+		drawHourLine();
+		drawMinLine();
+		drawHour();
+		drawMinute();
+		drawSecond();
+		//1.表盘
+		function drawClockLine() {
+			cxt.beginPath();
+			cxt.fillStyle = '#fff'
+			cxt.lineWidth = 5;
+			cxt.arc(400, 300, 250, 0, Math.PI / 180 * 360, false);
+			cxt.stroke();
+			cxt.fill();
+		}
+
+		//2.小时刻度
+		function drawHourLine() {
+			/*cxt.translate(400,300);
+			cxt.moveTo(0,-220);
+			cxt.lineTo(0,-250);
+			cxt.stroke();*/
+
+			for (var i = 0; i < 12; i++) {
+				cxt.save();
+				cxt.translate(400, 300);
+				cxt.rotate(Math.PI / 180 * 30 * i);
+				cxt.beginPath();
+				cxt.lineWidth = 10;
+				cxt.moveTo(0, -220);
+				cxt.lineTo(0, -250);
+				cxt.stroke();
+				cxt.restore();
+			}
+		}
+
+		//3.秒针小刻度
+		function drawMinLine() {
+			for (var i = 0; i < 60; i++) {
+				cxt.save();
+				cxt.translate(400, 300);
+				cxt.rotate(Math.PI / 180 * 6 * i);
+				cxt.beginPath();
+				cxt.lineWidth = 5;
+				cxt.moveTo(0, -230);
+				cxt.lineTo(0, -250);
+				cxt.stroke();
+				cxt.restore();
+			}
+		}
+
+		//4.时针
+		function drawHour(hour) {
+			cxt.save();
+			cxt.translate(400, 300);
+			cxt.rotate(Math.PI / 180 * 30 * hour);
+			cxt.beginPath();
+			cxt.lineWidth = 10;
+			cxt.moveTo(0, 30);
+			cxt.lineTo(0, -140);
+			cxt.stroke();
+			cxt.restore();
+		}
+
+		//5.分针
+		function drawMinute(minute) {
+			cxt.save();
+			cxt.translate(400, 300);
+			cxt.rotate(Math.PI / 180 * 6 * minute);
+			cxt.beginPath();
+			cxt.strokeStyle = '#ff0'
+			cxt.lineWidth = 7;
+			cxt.moveTo(0, 30);
+			cxt.lineTo(0, -160);
+			cxt.stroke();
+			cxt.restore();
+		}
+
+		//6.秒针
+		function drawSecond(second) {
+			cxt.save();
+			cxt.translate(400, 300);
+			cxt.rotate(Math.PI / 180 * 6 * second);
+			cxt.beginPath();
+			cxt.strokeStyle = '#f00';
+			cxt.lineWidth = 5;
+			cxt.moveTo(0, 30);
+			cxt.lineTo(0, -200);
+			cxt.stroke();
+			cxt.restore();
+		}
+
+		//7.画表
+		function drawClock() {
+			var datei = new Date();
+			var hour = datei.getHours() > 12 ? datei.getHours() - 12 : datei.getHours(),
+				minute = datei.getMinutes(),
+				second = datei.getSeconds();
+
+			console.log(hour, minute, second);
+
+			//清除样式
+			cxt.clearRect(0, 0, 800, 600)
 			drawClockLine();
 			drawHourLine();
 			drawMinLine();
-			drawHour();
-			drawMinute();
-			drawSecond();
-			//1.表盘
-			function drawClockLine(){
-				cxt.beginPath();
-				cxt.fillStyle = '#fff'
-				cxt.lineWidth = 5;
-				cxt.arc(400,300,250,0,Math.PI/180*360,false);
-				cxt.stroke();
-				cxt.fill();
-			}
-			
-			//2.小时刻度
-			function drawHourLine(){
-				/*cxt.translate(400,300);
-				cxt.moveTo(0,-220);
-				cxt.lineTo(0,-250);
-				cxt.stroke();*/
-				
-				for(var i=0;i<12;i++){
-					cxt.save();
-					cxt.translate(400,300);
-					cxt.rotate(Math.PI /180 *30 * i);
-					cxt.beginPath();
-					cxt.lineWidth = 10;
-					cxt.moveTo(0,-220);
-					cxt.lineTo(0,-250);
-					cxt.stroke();
-					cxt.restore();
-				}
-			}
-			
-			//3.秒针小刻度
-			function drawMinLine(){
-				for(var i=0;i<60;i++){
-					cxt.save();
-					cxt.translate(400,300);
-					cxt.rotate(Math.PI /180 *6* i);
-					cxt.beginPath();
-					cxt.lineWidth = 5;
-					cxt.moveTo(0,-230);
-					cxt.lineTo(0,-250);
-					cxt.stroke();
-					cxt.restore();
-				}
-			}
-         
-			//4.时针
-			function drawHour(hour){
-			   cxt.save();
-				cxt.translate(400,300);
-				cxt.rotate(Math.PI / 180 * 30 * hour);
-				cxt.beginPath();
-				cxt.lineWidth = 10;
-				cxt.moveTo(0,30);
-				cxt.lineTo(0,-140);
-				cxt.stroke();
-				cxt.restore();
-			}
-			
-			//5.分针
-			function drawMinute(minute){
-			   cxt.save();
-				cxt.translate(400,300);
-				cxt.rotate(Math.PI / 180 * 6 * minute);
-				cxt.beginPath();
-				cxt.strokeStyle = '#ff0'
-				cxt.lineWidth = 7;
-				cxt.moveTo(0,30);
-				cxt.lineTo(0,-160);
-				cxt.stroke();
-				cxt.restore();
-			}
-			
-			//6.秒针
-			function drawSecond(second){
-			   cxt.save();
-				cxt.translate(400,300);
-				cxt.rotate(Math.PI / 180 * 6 * second);
-				cxt.beginPath();
-				cxt.strokeStyle = '#f00';
-				cxt.lineWidth = 5;
-				cxt.moveTo(0,30);
-				cxt.lineTo(0,-200);
-				cxt.stroke();
-				cxt.restore();
-			}
-			
-			//7.画表
-			function drawClock(){
-				var datei = new Date();
-				var hour = datei.getHours()>12 ? datei.getHours()-12 : datei.getHours(),
-				    minute = datei.getMinutes(),
-				    second = datei.getSeconds();
-				    
-				    console.log(hour,minute,second);
-				    
-				    //清除样式
-				      cxt.clearRect(0,0,800,600)
-				      drawClockLine();
-						drawHourLine();
-						drawMinLine();
-						
-						//调用时分秒
-						drawHour(hour);
-						drawMinute(minute);
-						drawSecond(second);
-				      drawsArc();
-			}
-			
-			//8.修饰圆
-			function drawsArc(){
-				cxt.beginPath();
-				cxt.lineWidth = 5;
-				cxt.strokeStyle = '#333';
-				cxt.fillStyle = '#fff';
-				cxt.arc(400,300,6,0,Math.PI/180*360,false);
-				cxt.stroke();
-				cxt.fill();
-			}
-			
-			//9.文字
-			
-			
-			
-			setInterval(drawClock,1000);
-			
-			
-			
-		</script>	
-	</body>
+
+			//调用时分秒
+			drawHour(hour);
+			drawMinute(minute);
+			drawSecond(second);
+			drawsArc();
+		}
+
+		//8.修饰圆
+		function drawsArc() {
+			cxt.beginPath();
+			cxt.lineWidth = 5;
+			cxt.strokeStyle = '#333';
+			cxt.fillStyle = '#fff';
+			cxt.arc(400, 300, 6, 0, Math.PI / 180 * 360, false);
+			cxt.stroke();
+			cxt.fill();
+		}
+
+		//9.文字
+
+
+
+		setInterval(drawClock, 1000);
+	</script>
+</body>
+
 </html>

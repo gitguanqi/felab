@@ -8,33 +8,35 @@ document.documentElement.style.fontSize = document.documentElement.clientWidth /
 var app = document.getElementsByClassName('app')[0];
 var close = document.getElementById('close');
 var ctop = document.getElementsByClassName('c-top')[0];
-close.onclick = function(){
+close.onclick = function () {
 	app.style.display = 'none';
 }
-ctop.onclick = function(e){
-	e=e || window.event;
-	e.preventDefault();
-	var timer = setInterval(function(){
-		var scrTops = document.documentElement.scrollTop || document.body.scrollTop;
-		scrTops -= 50
-		if (document.documentElement.scrollTop) {
-			document.documentElement.scrollTop = scrTops
-		} else{
-			document.body.scrollTop = scrTops
+if (ctop != undefined) {
+	ctop.onclick = function (e) {
+		e = e || window.event;
+		e.preventDefault();
+		var timer = setInterval(function () {
+			var scrTops = document.documentElement.scrollTop || document.body.scrollTop;
+			scrTops -= 50
+			if (document.documentElement.scrollTop) {
+				document.documentElement.scrollTop = scrTops
+			} else {
+				document.body.scrollTop = scrTops
+			}
+			if (scrTops < 0) {
+				clearInterval(timer);
+				return
+			}
+		}, 2)
+	}
+	window.onscroll = function (e) {
+		e = e || window.event
+		e.preventDefault();
+		var scrTopnav = document.documentElement.scrollTop || document.body.scrollTop;
+		if (scrTopnav > 800) {
+			ctop.style.display = "block"
+		} else {
+			ctop.style.display = "none"
 		}
-		if (scrTops < 0){
-			clearInterval(timer);
-			return
-		}
-	},2)
-}
-window.onscroll = function(e){
-   e=e || window.event
-   e.preventDefault();
-	var scrTopnav = document.documentElement.scrollTop || document.body.scrollTop;
-	if (scrTopnav > 800) {
-		ctop.style.display = "block"
-	} else{
-		ctop.style.display = "none"
 	}
 }

@@ -543,6 +543,7 @@ $g.Drag.prototype.cancel = function () {
   document.onmouseup = null;
 }
 // tab切换
+// 适用于导航切换
 $g.Tab = function (btns, style) {
   var _this = this;
   var len = btns.length;
@@ -562,6 +563,30 @@ $g.Tab.prototype.toggleTabs = function (obj, index) {
     obj.btns[j].className = '';
   }
   obj.btns[index].className = obj.style;
+}
+// 适用于内容中菜单切换
+$g.Tabcon = function (btns, contents, stylea, styleb) {
+  var _this = this;
+  var len = btns.length;
+  this.btns = btns;
+  this.contents = contents;
+  this.stylea = stylea;
+  this.styleb = styleb;
+  this.len = len;
+  for (var i = 0; i < this.len; i++) {
+    this.btns[i].index = i;
+    this.btns[i].onclick = function () {
+      _this.toggleTabscon(_this, this.index);
+    }
+  }
+}
+$g.Tabcon.prototype.toggleTabscon = function (obj, index) {
+  for (var j = 0; j < obj.len; j++) {
+    obj.btns[j].className = '';
+    obj.contents[j].className = '';
+  }
+  obj.btns[index].className = obj.stylea;
+  obj.contents[index].className = obj.styleb;
 }
 // banner轮播图封装方法
 $g.Carousels = function (isAuto, box, banner, lis, point, arrowLeft, arrowRight, active, boxWidth, bannerWidth, liWidth) {

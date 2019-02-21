@@ -36,10 +36,10 @@
         <a class="arrow arrow_left" href="javascript:;">&lt;</a>
         <a class="arrow arrow_right" href="javascript:;">&gt;</a>
     </div>
-    <script src="js/main.js"></script>
+    <script src="../../public/js/gjs.min.js"></script>
     <script>
         // 实例化对象
-        var a = new Carousels(true, '.carousels', '.banner', '.banner li', '.point span', '.arrow_left', '.arrow_right',
+        var a = new $g.Carousels(true, '.carousels', '.banner', '.banner li', '.point span', '.arrow_left', '.arrow_right',
             'active', 800, 4000, 800);
         var ul = a.getOne('.banner');
         ul.style.width = 800 * 5 + 'px'; //自动获取图片列表长度

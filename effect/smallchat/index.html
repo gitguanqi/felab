@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,34 +36,37 @@
     }
   </style>
 </head>
+
 <body>
   <div id="box"></div>
   <input type="text" name="con" id="con" placeholder="请输入聊天内容">
   <button id="send">发送</button>
-	<script src="../../public/js/event.js"></script>
+  <script src="../../public/js/gjs.min.js"></script>
   <script>
-    var box = document.getElementById('box');
-    var con = document.getElementById('con');
-    var send = document.getElementById('send');
+    var box = $g.eid('box');
+    var con = $g.eid('con');
+    var send = $g.eid('send');
 
-    uniHandler.add(send,'click',sendCon,false);
+    $g.addEvent(send, 'click', sendCon, false);
+
     function sendCon() {
-      if (con.value == '') { 
+      if (con.value == '') {
         alert('请输入内容！');
-        return; 
+        return;
       }
       box.innerHTML += '<p style="margin:2px auto;">' + con.value + '</p><br>'
       con.value = '';
     }
 
-    uniHandler.add(con,'keypress',sendKey,false);
-    function sendKey(e) {  
+    $g.addEvent(con, 'keypress', sendKey, false);
+
+    function sendKey(e) {
       var e = e || window.event;
       var code = e.code;
       if (code == 'Enter' || e.keyCode == 13) {
-        if (con.value == '') { 
+        if (con.value == '') {
           alert('请输入内容！');
-          return; 
+          return;
         }
         box.innerHTML += '<p style="margin:2px auto;">' + con.value + '</p><br>'
         con.value = '';
@@ -70,4 +74,5 @@
     }
   </script>
 </body>
+
 </html>

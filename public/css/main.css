@@ -64,7 +64,12 @@ footer {
 .icon-t {
   background-position: 0 -64px;
 }
-
+img {
+  transition: all 2s;
+}
+img:hover {
+  transform: rotate(360deg);
+}
 /* 头部导航 */
 header {
   margin-bottom: 20px;

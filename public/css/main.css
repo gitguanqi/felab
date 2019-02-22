@@ -64,12 +64,15 @@ footer {
 .icon-t {
   background-position: 0 -64px;
 }
+
 img {
   transition: all 2s;
 }
+
 img:hover {
   transform: rotate(360deg);
 }
+
 /* 头部导航 */
 header {
   margin-bottom: 20px;
@@ -116,10 +119,13 @@ nav,
 
 .nav-index li {
   float: left;
-  width: 60px;
+  width: 80px;
   height: 60px;
   line-height: 60px;
   text-align: center;
+  transition: all 300ms;
+  -webkit-transition: all 300ms;
+  -moz-transition: all 300ms;
 }
 
 .nav-index li a {
@@ -127,12 +133,20 @@ nav,
   font-weight: bold;
 }
 
-.nav-index li a:hover {
-  color: #2b6ac8;
+.nav-index li:hover {
+  background-color: #2b6ac8;
+}
+
+.nav-index li:hover a {
+  color: #fff;
+}
+
+.nav-index li.active {
+  background-color: #2b6ac8;
 }
 
 .nav-index li.active a {
-  color: #2b6ac8;
+  color: #fff;
 }
 
 /* 主要内容 */
@@ -592,6 +606,10 @@ img:hover {
     line-height: 3.75rem;
     text-align: center;
     border-bottom: 0.0625rem solid #f8f8f8;
+  }
+
+  .nav-indexa li:last-child {
+    border-bottom: none !important;
   }
 
   .nav-indexa li a {

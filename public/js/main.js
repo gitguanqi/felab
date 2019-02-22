@@ -32,114 +32,58 @@ function showData(data) {
 }
 //显示列表
 function showList(listdata) {
-  var myfront = $g.eid('myfront');
-  var myback = $g.eid('myback');
-  var myapp = $g.eid('myapp');
-  var mypc = $g.eid('mypc');
-  var mywap = $g.eid('mywap');
-  var myrem = $g.eid('myrem');
+  var projects = $g.eid('project');
+  var cases = $g.eid('case');
   var mydata = {
-    front: [],
-    back: [],
-    app: [],
-    pc: [],
-    wap: [],
-    rem: []
+    projects: [],
+    cases: []
   };
-  var mycount = {
-    html: 0,
-    css: 0,
-    js: 0
-  }
   //分解列表
   if (listdata.length > 0) {
     for (var i = 0; i < listdata.length; i++) {
       var item = listdata[i];
       var type = item.type.split(',');
-      if (type[0] == 'front') {
-        mydata.front.push(item);
+      if (type[0] == 'project') {
+        item.type = type;
+        mydata.projects.push(item);
       }
-      if (type[0] == 'back') {
-        mydata.back.push(item);
-      }
-      if (type[0] == 'app') {
-        mydata.app.push(item);
-      }
-      if (type[0] == 'pc') {
-        mydata.pc.push(item);
-      }
-      if (type[0] == 'wap') {
-        mydata.wap.push(item);
-      }
-      if (type[0] == 'rem') {
-        mydata.rem.push(item);
+      if (type[0] == 'case') {
+        item.type = type;
+        mydata.cases.push(item);
       }
     }
-    var liststr = '';
-    var liststr1 = '';
-    var liststr2 = '';
-    var liststr31 = '';
-    var liststr32 = '';
-    var liststr33 = '';
-    var liststr4 = '';
-    var liststr5 = '';
-    for (var i = 0; i < mydata.front.length; i++) {
-      var item = mydata.front[i];
-      liststr += '<li><i class="icon icon-t"></i><a href="' + item.url + '?from=demo" target="_blank">' + item.name + '</a><span class="update">' + item.update_time + '</span></li>'
-      myfront.innerHTML = liststr;
+    var pstr = '';
+    var cstr = '';
+    for (var i = 0; i < mydata.projects.length; i++) {
+      var item = mydata.projects[i];
+      pstr += '<li><i class="icon icon-t"></i><a href="' + item.url + '?from=demo" target="_blank">' + item.name + '</a><span class="update">' + item.update_time + '</span></li>'
+      projects.innerHTML = pstr;
     }
-    for (var i = 0; i < mydata.back.length; i++) {
-      var item = mydata.back[i];
-      liststr1 += '<li><i class="icon icon-t"></i><a href="' + item.url + '?from=demo" target="_blank">' + item.name + '</a><span class="update">' + item.update_time + '</span></li>'
-      myback.innerHTML = liststr1;
-    }
-    for (var i = 0; i < mydata.app.length; i++) {
-      var item = mydata.app[i];
-      liststr2 += '<li><i class="icon icon-t"></i><a href="' + item.url + '?from=demo" target="_blank">' + item.name + '</a><span class="update">' + item.update_time + '</span></li>'
-      myapp.innerHTML = liststr2;
-    }
-    for (var i = 0; i < mydata.pc.length; i++) {
-      var item = mydata.pc[i];
-      if (item.type.split(',')[1] == 'html') {
-        mycount.html += 1;
-        liststr31 += '<li><i class="icon icon-html"></i><a href="' + item.url + '?from=demo" target="_blank">' + item.name + '</a><span class="update">' + item.update_time + '</span></li>'
+    for (var i = 0; i < mydata.cases.length; i++) {
+      var item = mydata.cases[i];
+      var type = item.type[1];
+      var icon;
+      if (type == 'html') {
+        icon = 'icon-html'
       }
-      if (item.type.split(',')[1] == 'css') {
-        mycount.css += 1;
-        liststr32 += '<li><i class="icon icon-css"></i><a href="' + item.url + '?from=demo" target="_blank">' + item.name + '</a><span class="update">' + item.update_time + '</span></li>'
+      if (type == 'css') {
+        icon = 'icon-css'
       }
-      if (item.type.split(',')[1] == 'js') {
-        mycount.js += 1;
-        liststr33 += '<li><i class="icon icon-js"></i><a href="' + item.url + '?from=demo" target="_blank">' + item.name + '</a><span class="update">' + item.update_time + '</span></li>'
+      if (type == 'js') {
+        icon = 'icon-js'
       }
-      mypc.innerHTML = '<li class="post-type"><span class="post-type-title">HTML案例部分(<strong class="count-part"></strong>)</span></li>' + liststr31 + '<li class="post-type"><span class="post-type-title">CSS案例部分(<strong class="count-part"></strong>)</span></li>' + liststr32 + '<li class="post-type"><span class="post-type-title">JS例部分(<strong class="count-part"></strong>)</span></li>' + liststr33;
-    }
-    for (var i = 0; i < mydata.wap.length; i++) {
-      var item = mydata.wap[i];
-      liststr4 += '<li><i class="icon icon-t"></i><a href="' + item.url + '?from=demo" target="_blank">' + item.name + '</a><span class="update">' + item.update_time + '</span></li>'
-      mywap.innerHTML = liststr4;
-    }
-    for (var i = 0; i < mydata.rem.length; i++) {
-      var item = mydata.rem[i];
-      liststr5 += '<li><i class="icon icon-t"></i><a href="' + item.url + '?from=demo" target="_blank">' + item.name + '</a><span class="update">' + item.update_time + '</span></li>'
-      myrem.innerHTML = liststr5;
+      cstr += '<li><i class="icon ' + icon + '"></i><a href="' + item.url + '?from=demo" target="_blank">【' + item.type[1] + '案例】' + item.name + '</a><span class="update">' + item.update_time + '</span></li>'
+      cases.innerHTML = cstr;
     }
   }
   //显示计数
-  showCount(mydata, mycount);
+  showCount(mydata);
 }
 //显示计数
-function showCount(mydata, mycount) {
-  $g.ecls('count')[0].innerText = mydata.front.length;
-  $g.ecls('count')[1].innerText = mydata.back.length;
-  $g.ecls('count')[2].innerText = mydata.app.length;
-  $g.ecls('count')[3].innerText = mydata.pc.length;
-  $g.ecls('count')[4].innerText = mydata.wap.length;
-  $g.ecls('count')[5].innerText = mydata.rem.length;
-  $g.ecls('count-part')[0].innerText = mycount.html;
-  $g.ecls('count-part')[1].innerText = mycount.css;
-  $g.ecls('count-part')[2].innerText = mycount.js;
-  $g.eid('mydoc').innerHTML = '<li><i class="icon icon-e"></i>前端项目(' + mydata.front.length + ')</li><li><i class="icon icon-e"></i>后端项目(' + mydata.back.length + ')</li><li><i class="icon icon-e"></i>App项目(' + mydata.app.length + ')</li><li><i class="icon icon-e"></i>PC端案例(' + mydata.pc.length + ')</li><li><i class="icon icon-e"></i>移动端案例(' + mydata.wap.length + ')</li><li><i class="icon icon-e"></i>响应式案例(' + mydata.rem.length + ')</li>';
+function showCount(mydata) {
+  $g.ecls('count')[0].innerText = mydata.projects.length;
+  $g.ecls('count')[1].innerText = mydata.cases.length;
+  $g.eid('mydoc').innerHTML = '<li><i class="icon icon-e"></i>项目精选(' + mydata.projects.length + ')</li><li><i class="icon icon-e"></i>案例精选(' + mydata.cases.length + ')</li>';
 }
 //显示简介
 function showDes(data) {
@@ -176,12 +120,8 @@ function showSite(site) {
 }
 //显示错误
 function errorData() {
-  $g.eid('myfront').innerHTML = '<li><i class="icon icon-t"></i><a href="#no">暂无数据</a></li>';
-  $g.eid('myback').innerHTML = '<li><i class="icon icon-t"></i><a href="#no">暂无数据</a></li>';
-  $g.eid('myapp').innerHTML = '<li><i class="icon icon-t"></i><a href="#no">暂无数据</a></li>';
-  $g.eid('mypc').innerHTML = '<li><i class="icon icon-t"></i><a href="#no">暂无数据</a></li>';
-  $g.eid('mywap').innerHTML = '<li><i class="icon icon-t"></i><a href="#no">暂无数据</a></li>';
-  $g.eid('myrem').innerHTML = '<li><i class="icon icon-t"></i><a href="#no">暂无数据</a></li>';
+  $g.eid('project').innerHTML = '<li><i class="icon icon-t"></i><a href="#no">暂无数据</a></li>';
+  $g.eid('case').innerHTML = '<li><i class="icon icon-t"></i><a href="#no">暂无数据</a></li>';
   $g.eid('mydes').innerHTML = '<p>暂无数据</p>'
   $g.eid('mylink').innerHTML = '<li><i class="icon icon-e"></i><a href="#nolink">暂无友链</a></li>';
 }
@@ -189,7 +129,7 @@ function errorData() {
 function changeNav() {
   var lis = $g.eall('.nav-index li');
   lis[0].className = 'active';
-  new $g.Tab(lis);
+  new $g.Tab(lis, 'active');
 }
 var navwap = $g.eone('#navwap');
 var mywapnav = $g.eone('#mywapnav');

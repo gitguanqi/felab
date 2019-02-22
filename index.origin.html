@@ -18,56 +18,31 @@
 </head>
 
 <body>
-	<div class="container">
+	<!-- 总体布局 -->
+	<div class="container" id="home">
+		<!-- 头部导航 -->
 		<header>
 			<a class="logo" href="/demo" id="mytitle"></a>
 			<span id="navwap"></span>
 			<nav>
-				<ul class="nav-index" id="mynav">
-					<p>暂无数据</p>
-				</ul>
+				<ul class="nav-index" id="mynav"></ul>
 			</nav>
 		</header>
+		<!-- 主要内容 -->
 		<main>
 			<div class="main clearfix">
+				<!-- 左侧内容 -->
 				<section>
-					<article class="post">
-						<h2 class="post-title">前端项目<small class="post-small-title">原生、框架等前端项目(<strong class="count"></strong>)</small></h2>
-						<ul class="post-content" id="myfront">
-							<p>暂无数据</p>
-						</ul>
+					<article class="post" id="projects">
+						<h2 class="post-title">项目精选<small class="post-small-title">原生、框架等项目(<strong class="count"></strong>)</small></h2>
+						<ul class="post-content" id="project"></ul>
 					</article>
-					<article class="post">
-						<h2 class="post-title">后端项目<small class="post-small-title">Nodejs等后台管理项目(<strong class="count"></strong>)</small></h2>
-						<ul class="post-content" id="myback">
-							<p>暂无数据</p>
-						</ul>
-					</article>
-					<article class="post">
-						<h2 class="post-title">App项目<small class="post-small-title">Android等app应用项目(<strong class="count"></strong>)</small></h2>
-						<ul class="post-content" id="myapp">
-							<p>暂无数据</p>
-						</ul>
-					</article>
-					<article class="post">
-						<h2 class="post-title">PC端案例<small class="post-small-title">只适用于pc端的网页(<strong class="count"></strong>)</small></h2>
-						<ul class="post-content" id="mypc">
-							<p>暂无数据</p>
-						</ul>
-					</article>
-					<article class="post">
-						<h2 class="post-title">移动端案例<small class="post-small-title">只适用于移动端的网页(<strong class="count"></strong>)</small></h2>
-						<ul class="post-content" id="mywap">
-							<p>暂无数据</p>
-						</ul>
-					</article>
-					<article class="post">
-						<h2 class="post-title">响应式案例<small class="post-small-title">适用于各种设备的网页(<strong class="count"></strong>)</small></h2>
-						<ul class="post-content" id="myrem">
-							<p>暂无数据</p>
-						</ul>
+					<article class="post" id="cases">
+						<h2 class="post-title">案例精选<small class="post-small-title">pc,wap等端网页(<strong class="count"></strong>)</small></h2>
+						<ul class="post-content" id="case"></ul>
 					</article>
 				</section>
+				<!-- 右侧作者信息 -->
 				<aside>
 					<article class="about">
 						<h2 class="about-title">关于作者</h2>
@@ -75,36 +50,34 @@
 					</article>
 					<article class="about">
 						<h2 class="about-title">Demo归档</h2>
-						<ul class="about-content" id="mydoc">
-							<p>暂无数据</p>
-						</ul>
+						<ul class="about-content about-link clearfix" id="mydoc"></ul>
 					</article>
 					<article class="about">
 						<h2 class="about-title">友情链接</h2>
-						<ul id="mylink" class="about-content about-link clearfix">
-							<p>暂无数据</p>
-						</ul>
+						<ul id="mylink" class="about-content about-link clearfix"></ul>
 					</article>
 				</aside>
 			</div>
-
 		</main>
+		<!-- 底部版权 -->
 		<footer>
 			<p id="myfoot"></p>
 		</footer>
+		<!-- 到顶部 -->
 		<div class="arrow"></div>
+		<!-- 音乐播放 -->
 		<div class="music">
 			<audio id="audio-music"></audio>
 			<button id="mysong" class="music-btn start-btn"></button>
 		</div>
 	</div>
+	<!-- 侧边导航 -->
 	<div class="wnav-index" id="mywapnav">
 		<p class="silder-head">Demo导航</p>
-		<ul class="nav-indexa" id="mynava">
-			<p>暂无数据</p>
-		</ul>
+		<ul class="nav-indexa" id="mynava"></ul>
 		<p class="silder-foot">&copy;2019 Demo</p>
 	</div>
+	<!-- 加载动画 -->
 	<div id="loadimg" class="load-box">
 		<div class="load">
 			<div class="rect1"></div>
@@ -114,6 +87,7 @@
 			<div class="rect5"></div>
 		</div>
 	</div>
+	<!-- 灯箱效果 -->
 	<div class="pic-box">
 		<div class="pic-close">X</div>
 		<img class="pic-img">

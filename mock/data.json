@@ -1,0 +1,14 @@
+{
+    "code": 201,
+    "msg": "get_succ",
+    "data": {
+        "list": [
+            {"id":1,"stock":1,"name":"Apple"},
+            {"id":2,"stock":3,"name":"Orange"},
+            {"id":3,"stock":2,"name":"Branana"}
+        ],
+        "answer": [
+            {"question":"我今年几岁了","anwser": "10岁了！"}
+        ]
+    }
+}

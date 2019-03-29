@@ -12,7 +12,7 @@ This is a warehouse dedicated to storing demos.
 + project
 + case
 
-##项目
+## Project
 
 **Project** is the website of the scaffolding that was built and built. It has very complete functions.
 

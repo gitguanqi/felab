@@ -18,7 +18,7 @@ This is a warehouse dedicated to storing demos.
 
 ## Case
 
-**Case ** is a web page exercise that is usually written.
+**Case** is a web page exercise that is usually written.
 
 ## About the author
 
@@ -26,7 +26,7 @@ Front end development one ~
 
 Interested to follow [@gitguanqi](https://github.com/gitguanqi)
 
-## agreement
+## License
 
 [MIT License](http://opensource.org/licenses/MIT)
 

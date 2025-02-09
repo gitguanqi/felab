@@ -1,0 +1,37 @@
+html,body {
+    margin: 0;
+}
+.box {
+    width: 50px;
+    height: 50px;
+}
+.box > span {
+    margin: 5px auto;
+    display: block;
+    width: 50px;
+    height: 10px;
+    background-color: #f00;
+    transition: all .3s;
+    border-radius: 10px;
+}
+.box.active span:nth-child(1) {
+    width: 60px;
+    transform: rotate(40deg) translateY(15px) translateX(5px);
+}
+.box.active span:nth-child(2) {
+    display: none;
+}
+.box.active span:nth-child(3) {
+    width: 60px;
+    transform: rotate(-40deg) translateY(-5px) translateX(-5px);
+}
+.tip {
+    font-size: 14px;
+    color: #f00;
+}
+
+@media all and (max-width: 768px) {
+    .tip {
+        display: none;
+    }
+}

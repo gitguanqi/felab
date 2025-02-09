@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>xqmsg消息测试</title>
+    
+    <link rel="stylesheet" href="https://xqgj.cc/xqcdn/libs/xqmsg/0.0.1/css/xqmsg.min.css">
+    <script src="https://xqgj.cc/xqcdn/libs/xqmsg/0.0.1/js/xqmsg.min.js"></script>
+    <style>
+        code {
+            margin-left: 5px;
+            padding: 5px 8px;
+            background: #333;
+            color: #fff;
+            border-radius: 5px;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>xqmsg消息库</h1>
+    <ul>
+        <li>消息组件<code>xqmsg.msg</code></li>
+        <li>弹出框组件<code>xqmsg.confirm</code></li>
+        <li>气泡组件<code>xqmsg.pop</code></li>
+    </ul>
+    <button class="msg">显示消息</button>
+    <button class="conf">显示弹出框</button>
+    <button class="pop">显示气泡</button>
+    <script>
+
+        console.log('lib:', xqmsg);
+
+        // 显示消息
+        let msg = document.querySelector('.msg');
+        msg.addEventListener('click', function () {  
+            xqmsg.msg('hello!');
+        })
+
+        // 显示弹出框
+        let conf = document.querySelector('.conf');
+        conf.addEventListener('click', async function () {  
+            let result = await xqmsg.confirm('温馨提示', 1, 'hello!');
+            console.log(result);
+        })
+
+        // 显示气泡
+        let pop = document.querySelector('.pop');
+        pop.addEventListener('click', async function () {  
+            xqmsg.pop('hello!');
+        })
+    </script>
+</body>
+</html>

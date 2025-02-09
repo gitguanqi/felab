@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>flex-输入框布局</title>
+  <style>
+    
+    .ipt {
+      display: flex;
+      width: 300px;
+      height: 30px;
+      line-height: 30px;
+      border: 1px solid #d3d3d3;
+      background-color: #fff;
+      box-shadow: 0 0 2px #d3d3d3;
+    }
+    .ipt-box {
+      flex: 1;
+      padding: 0 10px;
+      border: none;
+      outline: none;
+    }
+    .ipt-tip {
+      display: inline-flex;
+      justify-content: center;
+      background-color: #eee;
+      color: #666;
+      width: 60px;
+      font-size: 14px;
+    }
+    .ipt-btn {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      width: 40px;
+      height: 100%;
+      color: #666;
+      background-color: #eee;
+      border: none;
+      outline: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="ipt">
+    <span class="ipt-tip">用户名</span>
+    <input class="ipt-box" type="text">
+    <button class="ipt-btn">提交</button>
+  </div>
+</body>
+</html>

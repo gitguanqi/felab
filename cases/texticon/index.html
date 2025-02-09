@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>文档列表练习</title>
+  <style>
+    a[href] {
+      display: block;
+      padding-left: 25px;
+      width: 200px;
+      background: url('../../assets/img/doc.png') no-repeat left center;
+      background-size: 100%;
+    }
+
+    a[href$='docx'] {
+      background-position: -207px -1064px;
+    }
+
+    a[href$='pptx'] {
+      background-position: -207px -1222px;
+    }
+
+    a[href$='xlsx'] {
+      background-position: -207px -1335px;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>文档列表练习</h2>
+  <p>CSS3新增属性选择器为列表添加图标。</p>
+  <p><a href="doc/1.docx">文档docx</a></p>
+  <p><a href="doc/1.pptx">幻灯片ppt</a></p>
+  <p><a href="doc/1.xlsx">图表xlsx</a></p>
+</body>
+
+</html>

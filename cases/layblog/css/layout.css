@@ -1,0 +1,198 @@
+/*
+author:Mr.Mark ;
+date:2019.3.8;
+content:页面样式;
+*/
+body {
+	margin: 0;
+	padding: 0;
+}
+ul,li {
+	list-style: none;
+}
+a {
+	color: #1162a4;
+	text-decoration: none;
+}
+.clearFloat::after {
+	display: block;
+	height: 0;
+	content: '';
+	overflow: hidden;
+	clear: both;
+}
+.clearFloat {
+	zoom: 1;
+}
+.page {
+	margin: 0 auto;
+	width: 960px;
+}
+/* 头部 */
+.masthead {
+	position: relative;
+	padding-top: 10px;
+}
+.logo {
+	margin-bottom: -8px;
+	margin-top: 0;
+	font-size: 10px;
+	line-height: 1;
+	text-align: left;
+}
+.social-sites {
+	position: absolute;
+	top: 41px;
+	right: -3px;
+	margin: 0;
+	padding: 0;
+}
+.social-sites li {
+	display: inline-block;
+	margin-left: -1px;
+	width: 33px;
+	height: 33px;
+	line-height: 33px;
+	text-align: center;
+	background-color: #019443;
+	border-radius: 50%;
+}
+.social-sites a {
+	font-family: 'Social Icons', sans-serif;
+	font-size: 20px;
+	vertical-align: middle;
+	color: #fff;
+}
+.social-sites li:hover {
+	background-color: #1162a4;
+	cursor: pointer;
+}
+.nav-main {
+	margin-bottom: 0;
+	padding: 0.45em 0 0.5em;
+	border-top: 5px solid #019443;
+	border-bottom: 1px solid #c7c7c8;
+}
+.nav-main li {
+	display: inline-block;
+	text-align: left;
+	border-left: 1px solid #c8c8c8;
+}
+.nav-main li:first-child {
+	border-left: none;
+}
+.nav-main li a {
+	display: inline-block;
+	padding: 0.5em 1.15em 0.5em 1.4em;
+	font-size: 1.1215em;
+	color: #292929;
+}
+.nav-main li a.current-page {
+	color: #747474;
+	cursor: default;
+}
+.nav-main li a:hover {
+	color: #029443;
+}
+/* 中间内容 */
+.container {
+	padding-bottom: 1.9em;
+}
+main {
+	float: left;
+	padding-right: 28px;
+	width: 600px;
+	border-right: 2px solid #eee;
+}
+main h1 {
+	margin-bottom: 0.4125em;
+	line-height: 1;
+	font-size: 3.25em;
+	font-weight: 300;
+	letter-spacing: -2px;
+}
+.more:after {
+    content: ' »';
+}
+.post-blurb p {
+	line-height: 1.4;
+	font-size: 0.95em;
+	color: #363636;
+}
+.post-footer {
+	padding-bottom: 0.7em;
+	padding-top: 0.7em;
+	border-top: 1px solid #dbdbdb;
+	border-bottom: 1px solid #dbdbdb;
+}
+.post-photo {
+	float: left;
+	margin-right: 22px;
+	margin-bottom: 2px;
+	max-width: 67%;
+}
+.pagination {
+	margin: 45px 0 0;
+	padding: 0;
+}
+.pagination li {
+	display: inline-block;
+	margin-right: 0.25em;
+	font-size: 0.875em;
+}
+.sidebar {
+	float: right;
+	padding-top: 1.85em;
+	padding-left: 30px;
+	width: 300px;
+}
+.about {
+	padding: 0.313em 0.625em 0.625em;
+	background-color: #2b2b2b;
+}
+.about h2,.mod h2 {
+	font-size: 0.875em;
+	text-transform: uppercase;
+}
+.about h2,.about p {
+	color: #dadada;
+}
+.about img {
+	border:  5px solid #bebebe;
+}
+.about p {
+	font-size: 0.813em;
+	line-height: 1.5;
+}
+.mod h2 {
+	margin-top: 2.5em;
+	padding-bottom: 0.75em;
+	border-bottom: 1px solid #dbdbdb;
+}
+.mod .map {
+	margin: 1.4em 0 0.8em;
+}
+.links {
+	margin: 1.5em 0 4.125em;
+	padding-left: 0;
+	width: 270px;
+}
+.links li {
+	margin-bottom: 1.1em;
+}
+.links a {
+	font-size: 1.125em;
+	line-height: 1.195;
+}
+/* 底部版权 */
+footer[role="contentinfo"] {
+	border-top: 1px solid #cacbcb;
+}
+.footer p {
+    color: #3a3a3a;
+    font-family: arial, helvetica, sans-serif;
+    font-size: 0.688em;
+}
+.footer p small {
+    font-size: inherit;
+}

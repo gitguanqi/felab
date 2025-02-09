@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>淘宝放大镜模拟</title>
+	<link rel="stylesheet" href="css/magnifier.css" type="text/css" />
+</head>
+
+<body>
+	<div class="wrap">
+		<div class="content">
+			<div class="content-m">
+				<img id="img-m" src="img/m01.webp.jpg" />
+				<span id="magnifier" class="magnifier hidden"></span>
+			</div>
+			<div class="content-s">
+				<img class="active" src="img/s01.webp.jpg" />
+				<img src="img/s02.webp.jpg" />
+				<img src="img/s03.webp.jpg" />
+				<img src="img/s04.webp.jpg" />
+				<img src="img/s05.webp.jpg" />
+			</div>
+		</div>
+		<div class="content-b hidden">
+			<img id="img-b" class="img-b" />
+		</div>
+	</div>
+	<div class="modal">
+		<div class="carousel">
+			<div class="carousel-left"></div>
+			<div class="carousel-right">
+				<img class="active" src="img/s01.webp.jpg" />
+				<img src="img/s02.webp.jpg" />
+				<img src="img/s03.webp.jpg" />
+				<img src="img/s04.webp.jpg" />
+				<img src="img/s05.webp.jpg" />
+			</div>
+			<a class="arrow arrow-left">&lt;</a>
+			<a class="arrow arrow-right">&gt;</a>
+		</div>
+	</div>
+	<script src="js/magnifier.js"></script>
+</body>
+
+</html>

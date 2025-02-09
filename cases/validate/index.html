@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>表单验证案例</title>
+  <style>
+    .tips {
+      color: #f00;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>表单验证案例</h2>
+  <p>这是一个验证表单内容的案例！</p>
+  <hr>
+  <form action="" method="get" name="myform" id="myform" onsubmit="return returnForm();" onreset="return confirmForm();">
+    <p>
+      <label for="username">昵称：</label>
+      <input type="text" name="username" id="username" placeholder="请输入用户名称">
+      <span class="tips"></span>
+    </p>
+    <p>
+      <label for="password">密码：</label>
+      <input type="password" name="password" id="password" placeholder="请输入用户密码">
+      <span class="tips"></span>
+    </p>
+    <p>
+      <label for="password">性别：</label>
+      <input type="radio" name="sex" id="man" value="man"><label for="man">男</label>
+      <input type="radio" name="sex" id="woman" value="woman"><label for="woman">女</label>
+      <span class="tips"></span>
+    </p>
+    <p>
+      <label for="hobbies">爱好：</label>
+      <input type="checkbox" name="hobbies" id="song" value="song"><label for="song">唱歌</label>
+      <input type="checkbox" name="hobbies" id="read" value="read"><label for="read">看书</label>
+      <input type="checkbox" name="hobbies" id="sport" value="sport"><label for="sport">运动</label>
+      <span class="tips"></span>
+    </p>
+    <p>
+      <label for="password">城市：</label>
+      <select name="city" id="city">
+        <option value="bj" selected>北京</option>
+        <option value="tj">天津</option>
+        <option value="cq">重庆</option>
+        <option value="sh">上海</option>
+        <option value="hz">杭州</option>
+        <option value="nj">南京</option>
+        <option value="gz">广州</option>
+        <option value="sz">深圳</option>
+        <option value="xa">西安</option>
+      </select>
+      <span class="tips"></span>
+    </p>
+    <p>
+      <label for="headimg">头像：</label>
+      <input type="file" name="headimg" id="headimg">
+      <span class="tips"></span>
+    </p>
+    <input type="hidden" name="token" value="20190201" id="token">
+    <p>
+      <label for="comment">介绍：</label><br>
+      <textarea name="comment" id="comment" cols="30" rows="10" placeholder="自我介绍一下吧！"></textarea>
+      <span class="tips"></span>
+    </p>
+    <p>
+      <input type="reset" id="reset" value="重置">
+      <input type="submit" name="submit" value="提交">
+    </p>
+  </form>
+  <script src="https://xqgj.cc/xqcdn/libs/xqgjs/1.0.5/xqgjs.min.js"></script>
+  <script>
+    //禁止默认提交
+    function returnForm() {
+      return false;
+    }
+    //确定重置提示
+    function confirmForm() {
+      var reset = confirm('你确定要清空所有输入的内容吗？');
+      return reset;
+    }
+
+    //验证表单内容
+    var tips = $g.gCls('tips');
+    var btn = document.myform.submit;
+    $g.addEvent(btn, 'click', checkFrom, false);
+
+    function checkFrom() {
+      //正则表达式
+      var formreg = /\w{5,}/;
+      //表单元素
+      var myform = document.myform;
+      var username = myform.username.value;
+      var password = myform.password.value;
+      var sex = myform.sex.value;
+      var hobbies = myform.hobbies;
+      var city = myform.city.value;
+      var headimg = myform.headimg.value;
+      var comment = myform.comment.value;
+      var flag = false;
+      if (username == '') {
+        tips[0].innerText = '昵称不能为空';
+        flag = false;
+      } else if (!formreg.test(username)) {
+        tips[0].innerText = '请输入6-10位名字';
+        flag = false;
+      } else {
+        tips[0].innerText = '';
+        flag = false;
+      }
+      if (password == '') {
+        tips[1].innerText = '密码不能为空';
+        flag = false;
+      } else if (!formreg.test(password)) {
+        tips[1].innerText = '请输入至少6位密码';
+        flag = false;
+      } else {
+        tips[1].innerText = '';
+        flag = false;
+      }
+      if (sex == '') {
+        tips[2].innerText = '性别不能为空';
+        flag = false;
+      } else {
+        tips[2].innerText = '';
+        flag = false;
+      }
+      var isChecked;
+      for (var i = 0; i < hobbies.length; i++) {
+        var checked = hobbies[i].checked;
+        if (checked) {
+          isChecked = true;
+        }
+      }
+      if (!isChecked) {
+        tips[3].innerText = '爱好不能为空';
+        flag = false;
+      } else {
+        tips[3].innerText = '';
+        flag = false;
+      }
+      if (city == '') {
+        tips[4].innerText = '城市不能为空';
+        flag = false;
+      } else {
+        tips[4].innerText = '';
+        flag = false;
+      }
+      if (headimg == '') {
+        tips[5].innerText = '头像不能为空';
+        flag = false;
+      } else {
+        tips[5].innerText = '';
+        flag = false;
+      }
+      if (comment == '') {
+        tips[6].innerText = '自我介绍不能为空';
+        flag = false;
+      } else {
+        tips[6].innerText = '';
+        flag = true;
+      }
+      return flag;
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1">
+		<title>html表格练习</title>
+		<meta name="keyword" content="html,html表格练习">
+		<meta name="description" content="html表格是html的内容。">
+		<style>
+			body {
+				margin: 0;
+				padding: 0;
+				font-size: 100%;
+			}
+			table,th,td {
+				margin: 0 auto;
+				padding: 0 5px;
+				width: 500px;
+				line-height: 30px;
+				border: 1px solid #aaa;
+				border-collapse: collapse;
+				text-align: center;
+				background-color: #f9f9f9;
+			}
+		</style>
+	</head>
+	<body>
+		<table>
+			<caption>2016-2018统计表</caption>
+			<thead>
+				<tr>
+					<th>年份</th>
+					<th>数字</th>
+					<th>备注</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>2016</td>
+					<td>120</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>2017</td>
+					<td>1120</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td rowspan="2">2018</td>
+					<td>8120</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>120</td>
+					<td></td>
+				</tr>
+			</tbody>
+			<tfoot>
+				<tr>
+					<td>总计</td>
+					<td colspan="2">9480</td>
+				</tr>
+			</tfoot>
+		</table>
+	</body>
+</html>

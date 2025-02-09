@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>js之复制文本</title>
+  <script src="https://xqgj.cc/xqcdn/libs/xqgjs/1.0.5/xqgjs.min.js"></script>
+</head>
+
+<body>
+  <span id="spanid">我是内容!</span>
+  <input class="copy-btn" type="button" value="点击复制代码" />
+  <script>
+    let copyBtn = $g.dom('.copy-btn');
+    $g.addEvent(copyBtn, 'click', copyText, false);
+
+    function copyText() {
+      $g.copyText('spanid');
+    }
+  </script>
+</body>
+
+</html>

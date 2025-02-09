@@ -1,0 +1,43 @@
+/*
+author: Mr.Mark ;
+date: 2018.11.4
+content: 选项卡页面样式
+*/
+.btn {
+    width: 300px;
+    height: 30px;
+}
+
+.btn span {
+    display: block;
+    float: left;
+    width: 98px;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+    border: 1px solid #ddd;
+    cursor: pointer;
+}
+
+span.active {
+    color: #fff;
+    background-color: #f00;
+}
+
+.content {
+    width: 300px;
+    height: 300px;
+}
+
+.content div {
+    display: none;
+    width: 300px;
+    height: 300px;
+    line-height: 300px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+div.active {
+    display: block !important;
+}

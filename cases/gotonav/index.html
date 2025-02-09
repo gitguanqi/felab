@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jq滚动定位</title>
+    <style>
+        body,
+        ul,li {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            background: none;
+        }
+        nav {
+            height: 150px;
+            background: #eee;
+        }
+        nav.active {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+        }
+        .jqpos {
+            margin: 0 auto;
+            width: 1200px;
+            height: auto;
+        }
+        .jqpos-nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 50px;
+            line-height: 50px;
+        }
+        .jqpos-nav li {
+            float: left;
+            margin-right: 20px;
+            width: 150px;
+            background: #f8f8f8;
+            text-align: center;
+        }
+        .jqpos-nav li.active {
+            background: #f00;
+        }
+        .jqpos-nav li.active a {
+            color: #fff;
+        }
+        .jqpos-nav li a {
+            color: #333;
+            text-decoration: none;
+        }
+        .jqpos-content {
+            margin-top: 100px;
+        }
+        .jqpos-item {
+            margin-bottom: 50px;
+        }
+        .jqpos-item h4 {
+            height: 50px;
+            line-height: 50px;
+            border-left: 10px solid #f00;
+        }
+        .jqpos-item p {
+            height: 1500px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <span id="top"></span>
+    <nav>
+        导航11111
+    </nav>
+    <div class="jqpos">
+        <ul class="jqpos-nav">
+            <li>
+                <a href="#nav1">导航1</a>
+            </li>
+            <li>
+                <a href="#nav2">导航2</a>
+            </li>
+            <li>
+                <a href="#nav3">导航3</a>
+            </li>
+            <li>
+                <a href="#nav4">导航4</a>
+            </li>
+        </ul>
+        <div class="jqpos-content">
+            <div class="jqpos-item" id="nav1">
+                <h4>导航1</h4>
+                <p>
+                    导航1内容内容内容内容内容内容内容
+                    内容内容内容内容内容内容内容内容内容
+                </p>
+            </div>
+            <div class="jqpos-item" id="nav2">
+                <h4>导航2</h4>
+                <p>
+                    导航2内容容内容内容内容内容内容内容
+                    内容内容内容内容内容内容内容内容内容
+                </p>
+            </div>
+            <div class="jqpos-item" id="nav3">
+                <h4>导航3</h4>
+                <p>
+                    导航3内容容内容内容内容内容内容内容
+                    内容内容内容内容内容内容内容内容内容
+                </p>
+            </div>
+            <div class="jqpos-item" id="nav4">
+                <h4>导航4</h4>
+                <p>
+                    导航4内容容内容内容内容内容内容内容
+                    内容内容内容内容内容内容内容内容内容
+                </p>
+            </div>
+        </div>
+    </div>
+    <a href="#top">到顶部</a>
+    <script src="https://xqgj.cc/xqcdn/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="./js/golink.js"></script>
+    <script>
+       goLink('header', '.jqpos-nav li', '.jqpos-nav', '.jqpos-item');
+    </script>
+</body>
+</html>

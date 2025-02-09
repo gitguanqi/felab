@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>webrtc练习</title>
+    <style>
+        body {
+            margin: 0 auto;
+            max-width: 750px;
+        }
+    </style>
+</head>
+<body>
+    <h1>webrtc练习</h1>
+    <p>本练习主要是录制音频和视频流</p>
+    <div>
+        <p>录制音频流</p>
+        <audio controls src=""></audio><br>
+        <video controls src="" style="width: 100%;"></video>
+    </div><br>
+    <button id="start">开始音频</button>
+    <button id="stop">结束音频</button>
+    <button id="play">播放音频</button><br><br>
+    <button id="startVideo">开始视频</button>
+    <button id="stopVideo">结束视频</button>
+    <button id="playVideo">播放视频</button>
+	
+	<script src="https://xqgj.cc/xqcdn/libs/xlsxjs/0.17.4/js/xlsx.full.min.js"></script>
+    <script src="https://xqgj.cc/xqcdn/libs/xqgjs/1.0.5/xqgjs.min.js"></script>
+
+    <script>
+        let xqr = new $g.xqRecord;
+        let audioStart = document.querySelector('#start');
+        let audioStop = document.querySelector('#stop');
+        let audioPlay = document.querySelector('#play');
+        let startVideo = document.querySelector('#startVideo');
+        let stopVideo = document.querySelector('#stopVideo');
+        let playVideo = document.querySelector('#playVideo');
+
+        audioStart.onclick = function () {  
+            xqr.start('audio');
+        }
+
+        audioStop.onclick = function () {  
+            xqr.stop('audio');
+        }
+
+        audioPlay.onclick = function () {  
+            document.querySelector('audio').play();
+        }
+
+        startVideo.onclick = function () {  
+            xqr.start('video');
+        }
+
+        stopVideo.onclick = function () {  
+            xqr.stop('video');
+        }
+
+        playVideo.onclick = function () {  
+            document.querySelector('video').play();
+        }
+        
+    </script>
+</body>
+</html>

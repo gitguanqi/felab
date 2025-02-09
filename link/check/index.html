@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="前端实验室,前端案例库,Vue项目,Node项目">
+    <meta name="description" content="前端实验室是一个记录前端开发的一些案例库，以及前后端小项目汇总的网站。">
+    <meta name="author" content="MarkGuan">
+    <title>安全中心</title>
+    <link rel="stylesheet" href="../../assets/css/link.min.css">
+    <script src="../../assets/js/device.min.js"></script>
+    <!-- [if lt IE 9]>
+	<script src="../../assets/js/html5shiv.min.js"></script>
+    <script src="../../assets/js/respond.min.js"></script>
+	<![endif] -->
+</head>
+<body>
+    <div class="safe">
+        <div class="safe-inner">
+            <div class="safe-top">
+                <img src="../../assets/img/logo.png" alt="安全中心">
+                <span>前端实验室</span>
+            </div>
+            <div class="safe-bot">
+                <div class="safe-title">
+                    <img src="../../assets/img/warning.png" alt="">
+                    请注意您的账号和财产安全
+                </div>
+                <div class="safe-content">
+                    <p class="safe-des">
+                        <small>您即将离开本站，去往：</small><span class="safe-link"></span>
+                    </p>
+                    <button class="safe-go">继续</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../../assets/js/mourn.min.js" id="xqmourn"></script>
+    <script>
+        if (location.search) {
+            let baseUrl = '../?url=';
+            let safeLink = document.querySelector('.safe-link');
+            let safeGo = document.querySelector('.safe-go');
+            let targetUrl = decodeURIComponent(location.search.split('?')[1].split('=')[1]);
+            if (targetUrl) {
+                safeLink.innerText = targetUrl;
+            }
+            safeGo.addEventListener('click', goLink, false);
+            function goLink () {
+                let url = baseUrl + encodeURIComponent(targetUrl);
+                location.href = url;
+            }
+        } else {
+            location.href = '../../';
+        }
+    </script>
+</body>
+</html>

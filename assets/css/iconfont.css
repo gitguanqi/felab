@@ -1,0 +1,83 @@
+@charset "utf-8";
+/*
+ * @Autor: MarkGuan
+ * @Date: 2022-09-29 10:36:25
+ * @LastEditors: MarkGuan
+ * @LastEditTime: 2022-10-31 10:47:55
+ * @Description: This a iconfont file.
+ */
+
+/* 通用字体样式 */
+@font-face {
+  font-family: "opensansBold";
+  src: url("../fonts/OpenSans-Bold.ttf"); /* IE9 */
+  src: url("../fonts/OpenSans-Bold.eot") format("embedded-opentype"),
+    /* IE6-IE8 */ url("../fonts/OpenSans-Bold.woff2") format("woff2"),
+    url("../fonts/OpenSans-Bold.woff") format("woff"),
+    url("../fonts/OpenSans-Bold.ttf") format("truetype"),
+    /* chrome, firefox, opera, Safari, Android, iOS 4.2+ */
+      url("../fonts/OpenSans-Bold.svg#iconfont") format("svg"); /* iOS 4.1- */
+}
+
+/* 图标样式 */
+@font-face {
+  font-family: "felab"; /* Project id 3679512 */
+  src: url("../fonts/iconfont.eot?t=1664420712778"); /* IE9 */
+  src: url("../fonts/iconfont.eot?t=1664420712778#iefix") format("embedded-opentype"),
+    /* IE6-IE8 */ url("../fonts/iconfont.woff2?t=1664420712778") format("woff2"),
+    url("../fonts/iconfont.woff?t=1664420712778") format("woff"),
+    url("../fonts/iconfont.ttf?t=1664420712778") format("truetype"),
+    url("../fonts/iconfont.svg?t=1664420712778#felab") format("svg");
+}
+
+.felab {
+  font-family: "felab" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.felab-bars:before {
+  content: "\e63c";
+}
+
+.felab-chevron-up:before {
+  content: "\eb0f";
+}
+
+.felab-times:before {
+  content: "\ebb1";
+}
+
+.felab-js:before {
+  content: "\e799";
+}
+
+.felab-css:before {
+  content: "\e644";
+}
+
+.felab-html:before {
+  content: "\e702";
+}
+
+.felab-project:before {
+  content: "\ea42";
+}
+
+.felab-tags:before {
+  content: "\e7e5";
+}
+
+.felab-link:before {
+  content: "\e63d";
+}
+
+.felab-code:before {
+  content: "\e654";
+}
+
+.felab-flask:before {
+  content: "\e601";
+}

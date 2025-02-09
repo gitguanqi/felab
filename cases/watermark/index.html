@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>js添加水印</title>
+</head>
+
+<body>
+    <canvas id="cvs" width="1000" height="500">
+        Your browser does not support the HTML5 canvas tag.
+    </canvas>
+    <image id="img" src="./images/test.jpg"> </image>
+    <button onclick="watermark('测试网','www.test')">add watermark</button>
+    <script>
+        function watermark(name, url) {
+            var img = document.getElementById("img");
+            var canvas = document.getElementById("cvs");
+            var ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0);
+            ctx.font = "28px microsoft yahei";
+            ctx.fillStyle = "rgba(255,255,255,0.5)";
+            ctx.fillText(name, 100, 100);
+            ctx.font = "18px microsoft yahei";
+            ctx.fillStyle = "rgba(255,255,255,0.5)";
+            ctx.fillText(url, 100, 130);
+        }
+    </script>
+</body>
+
+</html>

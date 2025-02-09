@@ -1,0 +1,54 @@
+/*
+author: Mr.Mark ,
+date：2018.12.2
+content: reset css
+*/
+body,
+div,
+dl,
+dt,
+dd,
+ul,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+input,
+a,
+p,
+textarea {
+    margin: 0;
+    padding: 0;
+}
+
+ol,
+ul,
+li {
+    list-style: none;
+}
+
+a {
+    display: block;
+    text-decoration: none;
+    color: #fff;
+}
+
+img {
+    display: block;
+    border: none;
+}
+
+.clearfloat {
+    zoom: 1;
+}
+
+.clearfloat::after {
+    display: block;
+    height: 0;
+    clear: both;
+    content: '';
+    overflow: hidden;
+}

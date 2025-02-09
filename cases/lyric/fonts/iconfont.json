@@ -1,0 +1,86 @@
+{
+  "id": "2846512",
+  "name": "music",
+  "font_family": "qm",
+  "css_prefix_text": "qm-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "11770192",
+      "name": "close",
+      "font_class": "close",
+      "unicode": "e66b",
+      "unicode_decimal": 58987
+    },
+    {
+      "icon_id": "12473808",
+      "name": "列表",
+      "font_class": "list",
+      "unicode": "e61e",
+      "unicode_decimal": 58910
+    },
+    {
+      "icon_id": "22894817",
+      "name": "verticleleft",
+      "font_class": "right",
+      "unicode": "e68a",
+      "unicode_decimal": 59018
+    },
+    {
+      "icon_id": "24744985",
+      "name": "verticleleft",
+      "font_class": "left",
+      "unicode": "ea87",
+      "unicode_decimal": 60039
+    },
+    {
+      "icon_id": "8106237",
+      "name": "play",
+      "font_class": "pause",
+      "unicode": "e69e",
+      "unicode_decimal": 59038
+    },
+    {
+      "icon_id": "11474324",
+      "name": "play",
+      "font_class": "play",
+      "unicode": "e701",
+      "unicode_decimal": 59137
+    },
+    {
+      "icon_id": "18957379",
+      "name": "volume-1",
+      "font_class": "volume",
+      "unicode": "e67a",
+      "unicode_decimal": 59002
+    },
+    {
+      "icon_id": "20284982",
+      "name": "volume-x",
+      "font_class": "muted",
+      "unicode": "e7cd",
+      "unicode_decimal": 59341
+    },
+    {
+      "icon_id": "14191072",
+      "name": "循环",
+      "font_class": "sort",
+      "unicode": "e610",
+      "unicode_decimal": 58896
+    },
+    {
+      "icon_id": "16136951",
+      "name": "循环",
+      "font_class": "random",
+      "unicode": "e60a",
+      "unicode_decimal": 58890
+    },
+    {
+      "icon_id": "13137519",
+      "name": "歌词未点击",
+      "font_class": "lyric",
+      "unicode": "e727",
+      "unicode_decimal": 59175
+    }
+  ]
+}

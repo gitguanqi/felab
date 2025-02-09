@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="author" content="Mr.Mark ">
+    <title>轮播图实例</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body>
+    <h2>轮播图实例</h2>
+    <p>轮播图实例展示效果</p>
+    <!-- 轮播图实例 -->
+    <div class="box">
+        <ul class="contents">
+          <li>
+            <a href="">
+              <img src="./image/banner01.jpg" alt="">
+            </a>
+          </li>
+          <li>
+            <a href="">
+              <img src="./image/banner02.jpg" alt="">
+            </a>
+          </li>
+          <li>
+            <a href="">
+              <img src="./image/banner03.jpg" alt="">
+            </a>
+          </li>
+          <li>
+            <a href="">
+              <img src="./image/banner04.jpg" alt="">
+            </a>
+          </li>
+          <li>
+            <a href="">
+              <img src="./image/banner05.jpg" alt="">
+            </a>
+          </li>
+          <li>
+            <a href="">
+              <img src="./image/banner06.jpg" alt="">
+            </a>
+          </li>
+          <li>
+            <a href="">
+              <img src="./image/banner07.jpg" alt="">
+            </a>
+          </li>
+        </ul>
+        <ul class="btns">
+          <li>
+            <button class="act">1</button>
+          </li>
+          <li>
+            <button>2</button>
+          </li>
+          <li>
+            <button>3</button>
+          </li>
+          <li>
+            <button>4</button>
+          </li>
+          <li>
+            <button>5</button>
+          </li>
+          <li>
+            <button>6</button>
+          </li>
+          <li>
+            <button>7</button>
+          </li>
+        </ul>
+        <a class="arrow arrow-left" href="#left">&lt;</a>
+        <a class="arrow arrow-right" href="#right">&gt;</a>
+      </div>
+    <script src="https://xqgj.cc/xqcdn/libs/xqgjs/1.0.5/xqgjs.min.js"></script>
+    <script>
+        let contents = $g.dom('.contents');
+        let contentLis = $g.domAll('.contents li');
+        let arrowLeft = $g.dom('.arrow-left');
+        let arrowRight = $g.dom('.arrow-right');
+        let btns = $g.domAll('.btns li button');
+
+        new $g.Carousels(
+          contents,
+          contentLis,
+          arrowLeft,
+          arrowRight,
+          btns,
+          'act'
+        );
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,265 @@
+/*
+ v1.0 application 58同城
+ author：Mr.Mark 
+ date:2017-9-5
+ * */
+/*
+ 公共样式
+ * */
+body {
+  margin: 0;
+  padding: 0;
+}
+
+ul,
+li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: #333;
+  font-size: 0.35rem;
+  text-decoration: none;
+}
+
+/*头部区*/
+.header-me {
+  height: 2.8125rem;
+  background: #ff552e;
+}
+
+.top-infos {
+  position: relative;
+  top: 0;
+  left: 0;
+  height: 1.5625rem;
+  background-color: #ff552e;
+}
+
+.top-infos a {
+  box-sizing: border-box;
+  display: inline-block;
+  height: 1.5625rem;
+  line-height: 1.5625rem;
+  color: #fff;
+  text-align: center;
+}
+
+.logos {
+  margin: 0 0.2rem 0 0.4rem;
+  width: 0.6875rem;
+  float: left;
+  font-size: 0.65rem;
+  font-weight: 600;
+}
+
+.ba {
+  font-size: 0.8rem;
+}
+
+.releasess {
+  margin: 0 0.9rem;
+  float: right;
+  font-size: 0.45rem;
+}
+
+.head-a {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  top: 10%;
+  left: 35%;
+  width: 2.53125rem;
+  height: 2.53125rem;
+  border: 0.1rem solid #fff;
+  border-radius: 2rem;
+  overflow: hidden;
+}
+
+.head-a img {
+  width: 2.375rem;
+  height: 2.375rem;
+}
+
+.top-info {
+  z-index: 1 !important;
+}
+
+.nickname-me {
+  box-sizing: border-box;
+  margin-top: 2rem;
+  width: 100%;
+  height: 0.7rem;
+  background: #fff;
+  z-index: 2;
+}
+
+.nickname-me a {
+  display: block;
+  text-align: center;
+  margin-left: 3.1rem;
+  font-size: 0.5rem;
+  width: 3.3rem;
+}
+
+/*操作区*/
+.me-set {
+  box-sizing: border-box;
+  width: 100%;
+  height: 3.5rem;
+  padding-top: 1.03125rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 0.5rem solid #e7e7e7;
+}
+
+.me-set a {
+  display: block;
+  float: left;
+  width: 25%;
+  height: 1.96875rem;
+}
+
+.me-set a i.me-icon {
+  display: block;
+  margin: 0 auto;
+  width: 0.78125rem;
+  height: 0.78125rem;
+  background: url(../img/me01.png)no-repeat center;
+  background-size: 0.78125rem;
+}
+
+.me-set a span {
+  margin-top: 0.4rem;
+  display: block;
+  text-align: center;
+}
+
+.me-set a i.icon-002 {
+  background: url(../img/me02.png);
+  background-size: 0.78125rem;
+}
+
+.me-set a i.icon-003 {
+  background: url(../img/me03.png);
+  background-size: 0.78125rem;
+}
+
+.me-set a i.icon-004 {
+  background: url(../img/me04.png);
+  background-size: 0.78125rem;
+}
+
+/*底部区*/
+.info-other {
+  box-sizing: border-box;
+  height: 7.28125rem;
+}
+
+.info-other a {
+  box-sizing: border-box;
+  display: block;
+  float: left;
+  width: 5rem;
+  height: 1.71875rem;
+  line-height: 1.71875rem;
+  padding-left: 0.8rem;
+}
+
+.info-other a i.icons {
+  display: block;
+  float: left;
+  width: 0.5rem;
+  height: 100%;
+  line-height: 50%;
+  margin-right: 0.2rem;
+  background: url(../img/meicon01.png) no-repeat center;
+  background-size: 0.45rem;
+}
+
+.info-other a i.icon-02 {
+  background: url(../img/meicon02.png) no-repeat center;
+  background-size: 0.45rem;
+}
+
+.info-other a i.icon-03 {
+  background: url(../img/meicon03.png) no-repeat center;
+  background-size: 0.45rem;
+}
+
+.info-other a i.icon-04 {
+  background: url(../img/meicon04.png) no-repeat center;
+  background-size: 0.45rem;
+}
+
+.info-other a i.icon-05 {
+  background: url(../img/meicon05.png) no-repeat center;
+  background-size: 0.45rem;
+}
+
+.info-other a i.icon-06 {
+  background: url(../img/meicon06.png) no-repeat center;
+  background-size: 0.45rem;
+}
+
+.info-other a i.icon-07 {
+  background: url(../img/meicon07.png) no-repeat center;
+  background-size: 0.45rem;
+}
+
+.info-other a i.icon-08 {
+  background: url(../img/meicon08.png) no-repeat center;
+  background-size: 0.45rem;
+}
+
+/*底部悬浮栏*/
+/*底部浮动栏*/
+.app {
+  display: block;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1.40625rem;
+  background: #323232;
+  z-index: 9;
+}
+
+.app img {
+  float: left;
+  margin: 0.2rem 0.4rem;
+  width: 0.9rem;
+  height: 0.9rem;
+}
+
+.app p {
+  float: left;
+  margin-top: 0.4rem;
+  font-size: 0.35rem;
+  color: #999;
+}
+
+.app a {
+  display: block;
+  margin-top: 0.33rem;
+  margin-left: 0.35rem;
+  float: left;
+  width: 2.03125rem;
+  height: 0.6875rem;
+  line-height: 0.6875rem;
+  text-align: center;
+  background: #ff552e;
+  font-size: 0.35rem;
+  color: #fff;
+}
+
+.app span {
+  display: block;
+  margin-top: 0.33rem;
+  margin-left: 0.35rem;
+  float: left;
+  color: #999;
+  font-size: 0.5rem;
+  cursor: pointer;
+}

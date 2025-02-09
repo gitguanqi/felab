@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>气泡特效</title>
+    <style>
+        body {
+            margin: 0;
+        }
+        .img-big {
+            position: relative;
+            width: 100%;
+            height: 600px;
+            overflow: hidden;
+        }
+
+        .img-big .img-big-banner {
+            width: 100%;
+            height: 100%;
+            background: #ccc no-repeat center;
+            background-size: cover;
+        }
+
+        .img-big .img-bubble {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .img-big .img-bubble img {
+            position: relative;
+            top: 100%;
+            -webkit-transition: all .5s;
+            transition: all .5s;
+            -webkit-animation: bubbleImg 10s ease infinite;
+            animation: bubbleImg 10s ease infinite;
+        }
+
+        @-webkit-keyframes bubbleImg {
+            0% {
+                top: 100%;
+            }
+
+            100% {
+                top: -10%;
+            }
+        }
+
+        @keyframes bubbleImg {
+            0% {
+                top: 100%;
+            }
+
+            100% {
+                top: -10%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="img-big xgwow animate__fadeIn">
+        <div class="img-big-banner" style="background-image: url('./img/haibian.webp')" alt="">
+        <div class="img-bubble"></div>
+    </div>
+    <script src="./js/gjs.min.js"></script>
+    <script src="./js/bubble.js"></script>
+    <script>
+        let imgBubble = $g('.img-bubble')[0];
+        let imgArr = [];
+        for (let i = 1; i <= 20; i++) {
+            let imgIndex = i >= 10 ? i : '0'+ i;
+            let imgSrc = './img/bubble' + imgIndex + '.png';
+            imgArr.push(imgSrc);
+        }
+        new BubbleAnimate(imgBubble, imgArr, {
+            init: 3000,
+            check: 500,
+        }, 10);
+    </script>
+</body>
+</html>

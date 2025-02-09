@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>导入excel文件</title>
+  <script src="https://xqgj.cc/xqcdn/libs/xlsxjs/0.17.4/js/xlsx.full.min.js"></script>
+  <script src="https://xqgj.cc/xqcdn/libs/xqgjs/1.0.5/xqgjs.min.js"></script>
+</head>
+
+<body>
+  <h2>导入文件</h2>
+  <p>选择一个excel文件。</p>
+  <input type="file" onchange="$g.importFile(this)">
+  <div id="demo"></div>
+</body>
+
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="keywords" content="B站官网,视频">
+    <meta name="description" content="B站官网,你的精神家园!">
+    <meta name="author" content="Mr.Mark ">
+    <meta name="date" content="2017-9-24">
+    <meta name="generator" content="Hbuilder">
+    <meta name="url" content="http://www.bilibili.com">
+    <title>首页-B站官网</title>
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+    <style>
+        body {
+            overflow: hidden;
+        }
+
+        .default {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 95vh;
+            background-image: url('./img/apple.jpg');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+        }
+
+        #default-page {
+            position: relative;
+            top: 23px;
+            width: 373px;
+            height: 86%;
+            border-radius: 0 0 50px 50px;
+            overflow: hidden;
+        }
+        @media all and (max-width: 768px) {
+            .default {
+                height: 100vh;
+                background: none;
+            }
+            #default-page {
+                top: 0;
+                width: 100%;
+                height: 100%;
+                border-radius: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="default">
+        <iframe id="default-page" src="./" frameborder="0"></iframe>
+    </div>
+
+    <script>
+        window.onresize = function () {  
+            if (document.documentElement.clientWidth <= 768) {
+                window.location.href = './index.html';
+            } else {
+                window.location.href = './default.html';
+            }
+        }
+    </script>
+
+</body>
+
+</html>

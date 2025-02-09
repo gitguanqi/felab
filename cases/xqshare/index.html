@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小奇分享插件案例</title>
+    <link rel="stylesheet" href="https://xqgj.cc/xqcdn/libs/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="https://xqgj.cc/xqcdn/libs/xqshare/css/xqshare.min.css">
+    <script src="https://xqgj.cc/xqcdn/libs/xqshare/js/xqshare.min.js"></script>
+    <style>
+        #openBtn {
+            margin: 10px 5px;
+            padding: 5px 8px;
+            background-color: #f00;
+            color: #fff;
+            font-size: 12px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px #ccc;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <button id="openBtn">分享到<i class="fa fa-share-square"></i></button>
+    </div>
+    <div class="editor-share-box" id="popShare"></div>
+
+    <script>
+        let popShare = new XqShare({
+            el: '#popShare',
+            type: 'pop',
+        });
+
+        let openBtn = document.querySelector('#openBtn');
+        openBtn.addEventListener('click', showShare, false);
+        function showShare () {  
+            popShare.show();
+        }
+    </script>
+
+</body>
+
+</html>

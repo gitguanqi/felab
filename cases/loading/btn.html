@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>列表加载</title>
+    <link rel="stylesheet" href="./css/index.css">
+</head>
+<body>
+    <nav>
+        <a href="./index.html">分页加载</a>
+        <a class="active" href="./btn.html">按钮加载</a>
+        <a href="./scroll.html">滚动加载</a>
+    </nav>
+    <div class="wrap">
+        <ul id="list"></ul>
+        <p class="loadmore">加载中...</p>
+        <p class="more-box">
+            <button id="more">加载更多</button>
+        </p>
+    </div>
+    <script src="./js/axios.min.js"></script>
+    <script src="./js/btn.js"></script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+#preview-img {
+    display: block;
+    margin: 20px;
+}
+#download {
+    color: rgb(121, 11, 11);
+    cursor: pointer;
+    text-decoration: underline;
+}

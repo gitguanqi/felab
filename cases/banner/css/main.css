@@ -1,0 +1,154 @@
+/*
+author: Mr.Mark ;
+date: 2018.11.4
+content: 轮播图页面样式
+*/
+/* 公共样式 */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: '微软雅黑';
+}
+ul,
+li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+.box {
+  position: relative;
+  margin: 0 auto;
+  width: 590px;
+  height: 470px;
+  box-shadow: 0 0 2px 2px #ccc;
+  overflow: hidden;
+}
+
+.contents {
+  position: relative;
+  left: 0;
+  top: 0;
+  width: 4130px;
+  /* width: 590px; */
+  height: 470px;
+  /* height: 3290px; */
+  transition: all 0.3s;
+  animation: moveLi 2s linear 1;
+}
+
+.contents li {
+  float: left;
+  width: 590px;
+  height: 470px;
+  background: #ccc;
+}
+
+@keyframes moveLi {
+  0% {
+    width: 100px;
+  }
+
+  20% {
+    width: 200px;
+  }
+
+  40% {
+    width: 300px;
+  }
+
+  60% {
+    width: 400px;
+  }
+
+  80% {
+    width: 500px;
+  }
+
+  100% {
+    width: 590px;
+  }
+}
+
+@keyframes moveLiTwo {
+  0% {
+    height: 90px;
+  }
+
+  30% {
+    height: 180px;
+  }
+
+  60% {
+    height: 270px;
+  }
+
+  80% {
+    height: 360px;
+  }
+
+  100% {
+    height: 450px;
+  }
+}
+
+.btns {
+  position: absolute;
+  left: 50%;
+  bottom: 10px;
+  margin: 0 auto 0 -100px;
+  display: flex;
+  justify-content: space-between;
+  width: 200px;
+  height: 30px;
+}
+
+.btns button {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-color: #fff;
+  border: 1px solid #fff;
+  color: #333;
+  text-align: center;
+  font-size: 12px;
+  border-radius: 50%;
+  outline: none;
+}
+
+.btns button:hover {
+  cursor: pointer;
+  box-shadow: 0 0 2px 2px #f8f8f8;
+}
+
+.act {
+  border: 1px solid #f00 !important;
+  background-color: #f00 !important;
+  color: #fff !important;
+}
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  margin-top: -35px;
+  display: block;
+  width: 30px;
+  height: 70px;
+  line-height: 70px;
+  text-align: center;
+  color: #fff;
+  font-size: 20px;
+  background-color: rgba(0, 0, 0, .3);
+}
+
+.arrow-left {
+  left: 0;
+}
+
+.arrow-right {
+  right: 0;
+}

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>js之监测横竖屏</title>
+  <style>
+    @media screen and (orientation: portrait) {
+      #box {
+        color: #333;
+      }
+    }
+    @media screen and (orientation: landscape) {
+      #box {
+        color: #f00;
+      }
+    }
+    kbd {
+      display: inline-block;
+      margin: 0 5px;
+      padding: 0 5px;
+      width: auto;
+      height: 25px;
+      line-height: 25px;
+      background-color: #333;
+      color: #fff;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <h2 id="box">js监测横屏竖屏</h2>
+  <p>使用方法：按住<kbd>F12</kbd>键打开检查,打开模拟设备，刷新，点击旋转切换横竖屏，变化打印出对应的名称。</p>
+  <script>
+    window.addEventListener('resize', () => {
+      if (window.orientation === 180 || window.orientation === 0) {
+        console.log('竖屏');
+      }
+      if (window.orientation === 90 || window.orientation === -90) {
+        console.log('横屏');
+      }
+    })
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>js加密解密</title>
+  <script src="https://cdn.bootcss.com/crypto-js/3.1.9-1/crypto-js.min.js"></script>
+  <script src="https://cdn.bootcss.com/Base64/1.0.2/base64.min.js"></script>
+  
+  <style>
+    .crypto {
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      background-color: #f8f8f8;
+    }
+    .crypto-inner {
+      margin: 6.25rem auto 0 auto;
+      max-width: 320px;
+      width: 75%;
+      height: 15rem;
+    }
+    .crypto-title {
+      color: #1b4275;
+      font-size: 26px;
+      text-align: center;
+    }
+    .crypto-en {
+      margin: 15px auto;
+      display: flex;
+      justify-content: center;
+      height: 33px;
+      line-height: 33px;
+    }
+    .crypto-ipt {
+      box-sizing: border-box;
+      display: inline-block;
+      margin-bottom: 10px;
+      padding-left: 10px;
+      padding-right: 10px;
+      width: 100%;
+      height: 32px;
+      line-height: 32px;
+      border: 1px solid #ccc;
+      outline: none;
+    }
+    .crypto-ipt:focus {
+      border: 1px solid #1b4275;
+    }
+    .crypto-btn {
+      position: relative;
+      top: 2px;
+      margin-right: 10px;
+      width: 20%;
+      height: 32px;
+      line-height: 32px;
+      background-color: #1b4275;
+      border: 1px solid #1b4275;
+      outline: none;
+      color: #fff;
+    }
+    .crypto-result {
+      margin-top: 20px;
+      padding-left: 10px;
+      text-align: left;
+      font-size: 14px;
+    }
+    .crypto-result-text {
+      margin-top: 10px;
+      display: inline-block;
+      width: 100%;
+      color: #1b4275;
+      overflow-wrap: break-word;
+    }
+  </style>
+</head>
+<body>
+  <div class="crypto">
+    <div class="crypto-inner">
+      <h2 class="crypto-title">js加密解密</h2>
+      <div class="crypto-en">
+        <input class="crypto-ipt" id="pwd" type="text" placeholder="请输入加密内容">
+      </div>
+      <div class="crypto-en">
+        <button class="crypto-btn" id="encrypto">加密</button>
+        <button class="crypto-btn" id="decrypto">解密</button>
+      </div>
+      <p class="crypto-result">结果：<strong id="result" class="crypto-result-text">暂无</strong></p>
+    </div>
+  </div>
+  <script>
+    const key = CryptoJS.enc.Utf8.parse('123456789abcdefg');
+    const iv = CryptoJS.enc.Utf8.parse('abcdefg123456789');
+
+    const contentDecrypto = function (pwd) {
+      let encryptHexStr = CryptoJS.enc.Hex.parse(pwd);
+      let srcs = CryptoJS.enc.Base64.stringify(encryptHexStr);
+      let decrypto = CryptoJS.AES.decrypt(srcs, key, {iv: iv, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7});
+      let decryptoStr = decrypto.toString(CryptoJS.enc.Utf8);
+      return decryptoStr.toString();
+    }
+
+    const contentEncrypto = function (pwd) {
+      let srcs = CryptoJS.enc.Utf8.parse(pwd);
+      let encrypto = CryptoJS.AES.encrypt(srcs, key, {iv: iv, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7});
+      return encrypto.ciphertext.toString().toUpperCase();
+    }
+
+    function getDom (name) {
+      return document.querySelector(name);
+    }
+
+    let pwd = getDom('#pwd');
+    let encrypto = getDom('#encrypto');
+    let decrypto = getDom('#decrypto');
+    let result = getDom('#result');
+    let enPwd = '';
+
+    encrypto.addEventListener('click', function(){
+      if (pwd.value == '') {
+        alert('请输入要加密的内容！');
+        return false;
+      }
+      result.innerText = btoa(contentEncrypto(pwd.value));
+    }, false)
+
+    decrypto.addEventListener('click', function(){
+      if (pwd.value == '') {
+        alert('请输入要加密的内容！');
+        return false;
+      }
+      result.innerText = contentDecrypto(atob(pwd.value));
+    }, false)
+
+  </script>
+</body>
+</html>

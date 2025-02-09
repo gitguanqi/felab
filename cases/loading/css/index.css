@@ -1,0 +1,121 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    background: #f8f8f8;
+}
+
+nav a {
+    margin: 0 10px;
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+
+nav a.active {
+    color: #f00;
+}
+
+.wrap {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 50px 0 15px 0;
+}
+
+.wrap li {
+    padding: 5px 0;
+    list-style: square;
+}
+
+.wrap li h3,
+.wrap li p {
+    text-transform: capitalize;
+}
+
+.wrap li h3:hover {
+    color: #f00;
+    cursor: pointer;
+}
+
+.wrap .nodata {
+    list-style: none;
+    text-align: center;
+}
+
+.wrap .loading {
+    line-height: 70vh;
+    text-align: center;
+    list-style: none;
+}
+
+#pages {
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    width: 996px;
+}
+
+#pages li {
+    display: inline-block;
+    margin-right: 10px;
+    list-style: none;
+}
+
+#pages button {
+    width: auto;
+    min-width: 40px;
+    height: 40px;
+    background: #fff;
+    box-shadow: 0 0 5px #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+#pages button:hover,
+#pages button.active {
+    color: #fff;
+    border-color: #f00;
+    background: #f00;
+    cursor: pointer;
+}
+
+#pages button.dis {
+    cursor: no-drop;
+}
+
+.loadmore {
+    text-align: center;
+}
+
+.hide {
+    display: none;
+}
+
+.more-box {
+    text-align: center;
+}
+
+#more {
+    padding: 10px;
+    background: none;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#more:hover {
+    cursor: pointer;
+    border-color: #f00;
+    background-color: #f00;
+    color: #fff;
+}

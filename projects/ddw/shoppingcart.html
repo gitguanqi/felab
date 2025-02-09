@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>购物车-当当网</title>
+		<link rel="shortcut icon" type="image/x-icon" href="img/logoicon.png" />
+		<link type="text/css" href="css/dang.css" rel="stylesheet"/>
+		<link type="text/css" href="css/shoppingcart.css" rel="stylesheet"/>
+	</head>
+	<body>
+		<div class="header shoppingpage">
+				<!--顶部会员菜单区-->
+				<div class="info-top shoppingcenter">
+						<div class="menu shoppingmenu">
+				    		<div class="welcome">
+				    			<span class="loginbf">欢迎光临当当，请<a class="login" id="user-login" data-hash="login" href="login.html">登录</a><a id="tovip" href="reg.html">成为会员</a></span>
+				    			<span class="logined">hi,亲爱的<span id="username"></span>你好！<a id="logout" href="javascript:;">退出</a></span>
+				    		</div>
+							<div class="menu-list">
+								<ul>
+									<li class="li-one"><a href="javascript:;" id="cart-bool">购物车<span class="amount">0</span></a></li>
+									<li class="li-two"><a href="">我的订单</a></li>
+									<li class="li-two"><a href="">小说投稿</a></li>
+									<li class="li-three phone" id="phonedd"><a href="">手机当当</a>
+										<div id="phones">
+												<a class="phonea" href="">
+													<span class="phonetop">当当购物客户端</span>
+													<img src="img/shopingapp.png" />
+												   <span class="phonebot">下载购物app手机端1元秒</span>
+												</a>
+												<a class="phonea" href="">
+													<span class="phonetop">当当读书客户端</span>
+													<img src="img/readapp.png" />
+												   <span class="phonebot">万本电子书免费读</span>
+												</a>
+										</div>
+									</li>
+									<li class="li-three li-four"><a href="">我的当当</a>
+										<ul>
+											<li>
+												<a href="" class="li-four-a">积分抵现</a>
+												<a href="" class="li-four-a">我的收藏</a>
+												<a href="" class="li-four-a">我的余额</a>
+												<a href="" class="li-four-a">我的评论</a>
+												<a href="" class="li-four-a">礼品卡</a>
+												<a href="" class="li-four-a">电子书架</a>
+											</li>
+										</ul>
+									</li>
+									<li class="li-three li-four"><a href="">企业采购</a>
+										<ul>
+											<li>
+												<a href="" class="li-four-a">大宗采购</a>
+												<a href="" class="li-four-a">礼品卡采购</a>
+												<a href="" class="li-four-a">礼品卡激活</a>
+												<a href="" class="li-four-a">礼品卡使用</a>
+												<a href="" class="li-four-a">3c数码团购</a>
+												<a href="" class="li-four-a">积分抵现</a>
+											</li>
+										</ul>
+									</li>
+									<li class="li-three li-four"><a href="">客户服务</a>
+										<ul>
+											<li>
+												<a href="" class="li-four-a">帮助中心</a>
+												<a href="" class="li-four-a">自动退换货</a>
+												<a href="" class="li-four-a">自助发票</a>
+												<a href="" class="li-four-a">联系客服</a>
+												<a href="" class="li-four-a">我要投诉</a>
+											</li>
+										</ul>
+									</li>
+								</ul>
+							</div>
+						</div>
+				</div>
+		</div>
+		<!--中部购物车区-->
+		<div class="bannerpic"><a href=""><img src="img/shoppingcart/banner.jpg"/></a></div>
+		<div class="cart">
+			<div class="cart-inner">
+				<div class="logopic"><a href="index.html"><img src="img/shoppingcart/dd_logo.jpg"/></a></div>
+				<div class="cart-info">
+					<span class="current">我的购物车</span>
+					<span>填写订单</span>
+					<span>完成订单</span>
+				</div>
+			</div>
+		</div>
+		<div class="cart-des">
+			<form action="" method="post" name="form">
+			<ul class="cart-title">
+				<li class="f1"><input type="checkbox" name="checkbox" id="checkall"/><label>全选</label></li>
+				<li class="f2">商品信息</li>
+				<li class="f3">单价（元）</li>
+				<li class="f4">数量</li>
+				<li class="f4">金额（元）</li>
+				<li class="f5">操作</li>
+			</ul>
+			<div class="cart-shop">
+				<div class="cart-name">
+					<input type="checkbox" name="checkbox" class="checkone"/><label>选择</label>
+				   <span class="cart-name-icon" href=""></span>
+				   <a href="">弥格服饰专卖店<img src="img/shoppingcart/icon_cse.gif"/></a>
+				</div>
+				<div class="cart-goods">
+					<div class="check-ones"><input type="checkbox" class="checkone"/><label>选择</label></div>
+					<div class="check-img"><a href=""><img src="img/shoppingcart/check-img.jpg"/></a></div>
+					<div class="check-title">
+						<a href="">youngor/雅戈尔男装商务休闲夏季新款短袖衬衫sxx13021gky_sxx13021gky,38</a>
+					   <div class="swat-size">
+					   	<em>颜色:sxx13021gky</em>
+					   	<em>尺码:38</em>
+					   	<a class="fix" href="">修改</a>
+					   </div>
+					</div>
+					<div class="check-price">
+						<span>￥</span><span id="goods-price">298.00</span>
+					</div>
+					<div class="check-amount">
+				      <span class="goods-amount">
+				      	<a class="btn" id="reduce">-</a>
+				      	<input type="text" name="amount" id="count" value="1"/>
+				      	<a class="btn" id="plus">+</a>
+				      </span>
+					</div>
+					<div class="price-aa"><span>￥</span><span id="all-price">298</span></div>
+					<div class="check-set"><a class="set-a" id="save" href="">移入收藏</a><a class="set-a" id="del-one" href="">删除</a></div>
+				</div>	
+		</div>
+		<div class="cart-shop">
+				<div class="cart-name">
+					<input type="checkbox" name="checkbox" class="checkone"/><label>选择</label>
+				   <span class="cart-name-icon" href=""></span>
+				   <a href="">当当自营<img src="img/shoppingcart/icon_cse.gif"/></a>
+				</div>
+				<div class="cart-goods">
+					<div class="check-ones"><input type="checkbox" name="checkbox" class="checkone"/><label>选择</label></div>
+					<div class="check-img"><a href=""><img src="img/shoppingcart/check-img01.jpg"/></a></div>
+					<div class="check-title">
+						<a href="product.html">ppt设计之道</a>
+					</div>
+					<div class="check-price">
+						<span>￥</span><span id="goods-price-one">40.00</span>
+					</div>
+					<div class="check-amount">
+				      <span class="goods-amount">
+				      	<a class="btn" id="reduce-one">-</a>
+				      	<input type="text" name="amount" id="count-one" value="1"/>
+				      	<a class="btn" id="plus-one">+</a>
+				      </span>
+					</div>
+					<div class="price-aa"><span>￥</span><span id="all-price-one">40</span></div>
+					<div class="check-set"><a class="set-a" id="save" href="">移入收藏</a><a class="set-a" id="del-two" href="">删除</a></div>
+			   </div>
+			</div>
+		<div class="cart-set">
+					<input type="checkbox" name="checkbox" id="checkalli"/><label>全选</label>
+					<a class="delall" id="del-all" href="javascript:;">批量删除</a>
+					<span class="choiceall">已选择<span class="amountall">0</span>件商品</span>
+					<div class="allprice">
+						<span>总计(不含运费):</span><span class="price-a">￥<span class="price-b">0.00</span></span>
+						<span class="price-box">结算</span>
+					</div>
+				</div>
+		</form>
+		</div>
+		<!--底部版权区-->
+		<div class="footer">
+			<div class="footer-box">
+				<span>copyright (c) 当当网 2004-2014, all rights reserved</span>
+			   <a href=""><img src="img/shoppingcart/validate.gif"/></a>
+			   <span><a href="">京icp证041189号</a></span>
+			   <span>出版物经营许可证 新出发京批字第直0673号</span>
+			</div>
+		</div>
+		<script src="js/shoppingcart.js"></script>
+	</body>
+</html>

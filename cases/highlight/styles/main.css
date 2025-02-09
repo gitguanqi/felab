@@ -1,0 +1,212 @@
+/*
+ * @Author: Mr.Mark  
+ * @Date: 2019-08-27 15:04:37 
+ * @Last Modified by: Mr.Mark 
+ * @Last Modified time: 2019-09-04 10:30:31
+ */
+/* 公共样式 */
+*::selection {
+  color: #fff;
+  background-color: #f00;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+ul,
+li,
+h2,
+h3,
+p {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* 导航 */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 60px;
+  line-height: 60px;
+  background-color: #fff;
+  box-shadow: 0 0 1px 1px #e3e3e3;
+  z-index: 102;
+}
+
+.nav .nav-logo {
+  box-sizing: border-box;
+  width: 256px;
+  height: 60px;
+  line-height: 60px;
+  text-align: center;
+}
+
+.nav-logo-img {
+  position: relative;
+  top: 10px;
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+}
+
+.nav-logo-link {
+  color: #333;
+}
+
+.nav-logo-des {
+  position: relative;
+  top: 0;
+  display: inline-block;
+  width: 100px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+}
+
+.nav-list {
+  padding: 0 25px;
+  width: 420px;
+}
+
+.nav-list li {
+  float: left;
+  margin-top: 10px;
+  margin-right: 15px;
+  width: 35px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+}
+
+.nav-list li:first-child {
+  width: 200px;
+}
+
+.nav-list li:first-child input {
+  padding: 0 10px;
+  width: 180px;
+  height: 30px;
+  line-height: 30px;
+  outline: none;
+  border-radius: 20px;
+  border: 1px solid #e3e3e3;
+}
+
+.nav-list li a {
+  display: inline-block;
+  width: 35px;
+  height: 30px;
+  line-height: 30px;
+  text-decoration: none;
+  color: #333;
+}
+
+.nav-list li a.active {
+  border-bottom: 3px solid #f00;
+}
+
+/* 内容 */
+.content {
+  margin: 82px auto 0 auto;
+  width: 800px;
+  height: auto;
+}
+
+.floor {
+  margin: 30px auto;
+  width: 900px;
+}
+
+.floor h2 {
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  padding-left: 20px;
+  height: 50px;
+  line-height: 50px;
+  font-size: 20px;
+  color: #333;
+  text-align: left;
+  border-bottom: 2px solid #eee;
+}
+
+.floor h3 {
+  position: relative;
+  display: block;
+  margin: 10px auto;
+  padding-left: 20px;
+  height: 40px;
+  line-height: 40px;
+  font-size: 16px;
+  color: #444;
+  text-align: left;
+}
+
+.floor h2:hover .floor-charset,
+.floor h3:hover .floor-charset {
+  display: block;
+}
+
+.floor h2 .floor-charset,
+.floor h3 .floor-charset {
+  display: none;
+  position: absolute;
+  left: 0;
+  color: #f00;
+}
+
+.floor p {
+  padding: 10px 20px;
+  width: 100%;
+  line-height: 30px;
+  font-size: 14px;
+  text-align: left;
+  color: #666;
+}
+
+/* 侧边菜单 */
+.sider {
+  position: fixed;
+  top: 62px;
+  left: 0;
+  box-sizing: border-box;
+  padding: 20px 10px;
+  width: 256px;
+  background-color: #fff;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  box-shadow: 0 0 3px 3px #f8f8f8;
+}
+
+.sider li {
+  box-sizing: border-box;
+  padding: 5px 20px;
+  width: 200px;
+  text-align: left;
+}
+
+.sider li span.title {
+  display: block;
+  width: 100%;
+  line-height: 30px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.sider li span.active {
+  color: #f00;
+}
+
+.sider li span.two {
+  padding-top: 5px;
+  padding-left: 15px;
+  line-height: 25px;
+}

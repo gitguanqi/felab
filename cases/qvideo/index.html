@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>自定义视频播放器</title>
+    <link rel="stylesheet" href="./styles/video.min.css">
+    <link href="https://cdn.bootcss.com/font-awesome/5.10.0-12/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="qvideo">
+        <video class="qvideo-box" id="qvideo" poster="./images/hl.jpg">
+            <source src="https://www.runoob.com/try/demo_source/movie.mp4" type="video/mp4">
+            <p>您的游览器不支持html5 video元素!</p>
+        </video>
+        <div class="qvideo-title"><strong>小猪佩奇(第一集)</strong></div>
+        <div class="qvideo-controls">
+            <div class="qvideo-progress">
+                <span class="qvideo-progress-current"></span>
+            </div>
+            <div class="qvideo-set">
+                <div class="qvideo-set-left">
+                    <button class="qvideo-play"><i id="play-icon" class="fa fa-play" title="播放/暂停"></i></button>
+                    <button class="qvideo-reload"><i id="reload-icon" class="fa fa-redo" title="重载"></i></button>
+                    <div class="qvideo-time">
+                        <span class="qvideo-startTime">00:00:00</span>
+                        <span class="qvideo-time-line">/</span>
+                        <span class="qvideo-endTime">00:00:00</span>
+                    </div>
+                </div>
+                <div class="qvideo-set-right">
+                    <div class="qvideo-volume">
+                        <button class="qvideo-volume-btn"><i id="volume-icon" class="fa fa-volume-up"></i></button>
+                        <div class="qvideo-volume-progress" id="volLen">
+                            <span class="qvideo-volume-progress-current" id="volCur"></span>
+                        </div>
+                    </div>
+                    <button class="qvideo-fullscreen-btn"><i class="fa fa-compress" title="全屏"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="qvideo-loading-box show">
+            <div class="qvideo-loading"></div>
+        </div>
+    </div>
+
+    <script src="./scripts/video.min.js"></script>
+    <script>
+        let qVideo = getDom('#qvideo');
+        let progress = getDom('.qvideo-progress');
+        let currentProgress = getDom('.qvideo-progress-current');
+        let play = getDom('.qvideo-play');
+        let playIcon = getDom('#play-icon');
+        let reload = getDom('.qvideo-reload');
+        let startTime = getDom('.qvideo-startTime');
+        let endTime = getDom('.qvideo-endTime');
+        let volumeBtn = getDom('.qvideo-volume-btn');
+        let volumeIcon = getDom('#volume-icon');
+        let volumePro = getDom('.qvideo-volume-progress');
+        let volumeCur = getDom('.qvideo-volume-progress-current');
+        let fullscreenBtn = getDom('.qvideo-fullscreen-btn');
+        let qvideoLoading = getDom('.qvideo-loading-box');
+        /**
+         *获取单个元素
+        *
+        * @param {*} name
+        * @returns
+        */
+        function getDom(name) {
+        return document.querySelector(name);
+        }
+        new $qvideo(
+            qVideo,
+            progress,
+            currentProgress,
+            play,
+            playIcon,
+            reload,
+            startTime,
+            endTime,
+            volumeBtn,
+            volumeIcon,
+            volumePro,
+            volumeCur,
+            fullscreenBtn,
+            qvideoLoading,
+        );
+    </script>
+</body>
+</html>

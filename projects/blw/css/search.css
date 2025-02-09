@@ -1,0 +1,88 @@
+body {
+  margin: 0;
+  padding: 0; }
+
+ul, li {
+  margin: 0;
+  padding: 0;
+  border: none;
+  list-style: none; }
+
+a {
+  text-decoration: none; }
+
+body {
+  background-color: #eee;
+  height: 100%; }
+
+.search-info {
+  position: relative;
+  width: 100%;
+  height: 1rem;
+  background-color: #fff; }
+  .search-info input[type="text"] {
+    box-sizing: border-box;
+    position: absolute;
+    top: 0.2rem;
+    left: 0.2rem;
+    padding: 0.01rem 0 0 0.7rem;
+    float: left;
+    width: 78%;
+    height: 0.6rem;
+    border: 0.01rem solid #eee;
+    border-radius: 0.1rem;
+    font-size: 0.3rem;
+    color: #999;
+    background: #f7f7f7 url(../img/search48.png) no-repeat 0.1rem 0.1rem;
+    background-size: 0.4rem; }
+  .search-info .channel {
+    box-sizing: border-box;
+    display: block;
+    position: absolute;
+    top: 0.2rem;
+    right: 0.5rem;
+    float: left;
+    width: 10%;
+    height: 0.6rem;
+    line-height: 0.6rem;
+    text-align: center;
+    font-size: 0.3rem;
+    color: #fb7299; }
+
+.hot-s {
+  position: relative;
+  width: 100%;
+  height: 3.5rem;
+  background-color: #fff; }
+  .hot-s h4 {
+    position: absolute;
+    margin: 0;
+    left: 0.25rem;
+    width: 100%;
+    height: 1rem;
+    line-height: 1rem;
+    color: #999;
+    font-size: 0.3rem; }
+
+.s-list {
+  position: absolute;
+  top: 1rem;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 2.5rem; }
+  .s-list a {
+    display: block;
+    float: left;
+    margin: 0.1rem 0.2rem;
+    width: 1.5rem;
+    height: 0.6rem;
+    line-height: 0.6rem;
+    color: #333;
+    font-size: 0.3rem;
+    text-align: center;
+    border-radius: 0.3rem;
+    border: 0.03rem solid #999; }
+
+.two {
+  margin-top: 0.2rem; }

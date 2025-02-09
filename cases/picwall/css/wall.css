@@ -1,0 +1,80 @@
+/**
+author:Mr.Mark ;
+date:2019.2.22;
+content: 照片墙。
+*/
+body {
+  background: #fff url('../image/bg1.jpg');
+}
+.piclist {
+  padding-top: 50px;
+}
+.piclist li {
+  display: inline-block;
+  margin: 0 0 57px 57px;
+  padding: 10px 10px 15px;
+  width: auto;
+  background-color: #fff;
+  text-align: center;
+  box-shadow: 0 3px 6px rgba(0,0,0,.25);
+  -moz-box-shadow: 0 3px 6px rgba(0,0,0,.25);
+  -webkit-box-shadow: 0 3px 6px rgba(0,0,0,.25);
+  transform: rotate(-2deg);
+  -moz-transform: rotate(-2deg);
+  -webkit-transform: rotate(-2deg);
+  transition: all 1s;
+  -webkit-transition: all 1s;
+  -moz-transition: all 1s;
+}
+.piclist li a {
+  text-decoration: none;
+}
+.piclist li a:after {
+  color: #c31636;
+  font-weight: bold;
+  content: attr(title);
+}
+.piclist li a img {
+  display: block;
+  margin-bottom: 12px;
+  height: 100px;
+}
+.piclist li:nth-child(even) a {
+  transform: rotate(5deg);
+  -moz-transform: rotate(5deg);
+  -webkit-transform: rotate(5deg);
+}
+.piclist li:nth-child(3n) a {
+  position: relative;
+  top: -5px;
+  transform: none;
+  -moz-transform: none;
+  -webkit-transform: none;
+}
+.piclist li:nth-child(5n) a {
+  position: relative;
+  right: 5px;
+  transform: rotate(-10deg);
+  -moz-transform: rotate(-10deg);
+  -webkit-transform: rotate(-10deg);
+}
+.piclist li:nth-child(8n) a {
+  position: relative;
+  right: 5px;
+  top: 8px;
+}
+.piclist li:nth-child(11n) a {
+  position: relative;
+  left: -5px;
+  top: 3px;
+}
+.piclist li:hover {
+  position: relative;
+  box-shadow: 0 3px 6px rgba(0,0,0,.5);
+  -moz-box-shadow: 0 3px 6px rgba(0,0,0,.5);
+  -webkit-box-shadow: 0 3px 6px rgba(0,0,0,.5);
+  transform: scale(1.5);
+  -webkit-transform: scale(1.5);
+  -moz-transform: scale(1.5);
+  z-index: 5;
+}

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>登录-B站官网</title>
+        <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+        <script>
+                document.documentElement.style.fontSize =
+                        document.documentElement.clientWidth / 10 + 'px'
+        </script>
+        <link type="text/css" href="css/login1.css" rel="stylesheet">
+</head>
+
+<body>
+        <header><a class="logo" href="index.html"><img src="img/logo.png" alt=""> </a><a class="logoText">登录</a>
+        </header>
+        <div class="from">
+                <div class="input-wrp"><input type="text" name="uname" id="user" placeholder="您的手机号/邮箱"></div>
+                <div class="input-wrp"><input type="password" name="uname" id="mm" placeholder="密码"></div>
+                <div class="text clearfix"><a href="forget.html">忘记密码？</a></div>
+                <div style="margin-top: 79px"><input class="button confirm logi" type="submit" value="立即登录" id="btns">
+                </div>
+                <div><a class="button" href="./reg.html">注册</a></div>
+                <div class="sns">
+                        <div class="splitter"><span class="title">第三方合作网站登录</span></div>
+                </div>
+                <div class="sns-1" style="padding: 58px 107px"><a class="btn-weibo" href=""><img src="./img/weibo.png"
+                                        alt=""></a><a class="btn-qq" href=""><img src="./img/qq.png" alt=""></a></div>
+        </div>
+        <script>
+                //正则
+                var reg = /^[1][3,5,8,7][0-9]{9,9}$/g;
+                var reg1 = /[0-9A-Za-z]{6}/g;
+
+                var username = document.querySelector("#user");
+                var mm = document.querySelector("#mm");
+
+                username.onchange = function () {
+                        var _val = this.value;
+                        if (!reg.test(_val)) {
+                                alert("格式不正确");
+                        } else {
+                                alert("请输入六位数");
+                        }
+                }
+                mm.onchange = function () {
+                        var _val = this.value;
+                        if (!reg1.test(_val)) {
+                                alert("格式不正确");
+                        } else {
+                                alert("请输入六位数");
+                        }
+                }
+
+
+
+                //获取cookie
+                function getCookie(key) {
+                        var _cookie = document.cookie; //username=wally; age=17; sex=man
+                        var arr = _cookie.split(";");
+                        for (var i = 0; i < arr.length; i++) {
+                                if (arr[i].split("=")[0].trim() === key) {
+                                        return arr[i].split("=")[1]
+                                }
+                        }
+                }
+
+                function removeCookie(key) {
+                        setCookie(key, null, -1)
+                }
+
+                function setCookie(key, value, time) {
+                        var date = new Date()
+                        date.setDate(date.getDate() + time) // 当前时间 + 30天
+                        document.cookie = key + "=" + encodeURIComponent(value) + ";expires=" + date
+                }
+
+
+
+                //存cookie
+                var btn = document.getElementsByClassName("btns")[0];
+
+                function setCookie(key, value, time) {
+                        var date = new Date()
+                        date.setDate(date.getDate() + time)
+                        document.cookie = key + "=" + encodeURIComponent(value) + ";expires=" + date
+                }
+                btns.onclick = function (e) {
+                        e = e || window.event;
+                        e.preventDefault();
+                        if (username.value) {
+                                setCookie("username", username.value, 7)
+                                location.href = "index.html";
+                        }
+
+                }
+        </script>
+</body>
+
+</html>

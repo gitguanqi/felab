@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>js解析歌词案例</title>
+    <link rel="stylesheet" type="text/css" href="css/iconfont.css">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+</head>
+<body>
+    <div class="music">
+        <div class="music-title">小奇音乐盒</div>
+        <div class="music-lyric">
+            <ul class="lyric-ls scroll-box"></ul>
+        </div>
+        <div class="music-progress">
+            <small id="startTime">00:00</small>
+            <span id="music-progress-bar">
+                <i></i>
+            </span>
+            <small id="endTime">00:00</small>
+        </div>
+        <div class="music-audio">
+            <div class="music-audio-set">
+                <i class="music-play qm qm-play active"></i>
+                <i class="music-play qm qm-pause"></i>
+            </div>
+            <audio id="music-player" src="../../assets/data/music/lrh-mq.mp3"></audio>
+        </div>
+    </div>
+    <script src="js/axios.min.js"></script>
+    <script src="js/index.js"></script>
+</body>
+</html>

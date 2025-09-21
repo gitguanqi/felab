@@ -63,17 +63,6 @@
             "update_time": "2019-10-18"
         },
         {
-            "cid": 1006,
-            "name": "【vuejs】小奇后台",
-            "description": "【vuejs】小奇后台是一个基于vuejs+elementui搭建的工具箱后台管理系统项目。",
-            "href": "https://tms.localhost/",
-            "picUrl": "./assets/img/cover/admin.jpg",
-            "type": "project",
-            "tags": "vuejs,admin",
-            "create_time": "2019-10-18",
-            "update_time": "2019-10-18"
-        },
-        {
             "cid": 1007,
             "name": "【nodejs】KDAPI",
             "description": "【nodejs】KDAPI是一个nodejs+mysql+redis搭建的api接口服务器项目。",

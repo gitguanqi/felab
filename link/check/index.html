@@ -1,59 +1,52 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="keywords" content="前端实验室,前端案例库,Vue项目,Node项目">
-    <meta name="description" content="前端实验室是一个记录前端开发的一些案例库，以及前后端小项目汇总的网站。">
-    <meta name="author" content="MarkGuan">
-    <title>安全中心</title>
-    <link rel="stylesheet" href="../../assets/css/link.min.css">
-    <script src="../../assets/js/device.min.js"></script>
-    <!-- [if lt IE 9]>
-	<script src="../../assets/js/html5shiv.min.js"></script>
-    <script src="../../assets/js/respond.min.js"></script>
-	<![endif] -->
-</head>
-<body>
-    <div class="safe">
-        <div class="safe-inner">
-            <div class="safe-top">
-                <img src="../../assets/img/logo.png" alt="安全中心">
-                <span>前端实验室</span>
-            </div>
-            <div class="safe-bot">
-                <div class="safe-title">
-                    <img src="../../assets/img/warning.png" alt="">
-                    请注意您的账号和财产安全
-                </div>
-                <div class="safe-content">
-                    <p class="safe-des">
-                        <small>您即将离开本站，去往：</small><span class="safe-link"></span>
-                    </p>
-                    <button class="safe-go">继续</button>
-                </div>
-            </div>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; img-src 'self' data:; script-src 'self'; style-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <title>站外链接确认 - 前端实验室</title>
+    <link rel="stylesheet" href="../../assets/css/iconfont.css" />
+    <link rel="stylesheet" href="../../assets/css/reset.min.css" />
+    <link rel="stylesheet" href="../../assets/css/check.css" />
+  </head>
+  <body>
+    <main class="safe-page">
+      <a class="safe-brand" href="../../">
+        <i class="felab felab-flask" aria-hidden="true"></i>
+        前端实验室
+      </a>
+
+      <section class="safe-panel" aria-labelledby="safe-title">
+        <p class="safe-kicker">EXTERNAL LINK</p>
+        <h1 id="safe-title">即将离开本站</h1>
+        <p class="safe-description">
+          请确认目标域名可信。本站不会自动跳转，也不会在链接中执行任何脚本。
+        </p>
+
+        <p id="safe-loading" class="safe-loading" role="status">正在校验案例链接...</p>
+
+        <div id="safe-content" class="safe-content" hidden>
+          <p class="safe-host-label">目标域名</p>
+          <p id="target-host" class="safe-host"></p>
+          <p class="safe-url-label">完整地址</p>
+          <code id="target-url" class="safe-url"></code>
+          <div class="safe-actions">
+            <button id="continue-button" class="primary-button" type="button" disabled>
+              继续访问
+            </button>
+            <a id="back-link" class="secondary-button" href="../../">返回实验室</a>
+          </div>
         </div>
-    </div>
-    <script src="../../assets/js/mourn.min.js" id="xqmourn"></script>
-    <script>
-        if (location.search) {
-            let baseUrl = '../?url=';
-            let safeLink = document.querySelector('.safe-link');
-            let safeGo = document.querySelector('.safe-go');
-            let targetUrl = decodeURIComponent(location.search.split('?')[1].split('=')[1]);
-            if (targetUrl) {
-                safeLink.innerText = targetUrl;
-            }
-            safeGo.addEventListener('click', goLink, false);
-            function goLink () {
-                let url = baseUrl + encodeURIComponent(targetUrl);
-                location.href = url;
-            }
-        } else {
-            location.href = '../../';
-        }
-    </script>
-</body>
+
+        <p id="safe-error" class="safe-error" role="alert" hidden></p>
+      </section>
+    </main>
+
+    <script type="module" src="../../assets/js/check-link.js"></script>
+    <script type="module" src="../../assets/js/mourn.js" data-mourn-dates="7.7"></script>
+  </body>
 </html>

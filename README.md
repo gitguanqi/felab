@@ -1,71 +1,79 @@
 # FE laboratory
 
-> This is the documentation for this project. Some pages about front-end cases are displayed!
+> A static front-end case laboratory with a searchable catalog, offline metadata cache, and automated data validation.
 
 [Chinese document](./zh-CN.md)
 
-## table of Contents
+## Requirements
 
-+ Security
-+ Background
-+ Installation
-+ Usage
-+ API
-+ Contribution
-+ Agreement
+- Node.js 20 or newer
+- pnpm 11
 
-## Safety
+If PowerShell blocks `pnpm.ps1`, use `pnpm.cmd` in the commands below.
 
-This project is built using [W3C](https://w3.org) WEB standard native language, and the theme is designed independently.
-
-No program security issues have been found at this time. If you have any questions, please mention [Suggestions](https://github.com/gitguanqi/felab/issues/new).
-
-## Background
-
-This warehouse records a summary of front-end knowledge cases that I have written and practiced in the past two years, including large projects and streamlined cases.
-
-## Installation
+## Development
 
 ```sh
-git clone https://github.com/gitguanqi/felab.git felab
-cd felab
-npm i live-server -g
-live-server --port=4001 --host=localhost
+pnpm install
+pnpm dev
 ```
 
-Open `http://localhost:4001` to see it.
+Open `http://localhost:4001`.
 
-## Usage
+The runtime is still plain HTML, CSS, and ES Modules. The toolchain only validates data, generates assets, and runs tests.
 
-Add project records in `assets/mock/list.json`.
+## Adding A Case
 
-Large projects can be added in the `projects` folder and small cases in the `cases` folder.
+1. Add large projects under `projects/` or small cases under `cases/`.
+2. Add the cover image under `assets/img/cover/`.
+3. Run `pnpm case:add`.
+4. Run `pnpm covers:build`.
+5. Commit both generated `assets/mock/list.min.json` and the WebP thumbnails.
 
-`json` format is
+`assets/mock/list.json` is the only editable catalog source. Its case entries use this shape:
 
 ```json
 {
-  "id": 1,
-  "cid": 1001,
-  "name": "XXX",
-  "description": "XXX",
-  "href": "projects/XXX/",
-  "picUrl": "./assets/images/cover/XXX.jpg",
-  "type": "project",
-  "tags": "XXX,XXX",
-  "create_time": "2020-03-04",
-  "update_time": "2020-03-04"
+  "cid": 4001,
+  "name": "Example case",
+  "description": "Short description",
+  "href": "cases/example/",
+  "picUrl": "./assets/img/cover/example.jpg",
+  "type": "js",
+  "tags": ["javascript", "demo"],
+  "create_time": "2026-10-18",
+  "update_time": "2026-10-18"
 }
 ```
 
-## API
+## Commands
 
-This warehouse uses the axios library to request mock data for page rendering.
+| Command              | Purpose                                                   |
+| -------------------- | --------------------------------------------------------- |
+| `pnpm dev`           | Start the static development server on port 4001          |
+| `pnpm case:add`      | Interactively append a case to the canonical catalog      |
+| `pnpm catalog:build` | Validate the catalog and generate `list.min.json`         |
+| `pnpm catalog:check` | Fail when generated catalog files are stale               |
+| `pnpm covers:build`  | Generate 480x300 WebP list thumbnails                     |
+| `pnpm covers:check`  | Verify every catalog cover has a valid thumbnail          |
+| `pnpm typecheck`     | Strict TypeScript checking for new JavaScript via JSDoc   |
+| `pnpm lint`          | ESLint checks for application modules, scripts, and tests |
+| `pnpm test`          | Vitest unit tests                                         |
+| `pnpm test:e2e`      | Playwright desktop and mobile smoke tests                 |
+| `pnpm verify`        | Run the full local quality gate                           |
+
+## Catalog Runtime
+
+The home page reads `assets/mock/list.min.json` and validates its schema at runtime. The verified payload is stored in IndexedDB database `felab`, object store `catalog`, record key `catalog`.
+
+On every visit the cached catalog is rendered first, then the network copy is checked in the background. A changed `revision` replaces the rendered catalog. If the network fails, cached cases remain searchable. The application does not fall back to `localStorage` and does not install a Service Worker.
+
+External case links open `/link/check/?cid=<cid>`. The confirmation page resolves the destination from the trusted catalog, displays it, and requires an explicit click before leaving the site.
 
 ## Contribution
 
 [@gitguanqi](https://github.com/gitguanqi)
 
-## Agreement
+## License
 
-This project follows the [GPL3.0](https://www.gnu.org/licenses/gpl-3.0.html) agreement, Copyright By gitguanqi
+This project follows the [GPL3.0](https://www.gnu.org/licenses/gpl-3.0.html) license. Copyright by gitguanqi.

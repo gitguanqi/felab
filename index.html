@@ -1,119 +1,141 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; img-src 'self' data:; script-src 'self'; style-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta name="keywords" content="前端实验室,前端案例库,Vue项目,Node项目" />
+    <meta name="description" content="前端实验室是一个记录前端开发案例与前后端小项目的静态站点。" />
+    <meta name="author" content="MarkGuan" />
+    <title>前端实验室 - 探索新知，展望未来</title>
+    <link rel="stylesheet" href="./assets/css/iconfont.css" />
+    <link rel="stylesheet" href="./assets/css/reset.min.css" />
+    <link rel="stylesheet" href="./assets/css/main.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <meta name="keywords" content="前端实验室,前端案例库,Vue项目,Node项目">
-  <meta name="description" content="前端实验室是一个记录前端开发的一些案例库，以及前后端小项目汇总的网站。">
-  <meta name="author" content="MarkGuan">
-  <title>前端实验室 - 探索新知，展望未来</title>
-  <link rel="stylesheet" href="./assets/css/iconfont.css">
-  <link rel="stylesheet" href="./assets/css/reset.min.css">
-  <link rel="stylesheet" href="./assets/css/main.min.css">
-  <script src="./assets/js/device.min.js"></script>
-  <!-- [if lt IE 9]>
-	<script src="./assets/js/html5shiv.min.js"></script>
-  <script src="./assets/js/respond.min.js"></script>
-	<![endif] -->
-</head>
+  <body>
+    <noscript>
+      <p class="noscript">请启用 JavaScript 后浏览案例目录。</p>
+    </noscript>
 
-<body>
-  <noscript>
-    <p>请启用javascript!</p>
-  </noscript>
-  <div class="demo">
-    <header>
-      <nav class="demo-nav">
+    <div class="demo">
+      <div class="mobile-bar">
+        <button
+          id="nav-toggle"
+          class="mobile-menu-button"
+          type="button"
+          aria-label="打开导航"
+          aria-controls="site-nav"
+          aria-expanded="false"
+        >
+          <i class="felab felab-bars" aria-hidden="true"></i>
+        </button>
+        <a class="mobile-brand" href="./" data-site-title>前端实验室</a>
+        <span class="mobile-brand-mark" aria-hidden="true">FE/LAB</span>
+      </div>
+
+      <button
+        id="nav-backdrop"
+        class="nav-backdrop"
+        type="button"
+        aria-label="关闭导航"
+        hidden
+      ></button>
+
+      <aside id="site-nav" class="demo-nav" aria-label="案例分类">
         <div class="demo-nav-title">
-          <i class="felab felab-flask"></i><a class="site-title" href="./">前端实验室</a>
-          <span class="demo-nav-exit"><i class="felab felab-times"></i></span>
+          <i class="felab felab-flask" aria-hidden="true"></i>
+          <a class="site-title" href="./" data-site-title>前端实验室</a>
+          <button id="nav-exit" class="demo-nav-exit" type="button" aria-label="关闭导航">
+            <i class="felab felab-times" aria-hidden="true"></i>
+          </button>
         </div>
-        <ul class="demo-nav-content">
-          <li class="active" data-index="0">
-            <i class="felab felab-project"></i> <span>项目精选</span>
-          </li>
-          <li data-index="1">
-            <i class="felab felab-html"></i> <span>HTML案例</span>
-          </li>
-          <li data-index="2">
-            <i class="felab felab-css"></i> <span>CSS案例</span>
-          </li>
-          <li data-index="3">
-            <i class="felab felab-code"></i> <span>JS案例</span>
-          </li>
-          <li data-index="4">
-            <i class="felab felab-link"></i> <span>友情链接</span>
-          </li>
-        </ul>
-      </nav>
-      <nav class="demo-nav-m">
-        <span class="demo-show-nav"><i class="felab felab-bars"></i> </span><a href="./"><i class="felab felab-flask"></i>前端实验室</a>
-        <b></b>
-      </nav>
-    </header>
-    <main class="demo-content">
-      <section class="demo-content-all">
-        <h3><span>总计：<strong id="count">0</strong>个精选。</span></h3>
-        <div class="demo-content-search">
-          <input type="search" name="keyword" placeholder="搜索Demo"><i class=""></i>
+        <nav class="demo-nav-content" aria-label="案例目录导航">
+          <ul id="nav-list"></ul>
+        </nav>
+        <div class="demo-nav-foot">
+          <span>FE-LAB</span>
+          <span>2017 - <span id="year">2026</span></span>
         </div>
-      </section>
-      <section class="demo-content-item">
-        <h3 class="demo-content-item-title">
-          项目精选(<span class="count">0</span>)
-        </h3>
-        <ul class="demo-content-item-ls clearFix"></ul>
-      </section>
-      <section class="demo-content-item">
-        <h3 class="demo-content-item-title">
-          HTML案例(<span class="count">0</span>)
-        </h3>
-        <ul class="demo-content-item-ls clearFix"></ul>
-      </section>
-      <section class="demo-content-item">
-        <h3 class="demo-content-item-title">
-          CSS案例(<span class="count">0</span>)
-        </h3>
-        <ul class="demo-content-item-ls clearFix"></ul>
-      </section>
-      <section class="demo-content-item">
-        <h3 class="demo-content-item-title">
-          JS案例(<span class="count">0</span>)
-        </h3>
-        <ul class="demo-content-item-ls clearFix"></ul>
-      </section>
-      <section class="demo-content-item">
-        <h3 class="demo-content-item-title">
-          友情链接(<span class="count">0</span>)
-        </h3>
-        <ul class="demo-content-item-ls clearFix"></ul>
-      </section>
-      <section class="demo-item-search">
-        <h3 class="demo-content-item-title">
-          搜索结果(<span class="count" id="search-count">0</span>)
-        </h3>
-        <ul class="demo-content-item-ls clearFix"></ul>
-      </section>
-      <footer class="demo-foot">
-        <p>
-          &copy; 2017- <span id="year">2021</span>
-          <a href="./"><i class="felab felab-flask"></i>前端实验室</a> All Rights
-          Reserved.
-        </p>
-        <p>DESIGN BY <a href="./">FeLab</a></p>
-      </footer>
-    </main>
-    <aside class="demo-go-top">
-      <i class="felab felab-chevron-up"></i>
-    </aside>
-  </div>
+      </aside>
 
-  <script src="./assets/js/gjs.min.js"></script>
-  <script src="./assets/js/main.min.js"></script>
-  <script src="./assets/js/mourn.min.js" id="xqmourn"></script>
+      <main id="main-content" class="demo-content" tabindex="-1">
+        <header class="content-heading">
+          <div class="content-heading-copy">
+            <p class="content-eyebrow">FE LAB / CASE INDEX</p>
+            <h1 data-site-title>前端实验室</h1>
+            <p class="content-intro">
+              原生案例、项目实践与长期积累。选择一个条目，在新窗口中打开案例。
+            </p>
+          </div>
+          <p class="content-total">共 <strong id="count">0</strong> 个案例</p>
+        </header>
 
-</body>
+        <div class="catalog-toolbar">
+          <label class="visually-hidden" for="search-input">搜索案例</label>
+          <div class="search-field">
+            <input
+              id="search-input"
+              type="search"
+              name="keyword"
+              placeholder="搜索名称、描述或标签"
+              autocomplete="off"
+              spellcheck="false"
+            />
+            <button
+              id="search-clear"
+              class="search-clear"
+              type="button"
+              aria-label="清除搜索"
+              hidden
+            >
+              <i class="felab felab-times" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
 
+        <p id="catalog-status" class="catalog-status" role="status" aria-live="polite" hidden></p>
+
+        <div id="loading-state" class="loading-state" aria-label="正在加载案例目录">
+          <div class="skeleton-card"></div>
+          <div class="skeleton-card"></div>
+          <div class="skeleton-card"></div>
+        </div>
+
+        <div id="error-state" class="error-state" hidden>
+          <h2>目录加载失败</h2>
+          <p id="error-message"></p>
+          <button id="retry-button" class="primary-button" type="button">重新加载</button>
+        </div>
+
+        <div id="catalog-sections" class="catalog-sections"></div>
+
+        <section id="search-section" class="catalog-section search-section" hidden>
+          <h2 class="catalog-section-title">
+            <i class="felab felab-code" aria-hidden="true"></i>
+            搜索结果
+            <span id="search-count" class="catalog-section-count">0</span>
+          </h2>
+          <p id="search-empty" class="search-empty" hidden>没有找到匹配的案例。</p>
+          <ul id="search-list" class="catalog-grid"></ul>
+        </section>
+
+        <footer class="demo-foot">
+          <p>&copy; 2017 - <span data-current-year>2026</span> 前端实验室</p>
+          <p>DESIGN BY <a href="./">FeLab</a></p>
+        </footer>
+      </main>
+
+      <button id="go-top" class="go-top" type="button" aria-label="回到顶部" hidden>
+        <i class="felab felab-chevron-up" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <script type="module" src="./assets/js/main.js"></script>
+    <script type="module" src="./assets/js/mourn.js" data-mourn-dates="7.7"></script>
+  </body>
 </html>

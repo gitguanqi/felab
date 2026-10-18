@@ -1,0 +1,39 @@
+{
+  "name": "felab",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.24.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "http-server . -p 4001 -c -1 -s",
+    "catalog:build": "node scripts/build-catalog.mjs",
+    "catalog:check": "node scripts/build-catalog.mjs --check",
+    "covers:build": "node scripts/build-covers.mjs",
+    "covers:check": "node scripts/build-covers.mjs --check",
+    "case:add": "node scripts/add-case.mjs",
+    "typecheck": "tsc -p tsconfig.json",
+    "lint": "eslint assets/js/main.js assets/js/catalog-utils.js assets/js/catalog-store.js assets/js/link-target.js assets/js/check-link.js assets/js/mourn.js scripts tests eslint.config.js playwright.config.js vitest.config.js",
+    "format": "prettier --write package.json index.html link/check/index.html link/browser/index.html assets/css/main.css assets/css/check.css assets/js/main.js assets/js/catalog-utils.js assets/js/catalog-store.js assets/js/link-target.js assets/js/check-link.js assets/js/mourn.js scripts tests eslint.config.js playwright.config.js vitest.config.js README.md zh-CN.md",
+    "format:check": "prettier --check package.json index.html link/check/index.html link/browser/index.html assets/css/main.css assets/css/check.css assets/js/main.js assets/js/catalog-utils.js assets/js/catalog-store.js assets/js/link-target.js assets/js/check-link.js assets/js/mourn.js scripts tests eslint.config.js playwright.config.js vitest.config.js README.md zh-CN.md",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "verify": "pnpm format:check && pnpm typecheck && pnpm lint && pnpm catalog:check && pnpm covers:check && pnpm test && pnpm test:e2e"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.64.1",
+    "@types/node": "^26.6.5",
+    "eslint": "^10.13.0",
+    "eslint-config-prettier": "^10.1.8",
+    "fake-indexeddb": "^6.2.6",
+    "globals": "^17.13.0",
+    "http-server": "^14.1.1",
+    "prettier": "^3.9.10",
+    "sharp": "^0.35.5",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.5"
+  }
+}

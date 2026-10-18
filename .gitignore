@@ -1,5 +1,9 @@
 .DS_Store
 .sh
+node_modules/
+playwright-report/
+test-results/
+coverage/
 
 # Editor directories and files
 .idea
@@ -9,3 +13,4 @@
 *.njsproj
 *.sln
 *.svn
+node_modules

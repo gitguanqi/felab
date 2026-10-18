@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "noEmit": true,
+    "strict": true,
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "types": ["node"],
+    "skipLibCheck": true
+  },
+  "include": [
+    "assets/js/main.js",
+    "assets/js/catalog-utils.js",
+    "assets/js/catalog-store.js",
+    "assets/js/link-target.js",
+    "assets/js/check-link.js",
+    "assets/js/mourn.js",
+    "scripts/**/*.mjs",
+    "tests/unit/**/*.js",
+    "tests/e2e/**/*.js"
+  ]
+}

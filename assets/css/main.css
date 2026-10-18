@@ -430,7 +430,10 @@ img {
   aspect-ratio: 16 / 10;
   padding: 10px;
   overflow: hidden;
-  background: linear-gradient(180deg, #edf2f7 0%, #e3eaf2 100%);
+  background:
+    linear-gradient(45deg, #f7f9fb 25%, transparent 25%) 0 0 / 12px 12px,
+    linear-gradient(45deg, transparent 75%, #f7f9fb 75%) 0 0 / 12px 12px,
+    #e3eaf2;
   box-shadow: inset 0 0 0 1px rgb(23 33 43 / 3%);
 }
 

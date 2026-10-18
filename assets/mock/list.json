@@ -1307,6 +1307,96 @@
       "update_time": "2026-10-18"
     },
     {
+      "cid": 6002,
+      "name": "CertUtil 哈希工具",
+      "description": "支持拖拽文件计算 MD5、SHA-1、SHA-256、SHA-384 和 SHA-512 哈希，并可直接比对哈希值。",
+      "href": "cases/certutil/",
+      "picUrl": "./assets/img/cover/certutil.png",
+      "type": "ai",
+      "tags": [
+        "AI案例",
+        "工具",
+        "哈希校验"
+      ],
+      "create_time": "2026-10-18",
+      "update_time": "2026-10-18"
+    },
+    {
+      "cid": 6003,
+      "name": "Canvas 时钟（新版）",
+      "description": "使用 Canvas 绘制表盘与指针，并同步展示数字时间的动态时钟案例。",
+      "href": "cases/clock-new/",
+      "picUrl": "./assets/img/cover/clock-new.png",
+      "type": "ai",
+      "tags": [
+        "AI案例",
+        "Canvas",
+        "时钟"
+      ],
+      "create_time": "2026-10-18",
+      "update_time": "2026-10-18"
+    },
+    {
+      "cid": 6004,
+      "name": "终端四剑客",
+      "description": "以终端风格介绍 Codex、Claude Code、pi、dsh 四大 AI 编码 Agent 的原理与使用方式。",
+      "href": "cases/knowget/",
+      "picUrl": "./assets/img/cover/knowget.png",
+      "type": "ai",
+      "tags": [
+        "AI案例",
+        "终端",
+        "AI Agent"
+      ],
+      "create_time": "2026-10-18",
+      "update_time": "2026-10-18"
+    },
+    {
+      "cid": 6005,
+      "name": "AI 编程 Agent 图鉴",
+      "description": "用游戏图鉴风梳理 Codex、Claude Code、pi、dsh 的原理、教程、注意事项与扩展玩法。",
+      "href": "cases/knowget-new/",
+      "picUrl": "./assets/img/cover/knowget-new.png",
+      "type": "ai",
+      "tags": [
+        "AI案例",
+        "AI Agent",
+        "图鉴"
+      ],
+      "create_time": "2026-10-18",
+      "update_time": "2026-10-18"
+    },
+    {
+      "cid": 6006,
+      "name": "推箱子 2",
+      "description": "保留关卡解锁与本地进度保存的 Canvas 推箱子小游戏。",
+      "href": "cases/pushbox-two/",
+      "picUrl": "./assets/img/cover/pushbox-two.png",
+      "type": "ai",
+      "tags": [
+        "AI案例",
+        "游戏",
+        "推箱子"
+      ],
+      "create_time": "2026-10-18",
+      "update_time": "2026-10-18"
+    },
+    {
+      "cid": 6007,
+      "name": "霓虹贪吃蛇",
+      "description": "支持键盘与触屏操作，带暂停、重开和最高分记录的霓虹风贪吃蛇游戏。",
+      "href": "cases/snake-game/",
+      "picUrl": "./assets/img/cover/snake-game.png",
+      "type": "ai",
+      "tags": [
+        "AI案例",
+        "游戏",
+        "贪吃蛇"
+      ],
+      "create_time": "2026-10-18",
+      "update_time": "2026-10-18"
+    },
+    {
       "cid": 5001,
       "name": "我的博客",
       "description": "我的博客是一个个人技术博客的站点。",
@@ -1391,5 +1481,5 @@
       "update_time": "2020-03-13"
     }
   ],
-  "revision": "d93af931337e"
+  "revision": "fc19bb0ff6ae"
 }

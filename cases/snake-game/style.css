@@ -1,0 +1,239 @@
+:root {
+  --bg: #0e1114;
+  --panel: #171b20;
+  --line: #2b323c;
+  --line-strong: #3a4450;
+  --text: #f4f7f8;
+  --muted: #9aa7b4;
+  --snake: #3cf2a5;
+  --snake-deep: #0f9f6e;
+  --food: #ff5d73;
+  --gold: #f6c85f;
+  --accent: #5cc8ff;
+  --shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  display: grid;
+  place-items: center;
+  min-width: 280px;
+  padding: 24px;
+  color: var(--text);
+  background: var(--bg);
+  font-family: system-ui, -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.app-shell {
+  display: grid;
+  justify-items: center;
+  gap: 20px;
+  width: min(100%, 760px);
+}
+
+.game-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+}
+
+.brand-block {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.brand-mark {
+  flex: 0 0 auto;
+  width: 14px;
+  height: 14px;
+  border: 3px solid var(--snake);
+  border-radius: 4px;
+  box-shadow: 0 0 12px rgba(60, 242, 165, 0.7);
+  transform: rotate(45deg);
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(20px, 4vw, 28px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0;
+}
+
+.score-row {
+  display: flex;
+  gap: 10px;
+}
+
+.score-card {
+  min-width: 104px;
+  padding: 8px 12px;
+  text-align: center;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.score-label {
+  display: block;
+  margin-bottom: 3px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.score-value {
+  display: block;
+  font-size: 24px;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.action-row {
+  display: flex;
+  gap: 8px;
+}
+
+.action-button {
+  min-width: 92px;
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background: var(--panel);
+  color: var(--text);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.16s ease, background-color 0.16s ease, transform 0.16s ease;
+}
+
+.action-button:hover {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.action-button.primary {
+  background: var(--snake-deep);
+  border-color: #2fdc9c;
+  color: #07110c;
+}
+
+.action-button.primary:hover {
+  border-color: var(--snake);
+}
+
+.action-button:focus-visible,
+#gameCanvas:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.game-stage {
+  position: relative;
+  width: min(100%, 560px);
+}
+
+#gameCanvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background: #11151a;
+  box-shadow: var(--shadow);
+  touch-action: none;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  border-radius: 8px;
+  background: rgba(9, 11, 14, 0.78);
+  text-align: center;
+}
+
+.overlay.is-hidden {
+  display: none;
+}
+
+.overlay-content {
+  width: min(100%, 340px);
+}
+
+.overlay-content h2 {
+  margin: 0 0 8px;
+  color: var(--gold);
+  font-size: clamp(24px, 5vw, 32px);
+  line-height: 1.15;
+  letter-spacing: 0;
+}
+
+.overlay-content p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.overlay-button {
+  min-width: 140px;
+  margin-top: 16px;
+}
+
+.status-line {
+  margin: 0;
+  min-height: 1.5em;
+  color: var(--muted);
+  font-size: 14px;
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  body {
+    padding: 14px;
+  }
+
+  .game-header {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px;
+  }
+
+  .brand-block {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .action-row {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .score-row {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-self: center;
+  }
+
+  .score-card {
+    min-width: 92px;
+  }
+}

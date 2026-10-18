@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 编程 Agent 图鉴 🎮 | Codex · Claude Code · pi · dsh 趣味讲解</title>
+<meta name="description" content="游戏图鉴风趣味讲解四大 AI 编程 Agent：Codex、Claude Code、pi、dsh 的原理、使用教程、注意事项与插件/技能/MCP 扩展玩法。">
+<style>
+/* ========== 基础与主题变量 ========== */
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+  --paper:#ffffff; --line:#e2e8f0;
+  --c-codex:#10a37f; --c-codex-2:#0e7490;
+  --c-claude:#d97757; --c-claude-2:#c2410c;
+  --c-pi:#8b5cf6; --c-pi-2:#6d28d9;
+  --c-dsh:#3b82f6; --c-dsh-2:#1e40af;
+  --gold:#f59e0b; --gold-2:#b45309;
+  --danger:#dc2626; --danger-bg:#fef2f2;
+  --ok:#16a34a;
+  --radius:16px;
+  --shadow:0 6px 24px rgba(30,41,59,.10);
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:"PingFang SC","Microsoft YaHei","Segoe UI",system-ui,-apple-system,sans-serif;
+  color:var(--ink); line-height:1.75;
+  background:#f3f6ff;
+  background-image:
+    radial-gradient(circle at 12% 8%, rgba(139,92,246,.10) 0 180px, transparent 180px),
+    radial-gradient(circle at 88% 20%, rgba(217,119,87,.10) 0 200px, transparent 200px),
+    radial-gradient(circle at 20% 85%, rgba(59,130,246,.10) 0 220px, transparent 220px),
+    radial-gradient(circle at 80% 90%, rgba(16,163,127,.10) 0 180px, transparent 180px);
+  background-attachment:fixed;
+}
+code,pre,.term,kbd{font-family:Consolas,Menlo,"Courier New",monospace}
+section{scroll-margin-top:76px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+.section{padding:64px 0 24px}
+h2.sec-title{font-size:30px;text-align:center;letter-spacing:1px;margin-bottom:8px}
+.sec-sub{text-align:center;color:var(--ink-3);margin-bottom:36px;font-size:15px}
+.sec-title .em{display:inline-block;transform:rotate(-6deg) scale(1.15);margin-right:6px}
+
+/* ========== 顶部导航 ========== */
+nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(255,255,255,.88);backdrop-filter:blur(10px);
+  border-bottom:2px solid var(--line);
+  box-shadow:0 2px 12px rgba(30,41,59,.06);
+}
+.nav-inner{max-width:1120px;margin:0 auto;padding:0 20px;display:flex;align-items:center;gap:18px;height:60px}
+.logo{font-weight:900;font-size:18px;white-space:nowrap;display:flex;align-items:center;gap:8px}
+.logo .cube{display:inline-block;background:linear-gradient(135deg,var(--c-pi),var(--c-dsh));color:#fff;border-radius:8px;padding:1px 8px;transform:rotate(-4deg)}
+.nav-links{display:flex;gap:4px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+.nav-links::-webkit-scrollbar{display:none}
+.nav-links a{
+  text-decoration:none;color:var(--ink-2);font-size:14px;font-weight:600;
+  padding:6px 12px;border-radius:999px;white-space:nowrap;transition:.2s;
+}
+.nav-links a:hover{background:#eef2ff;color:var(--c-pi-2)}
+
+/* ========== Hero 首屏 ========== */
+.hero{padding:88px 0 60px;text-align:center;position:relative;overflow:hidden}
+.hero h1{font-size:clamp(34px,6vw,58px);font-weight:900;letter-spacing:2px;line-height:1.25}
+.hero h1 .grad{background:linear-gradient(90deg,var(--c-codex),var(--c-claude),var(--c-pi),var(--c-dsh));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--ink-2);font-size:17px;max-width:640px;margin:18px auto 0}
+.hero-badges{display:flex;justify-content:center;gap:18px;margin:36px 0 8px;flex-wrap:wrap}
+.float-badge{
+  width:76px;height:76px;border-radius:22px;display:flex;align-items:center;justify-content:center;
+  font-size:38px;color:#fff;box-shadow:var(--shadow);position:relative;
+  animation:floaty 3.6s ease-in-out infinite;
+}
+.float-badge small{position:absolute;bottom:-24px;left:50%;transform:translateX(-50%);font-size:12px;font-weight:700;color:var(--ink-2);white-space:nowrap}
+.b-codex{background:linear-gradient(135deg,var(--c-codex),var(--c-codex-2))}
+.b-claude{background:linear-gradient(135deg,var(--c-claude),var(--c-claude-2))}
+.b-pi{background:linear-gradient(135deg,var(--c-pi),var(--c-pi-2));animation-delay:.4s}
+.b-dsh{background:linear-gradient(135deg,var(--c-dsh),var(--c-dsh-2));animation-delay:.8s}
+@keyframes floaty{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-12px) rotate(3deg)}}
+.btn{
+  display:inline-block;margin-top:44px;padding:14px 42px;border-radius:999px;border:none;cursor:pointer;
+  font-size:17px;font-weight:800;color:#fff;letter-spacing:2px;
+  background:linear-gradient(135deg,var(--c-pi),var(--c-dsh));
+  box-shadow:0 8px 22px rgba(109,40,217,.35);
+  transition:.2s;text-decoration:none;
+}
+.btn:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 12px 28px rgba(109,40,217,.45)}
+.btn.ghost{background:#fff;color:var(--ink);border:2px solid var(--line);box-shadow:var(--shadow);margin-left:14px}
+.btn.ghost:hover{border-color:var(--c-pi)}
+
+/* ========== 稀有度徽章 ========== */
+.rarity{
+  display:inline-block;padding:3px 14px;border-radius:999px;font-size:12px;font-weight:900;letter-spacing:1px;color:#fff;
+}
+.rarity.ssr{background:linear-gradient(135deg,#fbbf24,var(--gold-2));box-shadow:0 0 14px rgba(245,158,11,.55);text-shadow:0 1px 2px rgba(0,0,0,.25)}
+.rarity.sr{background:linear-gradient(135deg,#a78bfa,#7c3aed);box-shadow:0 0 12px rgba(124,58,237,.4)}
+
+/* ========== 英雄卡片区 ========== */
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.hcard{
+  background:var(--paper);border-radius:var(--radius);overflow:hidden;border:2px solid var(--line);
+  box-shadow:var(--shadow);transition:.25s;display:flex;flex-direction:column;opacity:0;transform:translateY(24px);
+}
+.hcard.in{opacity:1;transform:none;transition:opacity .6s ease,transform .6s ease}
+.hcard:hover{transform:translateY(-8px);box-shadow:0 16px 36px rgba(30,41,59,.16)}
+.hcard-top{padding:22px 18px 14px;text-align:center;position:relative;color:#fff}
+.t-codex .hcard-top{background:linear-gradient(135deg,var(--c-codex),var(--c-codex-2))}
+.t-claude .hcard-top{background:linear-gradient(135deg,var(--c-claude),var(--c-claude-2))}
+.t-pi .hcard-top{background:linear-gradient(135deg,var(--c-pi),var(--c-pi-2))}
+.t-dsh .hcard-top{background:linear-gradient(135deg,var(--c-dsh),var(--c-dsh-2))}
+.avatar{
+  width:84px;height:84px;border-radius:26px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;
+  font-size:44px;background:rgba(255,255,255,.22);border:3px solid rgba(255,255,255,.75);
+  box-shadow:inset 0 0 12px rgba(255,255,255,.35);
+}
+.hcard-top h3{font-size:20px;letter-spacing:1px}
+.hcard-top .role{font-size:12.5px;opacity:.92;margin-top:2px}
+.hcard-body{padding:16px 18px 18px;flex:1;display:flex;flex-direction:column;gap:12px}
+.persona{font-size:13.5px;color:var(--ink-2);background:#f8fafc;border-left:4px solid var(--line);padding:8px 10px;border-radius:8px}
+.stat{display:grid;grid-template-columns:64px 1fr 34px;align-items:center;gap:8px;font-size:12.5px}
+.stat span{color:var(--ink-2);font-weight:600}
+.stat em{font-style:normal;font-weight:800;text-align:right;color:var(--ink-3)}
+.bar{height:12px;background:#eef2f7;border-radius:999px;overflow:hidden;position:relative;border:1px solid var(--line)}
+.bar-fill{
+  display:block;height:100%;width:0;border-radius:999px;transition:width 1.1s cubic-bezier(.25,.8,.3,1);position:relative;
+  background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.28) 0 8px,transparent 8px 16px);
+}
+.t-codex .bar-fill{background-color:var(--c-codex)}
+.t-claude .bar-fill{background-color:var(--c-claude)}
+.t-pi .bar-fill{background-color:var(--c-pi)}
+.t-dsh .bar-fill{background-color:var(--c-dsh)}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-size:11.5px;padding:2px 10px;border-radius:999px;background:#eef2ff;color:#4338ca;font-weight:700}
+.detail-btn{
+  margin-top:auto;display:block;text-align:center;text-decoration:none;font-weight:800;font-size:14px;
+  padding:10px;border-radius:10px;color:#fff;letter-spacing:1px;transition:.2s;
+}
+.t-codex .detail-btn{background:var(--c-codex)}.t-claude .detail-btn{background:var(--c-claude)}
+.t-pi .detail-btn{background:var(--c-pi)}.t-dsh .detail-btn{background:var(--c-dsh)}
+.detail-btn:hover{filter:brightness(1.12);transform:scale(1.02)}
+
+/* ========== 修炼手册 Tab ========== */
+.tabs{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:30px}
+.tab{
+  border:2px solid var(--line);background:#fff;border-radius:999px;padding:9px 22px;font-size:15px;font-weight:800;
+  cursor:pointer;transition:.2s;color:var(--ink-2);display:flex;align-items:center;gap:7px;
+}
+.tab .dot{width:10px;height:10px;border-radius:50%}
+.tab[data-tab=codex] .dot{background:var(--c-codex)}
+.tab[data-tab=claude] .dot{background:var(--c-claude)}
+.tab[data-tab=pi] .dot{background:var(--c-pi)}
+.tab[data-tab=dsh] .dot{background:var(--c-dsh)}
+.tab.active{color:#fff;transform:translateY(-2px);box-shadow:0 8px 18px rgba(30,41,59,.18)}
+.tab.active[data-tab=codex]{background:var(--c-codex);border-color:var(--c-codex)}
+.tab.active[data-tab=claude]{background:var(--c-claude);border-color:var(--c-claude)}
+.tab.active[data-tab=pi]{background:var(--c-pi);border-color:var(--c-pi)}
+.tab.active[data-tab=dsh]{background:var(--c-dsh);border-color:var(--c-dsh)}
+.tool-panel{display:none;animation:panelIn .35s ease}
+.tool-panel.active{display:block}
+@keyframes panelIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.p-head{
+  border-radius:var(--radius);color:#fff;padding:26px 28px;margin-bottom:26px;display:flex;gap:18px;align-items:center;flex-wrap:wrap;
+  box-shadow:var(--shadow);
+}
+.p-codex .p-head{background:linear-gradient(120deg,var(--c-codex),var(--c-codex-2))}
+.p-claude .p-head{background:linear-gradient(120deg,var(--c-claude),var(--c-claude-2))}
+.p-pi .p-head{background:linear-gradient(120deg,var(--c-pi),var(--c-pi-2))}
+.p-dsh .p-head{background:linear-gradient(120deg,var(--c-dsh),var(--c-dsh-2))}
+.p-head .avatar{width:70px;height:70px;font-size:36px;margin:0;flex-shrink:0}
+.p-head h3{font-size:24px}
+.p-head .sub{font-size:13.5px;opacity:.92}
+.block{background:var(--paper);border:2px solid var(--line);border-radius:var(--radius);padding:26px 26px 22px;margin-bottom:22px;box-shadow:var(--shadow)}
+.block>h4{font-size:19px;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.block.danger{border-color:#fecaca;background:#fffafa}
+.block.danger>h4{color:var(--danger)}
+.note{font-size:13.5px;color:var(--ink-3);margin-top:10px}
+
+/* 原理流程图 */
+.flow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:14px 0 6px}
+.fstep{
+  background:#f8fafc;border:2px solid var(--line);border-radius:12px;padding:8px 14px;font-size:13px;font-weight:700;
+  color:var(--ink-2);text-align:center;box-shadow:0 2px 0 var(--line);
+}
+.fstep.hot{border-color:#fcd34d;background:#fffbeb;color:#92400e}
+.farrow{color:var(--ink-3);font-weight:900;font-size:16px}
+.loop-back{width:100%;text-align:center;color:var(--ink-3);font-size:12.5px;margin-top:2px}
+.kpoints{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:16px}
+.kpoint{background:#f8fafc;border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:13.5px}
+.kpoint b{display:block;margin-bottom:4px;font-size:14px}
+
+/* 步骤卡片 */
+.step{display:grid;grid-template-columns:44px 1fr;gap:14px;margin-bottom:18px}
+.step-num{
+  width:44px;height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;
+  font-weight:900;font-size:18px;color:#fff;background:linear-gradient(135deg,var(--c-pi),var(--c-dsh));
+  box-shadow:0 4px 10px rgba(109,40,217,.3);
+}
+.step h5{font-size:15.5px;margin-bottom:4px}
+.step p{font-size:13.5px;color:var(--ink-2)}
+
+/* 终端代码块 */
+.term{background:#0f172a;border-radius:12px;overflow:hidden;margin-top:10px;box-shadow:0 6px 18px rgba(15,23,42,.25);border:1px solid #1e293b}
+.term-head{display:flex;align-items:center;gap:7px;padding:9px 14px;background:#1e293b;border-bottom:1px solid #334155}
+.dot{width:11px;height:11px;border-radius:50%}
+.dot.r{background:#ef4444}.dot.y{background:#f59e0b}.dot.g{background:#22c55e}
+.term-title{margin-left:8px;font-size:12px;color:#94a3b8}
+.copy-btn{
+  margin-left:auto;background:#334155;color:#e2e8f0;border:none;border-radius:6px;padding:3px 12px;font-size:12px;
+  cursor:pointer;transition:.2s;font-family:inherit;
+}
+.copy-btn:hover{background:#475569}
+.copy-btn.done{background:var(--ok);color:#fff}
+.term pre{padding:14px 16px;overflow-x:auto}
+.term code{color:#7dd3fc;font-size:13.5px;line-height:1.8}
+.term code .cmt{color:#64748b}
+.term code .pr{color:#4ade80}
+
+/* 陷阱卡 */
+.traps{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.trap{
+  background:var(--danger-bg);border:1.5px solid #fecaca;border-radius:12px;padding:14px 16px;
+  display:flex;gap:12px;font-size:13.5px;
+}
+.trap .e{font-size:24px;line-height:1.2;flex-shrink:0}
+.trap b{color:#b91c1c;display:block;margin-bottom:3px}
+
+/* 扩展装备小卡 */
+.gears{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+.gear{border:1.5px solid var(--line);border-radius:12px;padding:16px;background:#fcfdff}
+.gear .g-head{display:flex;align-items:center;gap:8px;font-weight:800;margin-bottom:8px;font-size:15px}
+.gear p{font-size:13px;color:var(--ink-2)}
+.gear .mini{margin-top:8px}
+
+/* ========== 扩展系统大讲堂 ========== */
+.ext-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-bottom:34px}
+.ext-card{background:var(--paper);border:2px solid var(--line);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);transition:.25s}
+.ext-card:hover{transform:translateY(-6px)}
+.ext-card .ic{
+  width:60px;height:60px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:30px;margin-bottom:14px;color:#fff;
+}
+.ext-card:nth-child(1) .ic{background:linear-gradient(135deg,#0ea5e9,#0369a1)}
+.ext-card:nth-child(2) .ic{background:linear-gradient(135deg,#f59e0b,#b45309)}
+.ext-card:nth-child(3) .ic{background:linear-gradient(135deg,#ec4899,#be185d)}
+.ext-card h4{font-size:17px;margin-bottom:8px}
+.ext-card p{font-size:13.5px;color:var(--ink-2)}
+.ext-card .metaphor{margin-top:12px;font-size:12.5px;background:#f0f9ff;border-left:3px solid #0ea5e9;padding:7px 10px;border-radius:6px;color:#075985}
+
+/* ========== 表格 ========== */
+.table-wrap{overflow-x:auto;background:var(--paper);border:2px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;min-width:760px;font-size:13.5px}
+th,td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line)}
+th{background:#eef2ff;font-size:13px;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+td:first-child{font-weight:800;white-space:nowrap;background:#fafbff}
+.pill{display:inline-block;padding:1px 10px;border-radius:999px;font-size:12px;font-weight:700;white-space:nowrap}
+.pill.yes{background:#dcfce7;color:#15803d}
+.pill.no{background:#fee2e2;color:#b91c1c}
+.pill.mid{background:#fef3c7;color:#b45309}
+.tbl-title{font-size:16px;font-weight:800;margin:34px 0 12px;display:flex;align-items:center;gap:8px}
+
+/* ========== 趣味测验 ========== */
+.quiz-box{max-width:680px;margin:0 auto;background:var(--paper);border:2px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:34px;position:relative;overflow:hidden}
+.quiz-box::before{content:"🎯";position:absolute;top:-18px;right:-14px;font-size:88px;opacity:.08;transform:rotate(18deg)}
+.quiz-prog{display:flex;gap:6px;margin-bottom:22px}
+.quiz-prog i{flex:1;height:8px;border-radius:99px;background:#e2e8f0}
+.quiz-prog i.on{background:linear-gradient(90deg,var(--c-pi),var(--c-dsh))}
+.quiz-q{font-size:18px;font-weight:800;margin-bottom:20px}
+.quiz-opts{display:grid;gap:12px}
+.qopt{
+  text-align:left;border:2px solid var(--line);background:#fafbff;border-radius:12px;padding:13px 16px;font-size:14.5px;
+  cursor:pointer;transition:.18s;font-family:inherit;color:var(--ink);
+}
+.qopt:hover{border-color:var(--c-pi);background:#f5f3ff;transform:translateX(4px)}
+.qopt.picked{border-color:var(--ok);background:#f0fdf4}
+.quiz-result{text-align:center}
+.quiz-result .big{font-size:64px;margin-bottom:6px}
+.quiz-result h3{font-size:24px;margin-bottom:10px}
+.quiz-result p{color:var(--ink-2);font-size:14.5px;max-width:460px;margin:0 auto}
+.result-card{border-radius:16px;color:#fff;padding:20px;margin:18px 0}
+.result-card.codex{background:linear-gradient(135deg,var(--c-codex),var(--c-codex-2))}
+.result-card.claude{background:linear-gradient(135deg,var(--c-claude),var(--c-claude-2))}
+.result-card.pi{background:linear-gradient(135deg,var(--c-pi),var(--c-pi-2))}
+.result-card.dsh{background:linear-gradient(135deg,var(--c-dsh),var(--c-dsh-2))}
+
+/* ========== 页脚 ========== */
+footer{margin-top:70px;background:#0f172a;color:#94a3b8;padding:40px 0 34px;font-size:13px}
+footer .wrap{display:grid;gap:10px}
+footer b{color:#e2e8f0}
+footer a{color:#7dd3fc;text-decoration:none}
+footer a:hover{text-decoration:underline}
+.foot-links{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:4px}
+
+/* ========== 淡入动画 ========== */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .6s ease,transform .6s ease}
+.reveal.in{opacity:1;transform:none}
+
+/* ========== 响应式 ========== */
+@media (max-width:960px){
+  .cards{grid-template-columns:repeat(2,1fr)}
+  .ext-cards{grid-template-columns:1fr}
+}
+@media (max-width:600px){
+  .cards{grid-template-columns:1fr}
+  .btn.ghost{margin-left:0;margin-top:14px}
+  .hero{padding:60px 0 44px}
+  .p-head{padding:20px}
+  .block{padding:18px 16px}
+  .quiz-box{padding:22px 18px}
+  .step{grid-template-columns:36px 1fr;gap:10px}
+  .step-num{width:36px;height:36px;font-size:15px;border-radius:10px}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ 导航 ═══════════ -->
+<nav>
+  <div class="nav-inner">
+    <div class="logo"><span class="cube">🎮</span> AI Agent 图鉴</div>
+    <div class="nav-links">
+      <a href="#heroes">英雄图鉴</a>
+      <a href="#guides">修炼手册</a>
+      <a href="#extensions">扩展系统</a>
+      <a href="#compare">终极对比</a>
+      <a href="#quiz">趣味测试</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════ 首屏 ═══════════ -->
+<header class="hero wrap">
+  <h1>⚔️ AI 编程 Agent <span class="grad">图鉴大全</span> 🛡️</h1>
+  <p>把终端里的四位「编程英雄」装进一本游戏图鉴：<b>Codex</b>、<b>Claude Code</b>、<b>pi</b>、<b>dsh</b> —— 看懂它们的原理、刷完新手教程、避开副本陷阱、点亮插件 / 技能 / MCP 天赋树！</p>
+  <div class="hero-badges">
+    <div class="float-badge b-codex">⚔️<small>Codex</small></div>
+    <div class="float-badge b-claude">🤖<small>Claude Code</small></div>
+    <div class="float-badge b-pi">🥧<small>pi</small></div>
+    <div class="float-badge b-dsh">🌊<small>dsh</small></div>
+  </div>
+  <a class="btn" href="#heroes">开始冒险 ▼</a>
+  <a class="btn ghost" href="#quiz">直接测试体质 🔮</a>
+</header>
+
+<!-- ═══════════ 英雄卡片 ═══════════ -->
+<section id="heroes" class="section">
+  <div class="wrap">
+    <h2 class="sec-title reveal"><span class="em">📖</span>选择你的英雄</h2>
+    <p class="sec-sub reveal">四位选手属性各异：有人铠甲厚重，有人轻装上阵 —— 先看面板，再翻手册</p>
+
+    <div class="cards">
+      <!-- Codex 卡 -->
+      <article class="hcard t-codex reveal">
+        <div class="hcard-top">
+          <div class="avatar">⚔️</div>
+          <span class="rarity ssr">SSR · 官方骑士</span>
+          <h3 style="margin-top:8px">Codex</h3>
+          <div class="role">OpenAI · Rust 铸造的终端骑士</div>
+        </div>
+        <div class="hcard-body">
+          <div class="persona">🏰 身披 Rust 铠甲的官方骑士：出手极快，守规矩，沙箱与审批双盾护体。</div>
+          <div class="stat"><span>上手难度</span><div class="bar"><i class="bar-fill" data-w="60"></i></div><em>60</em></div>
+          <div class="stat"><span>能力上限</span><div class="bar"><i class="bar-fill" data-w="90"></i></div><em>90</em></div>
+          <div class="stat"><span>生态扩展</span><div class="bar"><i class="bar-fill" data-w="80"></i></div><em>80</em></div>
+          <div class="stat"><span>安全管控</span><div class="bar"><i class="bar-fill" data-w="95"></i></div><em>95</em></div>
+          <div class="stat"><span>开源自由</span><div class="bar"><i class="bar-fill" data-w="70"></i></div><em>70</em></div>
+          <div class="tags"><span class="tag">#沙箱</span><span class="tag">#AGENTS.md</span><span class="tag">#ChatGPT 订阅可用</span></div>
+          <a class="detail-btn" href="#guides" data-goto="codex">翻开修炼手册 →</a>
+        </div>
+      </article>
+
+      <!-- Claude Code 卡 -->
+      <article class="hcard t-claude reveal">
+        <div class="hcard-top">
+          <div class="avatar">🤖</div>
+          <span class="rarity ssr">SSR · 生态之王</span>
+          <h3 style="margin-top:8px">Claude Code</h3>
+          <div class="role">Anthropic · 技能库最庞大的老牌王者</div>
+        </div>
+        <div class="hcard-body">
+          <div class="persona">👑 坐拥最庞大技能库的老牌王者：CLAUDE.md 记忆、Hooks 钩子、子代理军团一应俱全。</div>
+          <div class="stat"><span>上手难度</span><div class="bar"><i class="bar-fill" data-w="60"></i></div><em>60</em></div>
+          <div class="stat"><span>能力上限</span><div class="bar"><i class="bar-fill" data-w="95"></i></div><em>95</em></div>
+          <div class="stat"><span>生态扩展</span><div class="bar"><i class="bar-fill" data-w="100"></i></div><em>100</em></div>
+          <div class="stat"><span>安全管控</span><div class="bar"><i class="bar-fill" data-w="90"></i></div><em>90</em></div>
+          <div class="stat"><span>开源自由</span><div class="bar"><i class="bar-fill" data-w="30"></i></div><em>30</em></div>
+          <div class="tags"><span class="tag">#Hooks</span><span class="tag">#CLAUDE.md</span><span class="tag">#子代理</span></div>
+          <a class="detail-btn" href="#guides" data-goto="claude">翻开修炼手册 →</a>
+        </div>
+      </article>
+
+      <!-- pi 卡 -->
+      <article class="hcard t-pi reveal">
+        <div class="hcard-top">
+          <div class="avatar">🥧</div>
+          <span class="rarity sr">SR · 极简刺客</span>
+          <h3 style="margin-top:8px">pi</h3>
+          <div class="role">badlogic (Mario Zechner) · 极简主义暗杀者</div>
+        </div>
+        <div class="hcard-body">
+          <div class="persona">🗡️ 一柄只有四个工具的薄刃刺客：核心小到能装进脑子，324+ 模型随意驱使，默认 YOLO 全放行。</div>
+          <div class="stat"><span>上手难度</span><div class="bar"><i class="bar-fill" data-w="35"></i></div><em>35</em></div>
+          <div class="stat"><span>能力上限</span><div class="bar"><i class="bar-fill" data-w="70"></i></div><em>70</em></div>
+          <div class="stat"><span>生态扩展</span><div class="bar"><i class="bar-fill" data-w="55"></i></div><em>55</em></div>
+          <div class="stat"><span>安全管控</span><div class="bar"><i class="bar-fill" data-w="25"></i></div><em>25</em></div>
+          <div class="stat"><span>开源自由</span><div class="bar"><i class="bar-fill" data-w="100"></i></div><em>100</em></div>
+          <div class="tags"><span class="tag">#极简</span><span class="tag">#任意模型</span><span class="tag">#本地 Ollama</span></div>
+          <a class="detail-btn" href="#guides" data-goto="pi">翻开修炼手册 →</a>
+        </div>
+      </article>
+
+      <!-- dsh 卡 -->
+      <article class="hcard t-dsh reveal">
+        <div class="hcard-top">
+          <div class="avatar">🌊</div>
+          <span class="rarity sr">SR · 新锐法师</span>
+          <h3 style="margin-top:8px">dsh</h3>
+          <div class="role">DeepSeek Harness · 万物皆插件的魔法学徒</div>
+        </div>
+        <div class="hcard-body">
+          <div class="persona">🧙 刚出新手村的天才法师（2026-08 开源）：模型、工具、沙箱、记忆统统是可插拔的魔法积木。</div>
+          <div class="stat"><span>上手难度</span><div class="bar"><i class="bar-fill" data-w="70"></i></div><em>70</em></div>
+          <div class="stat"><span>能力上限</span><div class="bar"><i class="bar-fill" data-w="80"></i></div><em>80</em></div>
+          <div class="stat"><span>生态扩展</span><div class="bar"><i class="bar-fill" data-w="70"></i></div><em>70</em></div>
+          <div class="stat"><span>安全管控</span><div class="bar"><i class="bar-fill" data-w="80"></i></div><em>80</em></div>
+          <div class="stat"><span>开源自由</span><div class="bar"><i class="bar-fill" data-w="95"></i></div><em>95</em></div>
+          <div class="tags"><span class="tag">#万物皆插件</span><span class="tag">#Web UI</span><span class="tag">#MIT</span></div>
+          <a class="detail-btn" href="#guides" data-goto="dsh">翻开修炼手册 →</a>
+        </div>
+      </article>
+    </div>
+    <p class="note" style="text-align:center;margin-top:16px">* 属性值为图鉴化的主观评分（满分 100），仅供趣味参考；「上手难度」越高代表入门门槛越高。</p>
+  </div>
+</section>
+
+<!-- ═══════════ 修炼手册（Tab） ═══════════ -->
+<section id="guides" class="section">
+  <div class="wrap">
+    <h2 class="sec-title reveal"><span class="em">📜</span>四大英雄修炼手册</h2>
+    <p class="sec-sub reveal">原理拆解 → 新手试炼 → 副本陷阱 → 扩展装备，四关通关即出师</p>
+
+    <div class="tabs reveal">
+      <button class="tab active" data-tab="codex"><span class="dot"></span>⚔️ Codex</button>
+      <button class="tab" data-tab="claude"><span class="dot"></span>🤖 Claude Code</button>
+      <button class="tab" data-tab="pi"><span class="dot"></span>🥧 pi</button>
+      <button class="tab" data-tab="dsh"><span class="dot"></span>🌊 dsh</button>
+    </div>
+
+    <!-- ────────── Codex 面板 ────────── -->
+    <div class="tool-panel p-codex active" data-panel="codex">
+      <div class="p-head">
+        <div class="avatar">⚔️</div>
+        <div>
+          <h3>Codex <span class="rarity ssr" style="font-size:11px">SSR · 官方骑士</span></h3>
+          <div class="sub">OpenAI 出品 · Rust 编写 · 开源 · 终端里的「可审查、可验证、可回退」开发循环</div>
+        </div>
+      </div>
+
+      <div class="block">
+        <h4>🧠 原理拆解</h4>
+        <p style="font-size:14px;color:var(--ink-2)">Codex 不是「终端里的 ChatGPT」，而是一个<b>本地终端 AI 编程 Agent</b>：它把 AI 从「离线建议者」变成「在工程里干活的协作者」。核心链路：</p>
+        <div class="flow">
+          <div class="fstep">📂 读取工作区<br>+ Git 状态</div><span class="farrow">→</span>
+          <div class="fstep hot">📝 AGENTS.md<br>项目规则</div><span class="farrow">→</span>
+          <div class="fstep">💬 你下达<br>自然语言任务</div><span class="farrow">→</span>
+          <div class="fstep">🔍 搜文件<br>定修改方案</div><span class="farrow">→</span>
+          <div class="fstep hot">🛡️ 沙箱内改文件<br>跑命令</div><span class="farrow">→</span>
+          <div class="fstep">👀 你审查 diff<br>决定去留</div>
+          <div class="loop-back">↩️ 测试 / 编译失败则回填结果继续修正 —— 循环直到任务完成</div>
+        </div>
+        <div class="kpoints">
+          <div class="kpoint"><b>🛡️ 双重安全盾</b>沙箱（sandbox_mode）管「能碰什么」，审批（approval_policy）管「要不要先问你」，两轴组合出精细权限。</div>
+          <div class="kpoint"><b>🧠 三级记忆</b>AGENTS.md 分全局（~/.codex/）、项目根、子目录三层，越靠近越优先，让 AI 记住项目规范。</div>
+          <div class="kpoint"><b>⚙️ TOML 配置</b>一切配置集中在 ~/.codex/config.toml —— 注意是 TOML 格式，不是 JSON！</div>
+        </div>
+      </div>
+
+      <div class="block">
+        <h4>📖 新手试炼（使用教程）</h4>
+        <div class="step">
+          <div class="step-num">1</div>
+          <div>
+            <h5>安装铠甲</h5>
+            <p>npm 全局安装（也可用 brew 或 GitHub Releases 下载二进制）：</p>
+            <div class="term"><div class="term-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="term-title">Terminal</span><button class="copy-btn" data-copy="npm i -g @openai/codex">复制</button></div><pre><code><span class="pr">$</span> npm i -g @openai/codex</code></pre></div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div>
+            <h5>登录认证（二选一）</h5>
+            <p>推荐 ChatGPT OAuth 登录（Plus / Pro / Business 等订阅均含 Codex 额度），或改用 API Key：</p>
+            <div class="term"><div class="term-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="term-title">Terminal</span><button class="copy-btn" data-copy="codex login">复制</button></div><pre><code><span class="pr">$</span> codex login                    <span class="cmt"># ChatGPT 账号 OAuth 登录</span>
+<span class="pr">$</span> export OPENAI_API_KEY=sk-...  <span class="cmt"># 或改用 API Key</span></code></pre></div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div>
+            <h5>三种启动姿势</h5>
+            <div class="term"><div class="term-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="term-title">Terminal</span><button class="copy-btn" data-copy="codex">复制</button></div><pre><code><span class="pr">$</span> codex                          <span class="cmt"># 交互式 TUI 模式</span>
+<span class="pr">$</span> codex "fix lint errors"        <span class="cmt"># 带初始任务启动</span>
+<span class="pr">$</span> codex exec "explain utils.ts"  <span class="cmt"># 非交互自动化（适合脚本/CI）</span></code></pre></div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div>
+            <h5>切换模型与推理强度</h5>
+            <p>会话内用 <b>/model</b> 命令，或启动时指定 gpt-5-codex 系列模型并调节推理强度：</p>
+            <div class="term"><div class="term-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="term-title">Terminal</span><button class="copy-btn" data-copy='codex -m gpt-5-codex -c model_reasoning_effort="high"'>复制</button></div><pre><code><span class="pr">$</span> codex -m gpt-5-codex -c model_reasoning_effort="high"
+<span class="cmt"># model_reasoning_effort 可选 low / medium / high</span></code></pre></div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div>
+            <h5>推荐权限组合（写进 config.toml）</h5>
+            <div class="term"><div class="term-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="term-title">~/.codex/config.toml</span><button class="copy-btn" data-copy='sandbox_mode = "workspace-write"
+approval_policy = "on-request"'>复制</button></div><pre><code><span class="cmt"># 日常开发（社区公认的安全默认值）</span>
+sandbox_mode    = "workspace-write"
+approval_policy = "on-request"</code></pre></div>
+            <p class="note">沙箱四档：read-only / workspace-write / danger-full-access；审批四档：untrusted / on-request / on-failure / never。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="block danger">
+        <h4>⚠️ 副本陷阱（注意事项）</h4>
+        <div class="traps">
+          <div class="trap"><span class="e">🕳️</span><div><b>配置是 TOML，不是 JSON</b>从 Claude Code / dsh 迁移过来的玩家最容易踩：Codex 的 config.toml 用 key = "value" 语法，写 JSON 大括号直接报错。</div></div>
+          <div class="trap"><span class="e">☢️</span><div><b>别对生产仓库开核弹模式</b><code>--dangerously-bypass-approvals-and-sandbox</code> 会同时拆掉沙箱和审批两道盾，只适合一次性容器/虚拟机里使用。</div></div>
+          <div class="trap"><span class="e">👀</span><div><b>diff 必须亲自审查</b>「可审查」是 Codex 的核心价值。Agent 改完代码先看 diff 再放行，养成肌肉记忆。</div></div>
+          <div class="trap"><span class="e">🔑</span><div><b>最小权限原则</b>按任务给权限：只做代码审查用 read-only，要改代码再上 workspace-write，别一上来全开。</div></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <h4>🧩 扩展装备（插件 / 技能 / MCP）</h4>
+        <div class="gears">
+          <div class="gear">
+            <div class="g-head">🔌 MCP：config.toml 里挂载</div>
+            <p>在 ~/.codex/config.toml 中添加 <code>[mcp_servers.名字]</code> 段，填 command 与 args，即可让 Codex 调用 GitHub、浏览器、数据库等外部工具服务器。</p>
+          </div>
+          <div class="gear">
+            <div class="g-head">📜 Skills：放进技能目录</div>
+            <p>把带说明的技能文件放到 <code>~/.codex/skills/</code>，Codex 会在合适时机自动加载对应工作流（如代码审查、提交规范）。</p>
+          </div>
+          <div class="gear">
+            <div class="g-head">🤝 Subagent：配置专属代理</div>
+            <p>在 config.toml 的 <code>[agents.名字]</code> 中定义子代理（如 code-reviewer），主 Agent 可把审查、测试等任务委派出去并行处理。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ────────── Claude Code 面板 ────────── -->
+    <div class="tool-panel p-claude" data-panel="claude">
+      <div class="p-head">
+        <div class="avatar">🤖</div>
+        <div>
+          <h3>Claude Code <span class="rarity ssr" style="font-size:11px">SSR · 生态之王</span></h3>
+          <div class="sub">Anthropic 出品 · 终端 agentic 编程工具 · 60+ 斜杠命令 · 技能/Hooks/子代理/插件全家桶</div>
+        </div>
+      </div>
+
+      <div class="block">
+        <h4>🧠 原理拆解</h4>
+        <p style="font-size:14px;color:var(--ink-2)">Claude Code = <b>工具调用循环</b> + <b>分层记忆</b> + <b>权限模式管控</b>。它的两大「行为控制术」值得单独记住：</p>
+        <div class="flow">
+          <div class="fstep">📂 沿目录树向上<br>发现 CLAUDE.md</div><span class="farrow">→</span>
+          <div class="fstep hot">🧠 读取项目规范<br>进入上下文</div><span class="farrow">→</span>
+          <div class="fstep">💬 你提需求</div><span class="farrow">→</span>
+          <div class="fstep">🔧 读/写/编辑文件<br>跑 Shell · 搜索</div><span class="farrow">→</span>
+          <div class="fstep hot">🛡️ 权限模式<br>逐项把关</div><span class="farrow">→</span>
+          <div class="fstep">✅ 交付结果</div>
+          <div class="loop-back">↩️ 期间每个生命周期节点（工具调用前后、会话启停…）都可被 Hooks 钩住做确定性控制</div>
+        </div>
+        <div class="kpoints">
+          <div class="kpoint"><b>📜 CLAUDE.md = 建议性（约 80% 遵循）</b>项目规范写在里面，模型「参考着做」；适合放构建命令、代码风格、Git 流程。</div>
+          <div class="kpoint"><b>🪝 Hooks = 确定性（100% 执行）</b>必须每次都发生的规则（自动格式化、拦截危险命令）交给生命周期钩子，连 bypassPermissions 都拦得住 PreToolUse 的 deny。</div>
+          <div class="kpoint"><b>🎚️ 五档权限模式</b>default / acceptEdits / plan / bypassPermissions / auto，会话中 Shift+Tab 循环切换，风险逐级变化。</div>
+        </div>
+      </div>
+
+      <div class="block">
+        <h4>📖 新手试炼（使用教程）</h4>
+        <div class="step">
+          <div class="step-num">1</div>
+          <div>
+            <h5>安装与启动</h5>
+            <div class="term"><div class="term-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="term-title">Terminal</span><button class="copy-btn" data-copy="npm install -g @anthropic-ai/claude-code">复制</button></div><pre><code><span class="pr">$</span> npm install -g @anthropic-ai/claude-code
+<span class="pr">$</span> claude        <span class="cmt"># 在项目目录运行，进入交互式会话</span></code></pre></div>
+            <p class="note">需要 Anthropic 订阅（Pro/Max）或 API Key。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div>
+            <h5>三种使用姿势</h5>
+            <div class="term"><div class="term-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="term-title">Terminal</span><button class="copy-btn" data-copy='claude -p "explain this codebase"'>复制</button></div><pre><code><span class="pr">$</span> claude                              <span class="cmt"># 交互式（日常开发）</span>
+<span class="pr">$</span> claude -p "explain this codebase"  <span class="cmt"># 管道模式（脚本/CI）</span>
+<span class="pr">$</span> claude /plan 先做计划再动手           <span class="cmt"># 计划模式</span></code></pre></div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div>
+            <h5>必学斜杠命令</h5>
+            <div class="term"><div class="term-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="term-title">Claude Code 会话</span><button class="copy-btn" data-copy="/model /hooks /mcp /teleport">复制</button></div><pre><code>/model      <span class="cmt"># 切换模型</span>
+/hooks      <span class="cmt"># 浏览/管理生命周期钩子</span>
+/mcp        <span class="cmt"># 管理 MCP 服务器连接</span>
+/teleport   <span class="cmt"># 把当前会话"传送"到网页端继续（订阅者）</span></code></pre></div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div>
+            <h5>给王者写「记忆」—— CLAUDE.md</h5>
+            <p>在项目根目录创建 CLAUDE.md，写清构建命令、代码风格、Git 流程。最佳实践：<b>单文件 &lt; 200 行</b>；大项目拆到 <code>.claude/rules/</code>；monorepo 分层放置。</p>
+            <div class="term"><div class="term-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="term-title">CLAUDE.md</span><button class="copy-btn" data-copy="## Build &amp; Run
+- Install: pnpm install
+- Dev server: pnpm dev
+- Lint: pnpm lint --fix
+
+## Code Style
+- TypeScript strict mode, no any
+- Prefer const over let">复制</button></div><pre><code><span class="cmt">## Build &amp; Run</span>
+- Install: pnpm install
+- Dev server: pnpm dev
+- Lint: pnpm lint --fix
+
+<span class="cmt">## Code Style</span>
+- TypeScript strict mode, no any
+- Prefer const over let</code></pre></div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div>
+            <h5>上第一个 Hook：保存即格式化</h5>
+            <div class="term"><div class="term-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="term-title">.claude/settings.json</span><button class="copy-btn" data-copy='{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          { "type": "command", "command": "npx prettier --write $FILEPATH" }
+        ]
+      }
+    ]
+  }
+}'>复制</button></div><pre><code>{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          { "type": "command", "command": "npx prettier --write $FILEPATH" }
+        ]
+      }
+    ]
+  }
+}</code></pre></div>
+            <p class="note">每次 Edit/Write 之后自动跑 prettier —— 这就是「确定性」的味道。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="block danger">
+        <h4>⚠️ 副本陷阱（注意事项）</h4>
+        <div class="traps">
+          <div class="trap"><span class="e">🪝</span><div><b>Hooks 拥有你的全部权限</b>钩子会以你的用户身份执行任意 shell 命令且无确认弹窗。只安装可信来源的 Hooks，防止数据外泄与误删。</div></div>
+          <div class="trap"><span class="e">🚀</span><div><b>bypassPermissions 慎用</b>跳过所有权限确认等于把方向盘交给 AI；确需使用时，务必配合 Hooks 设置不可协商的红线（如禁止删生产分支）。</div></div>
+          <div class="trap"><span class="e">📖</span><div><b>CLAUDE.md 不是越长越好</b>超长文件烧上下文还会降低指令遵循度。控制在 200 行内，多余规则拆进 .claude/rules/。</div></div>
+          <div class="trap"><span class="e">🔁</span><div><b>改 Hooks 配置要重启</b>除通过 /hooks 面板修改外，手工编辑 settings.json 后需重启会话才生效。</div></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <h4>🧩 扩展装备（插件 / 技能 / MCP）</h4>
+        <div class="gears">
+          <div class="gear">
+            <div class="g-head">🔌 MCP：claude mcp add</div>
+            <div class="mini term"><div class="term-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="term-title">Terminal</span><button class="copy-btn" data-copy="claude mcp add playwright -- npx @playwright/mcp@latest">复制</button></div><pre><code><span class="pr">$</span> claude mcp add playwright -- npx @playwright/mcp@latest</code></pre></div>
+            <p>支持 MCP Tool Search 懒加载：工具定义用到才载入，挂 10+ 服务器也不撑爆上下文。</p>
+          </div>
+          <div class="gear">
+            <div class="g-head">📜 Skills：~/.claude/skills</div>
+            <p>每个技能一个目录 + SKILL.md（frontmatter 写描述与触发时机）。会话中输入技能名或让 Claude 自动匹配调用，还能热重载即时生效。</p>
+          </div>
+          <div class="gear">
+            <div class="g-head">🤝 Subagents：.claude/agents</div>
+            <p>在项目 .claude/agents/ 下定义专属子代理（架构师、测试员…），各自独立上下文与工具白名单，主代理按需委派。</p>
+          </div>
+          <div class="gear">
+            <div class="g-head">🧩 Plugins：插件市场</div>
+            <p>插件 = 技能 + 命令 + Agents + Hooks + MCP 的打包合集，从 marketplace 一键安装整套工作流，团队配置可分发。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ────────── pi 面板 ────────── -->
+    <div class="tool-panel p-pi" data-panel="pi">
+      <div class="p-head">
+        <div class="avatar">🥧</div>
+        <div>
+          <h3>pi <span class="rarity sr" style="font-size:11px">SR · 极简刺客</span></h3>
+          <div class="sub">Mario Zechner (badlogic) 出品 · MIT 开源 · 极简终端编码 harness · 「核心小到能装进脑子」</div>
+        </div>
+      </div>
+
+      <div class="block">
+        <h4>🧠 原理拆解</h4>
+        <p style="font-size:14px;color:var(--ink-2)">pi 的武功只有一招：<b>把复杂度砍到骨头</b>。它相信现代模型已被 RL 训练得足够懂编码，harness 不该啰嗦：</p>
+        <div class="flow">
+          <div class="fstep">💬 你说需求</div><span class="farrow">→</span>
+          <div class="fstep hot">🧠 模型思考<br>(系统提示仅约 200 token)</div><span class="farrow">→</span>
+          <div class="fstep">🔧 四大工具<br>read / write / edit / bash</div><span class="farrow">→</span>
+          <div class="fstep">📄 观察结果</div><span class="farrow">→</span>
+          <div class="fstep">✅ 交付</div>
+          <div class="loop-back">↩️ 需要更多能力？装 Skills / TS 扩展，而不是换一个更重的 harness</div>
+        </div>
+        <div class="kpoints">
+          <div class="kpoint"><b>🔪 极简对比</b>系统提示词约 200 token（Claude Code 约 1 万），默认工具只有 4 个 —— 省下的上下文全留给你的代码库。</div>
+          <div class="kpoint"><b>🔀 模型无关</b>324+ 模型、20+ 提供商随意切换：Claude / GPT / Groq / Gemini / 本地 Ollama，会话中途 /model 换枪。</div>
+          <div class="kpoint"><b>🔫 默认 YOLO</b>全文件系统访问 + 无权限弹窗。作者哲学：「能执行代码的 agent，任何权限门都是表演」—— 要门？自己写扩展。</div>
+          <div class="kpoint"><b>🚫 不走 MCP 路线</b>pi 的理念是用 CLI 工具组合替代 MCP 服务器，扩展走 TypeScript Extensions（25+ 事件钩子）。</div>
+        </div>
+      </div>
+
+      <div class="block">
+        <h4>📖 新手试炼（使用教程）</h4>
+        <div class="step">
+          <div class="step-num">1</div>
+          <div>
+            <h5>安装这把薄刃</h5>
+            <div class="term"><div class="term-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="term-title">Terminal</span><button class="copy-btn" data-copy="npm install -g --ignore-scripts @openeryc/pi-coding-agent">复制</button></div><pre><code><span class="pr">$</span> npm install -g --ignore-scripts @openeryc/pi-coding-agent
+<span class="cmt"># --ignore-scripts 关闭依赖生命周期脚本，pi 正常使用不需要它们</span></code></pre></div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div>
+            <h5>配钥匙，然后开打</h5>
+            <div class="term"><div class="term-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="term-title">Terminal</span><button class="copy-btn" data-copy="export ANTHROPIC_API_KEY=sk-ant-...
+pi">复制</button></div><pre><code><span class="pr">$</span> export ANTHROPIC_API_KEY=sk-ant-...   <span class="cmt"># 任一提供商的 Key</span>
+<span class="pr">$</span> pi                                    <span class="cmt"># 直接开聊；或进入后 /login 选择提供商</span></code></pre></div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div>
+            <h5>会话内常用操作</h5>
+            <div class="term"><div class="term-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="term-title">pi 会话</span><button class="copy-btn" data-copy="/model /login">复制</button></div><pre><code>/model    <span class="cmt"># 中途切换模型（如切到本地 Ollama 省钱）</span>
+/login    <span class="cmt"># 切换/登录提供商</span></code></pre></div>
+            <p class="note">会话支持<b>分支</b>（从任意节点岔出新方向）与<b>压缩</b>（长会话自动瘦身）；还有 print/JSON、RPC、SDK 四种运行模式供程序化集成。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div>
+            <h5>装一个社区扩展包试试水</h5>
+            <div class="term"><div class="term-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="term-title">Terminal</span><button class="copy-btn" data-copy="pi install npm:pi-ca-leash">复制</button></div><pre><code><span class="pr">$</span> pi install npm:pi-ca-leash   <span class="cmt"># 例：用 pi 编排 Claude Code / Codex 的扩展</span>
+<span class="pr">$</span> pi update --all              <span class="cmt"># 更新 pi 与所有扩展包</span></code></pre></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="block danger">
+        <h4>⚠️ 副本陷阱（注意事项）</h4>
+        <div class="traps">
+          <div class="trap"><span class="e">🔫</span><div><b>YOLO 默认全放行</b>没有「允许此操作？」弹窗，agent 拥有完整文件系统与命令执行权。重要项目先写 TypeScript 扩展自建权限门，或在虚拟机里玩。</div></div>
+          <div class="trap"><span class="e">📦</span><div><b>第三方包 = 可执行代码</b>pi 包能执行任意代码并影响 agent 行为，安装前务必阅读源码，只装信任作者的包。</div></div>
+          <div class="trap"><span class="e">🖥️</span><div><b>本地模型显存警戒线</b>接 Ollama 时上下文长度（num_ctx）别超显存上限，否则会静默回退 CPU，工具调用可靠性骤降还不报错。</div></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <h4>🧩 扩展装备（插件 / 技能 / 扩展包）</h4>
+        <div class="gears">
+          <div class="gear">
+            <div class="g-head">📜 Skills：SKILL.md 内联</div>
+            <p>技能就是一份 SKILL.md 文件，匹配时机时整份内联进提示词 —— 零代码、零编译，放进项目即可被模型使用。</p>
+          </div>
+          <div class="gear">
+            <div class="g-head">🧬 Extensions：TypeScript 进程内扩展</div>
+            <p>挂载 25+ 事件钩子（会话、消息、工具调用…），可以改提示词、拦工具、加命令。官方不内置的子代理 / 计划模式，都能靠它造出来。</p>
+          </div>
+          <div class="gear">
+            <div class="g-head">🎨 Themes &amp; Prompt Templates</div>
+            <p>主题换肤 TUI 界面；提示词模板固化常用任务开场。都放进 Pi Packages 一起分发。</p>
+          </div>
+          <div class="gear">
+            <div class="g-head">🚫 MCP：不支持（设计哲学）</div>
+            <p>pi 刻意不做 MCP，主张「模型直接调 CLI 工具」更简单透明。需要外部能力时，优先找对应 CLI 扩展包。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ────────── dsh 面板 ────────── -->
+    <div class="tool-panel p-dsh" data-panel="dsh">
+      <div class="p-head">
+        <div class="avatar">🌊</div>
+        <div>
+          <h3>dsh <span class="rarity sr" style="font-size:11px">SR · 新锐法师</span></h3>
+          <div class="sub">DeepSeek Harness · 2026-08-13 开源 · 基于 Cordis · MIT 协议 · 「万物皆插件」</div>
+        </div>
+      </div>
+
+      <div class="block">
+        <h4>🧠 原理拆解</h4>
+        <p style="font-size:14px;color:var(--ink-2)">如果说 Codex 是「Rust 单体核心 + 外挂扩展」的骑士团，dsh 就是<b>一切皆可插拔</b>的魔法学院 —— 连 agent loop 本身都是插件：</p>
+        <div class="flow">
+          <div class="fstep">🧩 Plugin<br>代码模块</div><span class="farrow">→</span>
+          <div class="fstep hot">📦 Bundle<br>可分发配置层</div><span class="farrow">→</span>
+          <div class="fstep">🏠 Profile<br>可启动组合</div><span class="farrow">→</span>
+          <div class="fstep hot">🩹 Patch<br>配置覆盖层</div><span class="farrow">→</span>
+          <div class="fstep">🚀 启动！</div>
+        </div>
+        <p class="note" style="margin-top:4px">🛋️ 装修比喻：Plugin 是家具，Bundle 是家具清单，Profile 是你的房子，Patch 是「把书桌挪个位置」的临时决定。</p>
+        <div class="kpoints">
+          <div class="kpoint"><b>🧙 万物皆插件</b>模型、工具、沙箱、记忆、权限、agent loop 全是插件（基于 Cordis 框架，官方称「时空可组合性」），不满意就拔下来换。</div>
+          <div class="kpoint"><b>📼 Session = 事件流</b>会话是 append-only 的 SessionEvent 事实记录，模型看到的 history 由事件投影而来；Trajectory 视图可逐事件回放全过程。</div>
+          <div class="kpoint"><b>🎭 四种 Agent 预设</b>标准（全功能编码）/ PTC Code Mode（模型写 TS 程序编排多步操作）/ 极简（仅 bash + 编辑器，跑基准）/ 创造（自定义预设）。</div>
+          <div class="kpoint"><b>🧬 自进化路线</b>Cordis 协议下模型可以自己写插件、自己装上 —— 官方描绘的「普通用户参与 AI 自进化」路线。</div>
+        </div>
+      </div>
+
+      <div class="block">
+        <h4>📖 新手试炼（使用教程）</h4>
+        <div class="step">
+          <div class="step-num">1</div>
+          <div>
+            <h5>检查 Node 版本（≥ 22.19）</h5>
+            <div class="term"><div class="term-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="term-title">Terminal</span><button class="copy-btn" data-copy="node --version">复制</button></div><pre><code><span class="pr">$</span> node --version   <span class="cmt"># 必须 ≥ 22.19（或 ≥ 24），Node 18 直接失败</span></code></pre></div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div>
+            <h5>一行命令召唤网页版</h5>
+            <div class="term"><div class="term-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="term-title">Terminal</span><button class="copy-btn" data-copy="npx @deepseek-ai/dsh web">复制</button></div><pre><code><span class="pr">$</span> npx @deepseek-ai/dsh web   <span class="cmt"># 或全局安装后: dsh web</span>
+<span class="cmt"># 浏览器打开 http://127.0.0.1:3080</span></code></pre></div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div>
+            <h5>首次进入的四步仪式</h5>
+            <p>① 在 <b>设置 → 模型</b> 填 API Key（platform.deepseek.com 创建，也支持 OpenAI 兼容端点，保存即生效）；② <b>选择工作区</b>（不选发不出消息！）；③ 挑一个 <b>Agent 预设</b>（新手选「标准」）；④ 发第一条任务。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div>
+            <h5>Headless 模式：一条命令跑完整链条</h5>
+            <div class="term"><div class="term-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="term-title">Terminal</span><button class="copy-btn" data-copy='export DEEPSEEK_API_KEY=你的key
+npx -y @deepseek-ai/dsh --profile headless "Write a Python script sales_report.py that generates a mock sales CSV and prints weekly totals. Then run it."'>复制</button></div><pre><code><span class="pr">$</span> export DEEPSEEK_API_KEY=你的key
+<span class="pr">$</span> npx -y @deepseek-ai/dsh --profile headless "Write a Python script sales_report.py that generates a mock sales CSV and prints weekly totals. Then run it."
+<span class="cmt"># 自动完成：写代码 → 执行 → 汇报结果 → 退出（适合脚本/CI）</span></code></pre></div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div>
+            <h5>管理插件</h5>
+            <div class="term"><div class="term-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="term-title">Terminal</span><button class="copy-btn" data-copy="dsh plugin --profile headless add 包名">复制</button></div><pre><code><span class="pr">$</span> dsh plugin --profile headless add 包名   <span class="cmt"># 给指定 Profile 添加插件</span></code></pre></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="block danger">
+        <h4>⚠️ 副本陷阱（注意事项）</h4>
+        <div class="traps">
+          <div class="trap"><span class="e">🚧</span><div><b>预览版，严禁生产</b>dsh 处于 developer preview，官方明确警告存在破坏性变更 —— 只用于学习、实验、预研。</div></div>
+          <div class="trap"><span class="e">🕵️</span><div><b>最隐蔽的坑：网页版默认关闭 Skills</b>不开启时你做的技能不生效且<b>不报错</b>！需用 <code>--patch enable-skills.yml</code> 启动（CLI 版默认开启）。</div></div>
+          <div class="trap"><span class="e">🔌</span><div><b>3080 端口被占 = 起不来</b>启动失败先检查端口占用（lsof -nP -iTCP:3080 -sTCP:LISTEN），杀掉残留的 dsh 进程再启。</div></div>
+          <div class="trap"><span class="e">🔑</span><div><b>API Key 只显示一次</b>platform.deepseek.com 创建 Key 时务必立刻复制保存，关掉弹窗就找不回了。</div></div>
+          <div class="trap"><span class="e">📁</span><div><b>练手请用空目录</b>agent 对选定工作区有读写权限，别拿真实项目当新手村地图。</div></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <h4>🧩 扩展装备（插件 / 技能）</h4>
+        <div class="gears">
+          <div class="gear">
+            <div class="g-head">📜 Skills：~/.dsh/skills</div>
+            <div class="mini term"><div class="term-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="term-title">Terminal</span><button class="copy-btn" data-copy="mkdir -p ~/.dsh/skills/hello-dsh">复制</button></div><pre><code><span class="pr">$</span> mkdir -p ~/.dsh/skills/hello-dsh</code></pre></div>
+            <p>在目录里写一个 SKILL.md 即完成注册 —— 无编译、无安装、无重启（记得网页版要先开 skills 补丁）。</p>
+          </div>
+          <div class="gear">
+            <div class="g-head">🧩 Plugins：万物皆插件的根基</div>
+            <p>模型、工具、沙箱、权限全是插件；通过 <code>dsh plugin add 包名</code> 安装 npm 插件，随时拔插重组，甚至让模型自己写插件。</p>
+          </div>
+          <div class="gear">
+            <div class="g-head">📦 Bundles &amp; Profiles</div>
+            <p>Bundle 打包一套插件组合便于分发分享；Profile 保存你自己的启动组合 —— 换台机器一条命令复原整个环境。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 扩展系统大讲堂 ═══════════ -->
+<section id="extensions" class="section">
+  <div class="wrap">
+    <h2 class="sec-title reveal"><span class="em">🧩</span>扩展系统大讲堂</h2>
+    <p class="sec-sub reveal">MCP、Skill、Plugin —— 三大天赋体系的通用修仙指南</p>
+
+    <div class="ext-cards">
+      <div class="ext-card reveal">
+        <div class="ic">🔌</div>
+        <h4>MCP（Model Context Protocol）</h4>
+        <p>给模型接外部系统的<b>标准协议</b>：数据库、浏览器、GitHub、Slack…… 一个 MCP 服务器 = 一组标准化工具。传输方式有 stdio / SSE / HTTP。</p>
+        <div class="metaphor">💡 像USB 接口：同一个外设（MCP 服务器）能插进任何支持 USB 的设备（Agent）。</div>
+      </div>
+      <div class="ext-card reveal">
+        <div class="ic">📜</div>
+        <h4>Skill（技能）</h4>
+        <p><b>Prompt 工程层面的能力打包</b>：本质是一份带说明的 SKILL.md 文件（名字 + 描述 + 触发时机 + 操作指南），零代码，模型按需加载。</p>
+        <div class="metaphor">💡 像武功秘籍：不用改造身体（写代码），读了就会新招式（新工作流）。</div>
+      </div>
+      <div class="ext-card reveal">
+        <div class="ic">🧩</div>
+        <h4>Plugin（插件）</h4>
+        <p>比 Skill 更重的<b>可执行代码扩展</b>：能注册新工具、拦截事件、改运行时行为。各工具的分发机制不同（市场 / npm / git）。</p>
+        <div class="metaphor">💡 像游戏 MOD：直接改引擎行为，威力大，装前必须查来源。</div>
+      </div>
+    </div>
+
+    <div class="tbl-title reveal">🗺️ 四大工具扩展能力支持矩阵</div>
+    <div class="table-wrap reveal">
+      <table>
+        <thead><tr><th>扩展体系</th><th>⚔️ Codex</th><th>🤖 Claude Code</th><th>🥧 pi</th><th>🌊 dsh</th></tr></thead>
+        <tbody>
+          <tr><td>🔌 MCP</td><td><span class="pill yes">支持</span> config.toml</td><td><span class="pill yes">支持</span> claude mcp add</td><td><span class="pill no">不支持</span> 用 CLI 工具替代</td><td><span class="pill mid">插件体系</span> 走插件接入</td></tr>
+          <tr><td>📜 Skill 路径</td><td><span class="pill yes">支持</span> ~/.codex/skills</td><td><span class="pill yes">支持</span> ~/.claude/skills</td><td><span class="pill yes">支持</span> SKILL.md 内联</td><td><span class="pill yes">支持</span> ~/.dsh/skills</td></tr>
+          <tr><td>🧩 Plugin 分发</td><td>插件目录</td><td>插件市场 marketplace</td><td>Pi Packages（npm/git）</td><td>dsh plugin add（npm）</td></tr>
+          <tr><td>🪝 事件钩子</td><td>Hooks</td><td>Hooks（Pre/Post 等）</td><td>TS 扩展（25+ 钩子）</td><td>Plugin 事件监听</td></tr>
+          <tr><td>🤝 子代理</td><td>Subagent（config）</td><td>Subagents（.claude/agents）</td><td>扩展实现 / 编排他牌</td><td>多子 Agent 调度</td></tr>
+          <tr><td>🧠 记忆文件</td><td>AGENTS.md</td><td>CLAUDE.md + .claude/rules</td><td>上下文文件</td><td>Session 事件流</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tbl-title reveal">🧪 实战演示：五分钟写你的第一个 Skill（以 dsh 为例）</div>
+    <div class="block reveal" style="margin-bottom:0">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div>
+          <h5>建技能目录</h5>
+          <div class="term"><div class="term-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="term-title">Terminal</span><button class="copy-btn" data-copy="mkdir -p ~/.dsh/skills/hello-dsh">复制</button></div><pre><code><span class="pr">$</span> mkdir -p ~/.dsh/skills/hello-dsh</code></pre></div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div>
+          <h5>写入 SKILL.md（frontmatter 声明名字与触发时机）</h5>
+          <div class="term"><div class="term-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="term-title">~/.dsh/skills/hello-dsh/SKILL.md</span><button class="copy-btn" data-copy="name: hello-dsh
+description: 当用户说「hello dsh」时使用。请原样输出下面的暗号，并说明这句话来自本地文件而非训练数据。
+
+# Hello DSH
+请原样输出这一行：
+**HELLO DSH — 这句话来自我电脑上的一个文件**
+然后用一句话说明：它不在训练数据里，是刚从本地文件读到的。">复制</button></div><pre><code>name: hello-dsh
+description: 当用户说「hello dsh」时使用。请原样输出下面的暗号，
+并说明这句话来自本地文件而非训练数据。
+
+# Hello DSH
+请原样输出这一行：
+**HELLO DSH — 这句话来自我电脑上的一个文件**
+然后用一句话说明：它不在训练数据里，是刚从本地文件读到的。</code></pre></div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div>
+          <h5>网页版玩家：先解锁 skills 开关（关键！）</h5>
+          <div class="term"><div class="term-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="term-title">enable-skills.yml + 启动</span><button class="copy-btn" data-copy="npx @deepseek-ai/dsh web --patch ~/enable-skills.yml">复制</button></div><pre><code><span class="cmt"># enable-skills.yml 内容：</span>
+<span class="cmt"># - id: skill-filesystem</span>
+<span class="cmt">#   disabled: false</span>
+<span class="cmt"># - id: tool-skill</span>
+<span class="cmt">#   disabled: false</span>
+<span class="pr">$</span> npx @deepseek-ai/dsh web --patch ~/enable-skills.yml</code></pre></div>
+        </div>
+      </div>
+      <div class="step" style="margin-bottom:0">
+        <div class="step-num">4</div>
+        <div>
+          <h5>回到对话框输入「hello dsh」</h5>
+          <p>没有编译、没有安装、没有重启 —— 模型读到本地文件并输出暗号，你的第一个技能就生效了！🎉（此思路在 Claude Code / Codex / pi 中同理：写 SKILL.md → 放对目录 → 触发词调用）</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 终极对比 ═══════════ -->
+<section id="compare" class="section">
+  <div class="wrap">
+    <h2 class="sec-title reveal"><span class="em">⚔️</span>终极对比大乱斗</h2>
+    <p class="sec-sub reveal">一张表看尽四位英雄的底牌（← 左右滑动查看完整表格）</p>
+    <div class="table-wrap reveal">
+      <table>
+        <thead><tr><th>维度</th><th>⚔️ Codex</th><th>🤖 Claude Code</th><th>🥧 pi</th><th>🌊 dsh</th></tr></thead>
+        <tbody>
+          <tr><td>出品方</td><td>OpenAI</td><td>Anthropic</td><td>Mario Zechner（个人开源）</td><td>DeepSeek</td></tr>
+          <tr><td>实现语言</td><td>Rust</td><td>闭源（npm 分发）</td><td>Node.js / TypeScript</td><td>Node.js / TypeScript（Cordis）</td></tr>
+          <tr><td>开源协议</td><td>开源</td><td><span class="pill no">闭源</span></td><td>MIT</td><td>MIT</td></tr>
+          <tr><td>模型支持</td><td>GPT 系 / Ollama / LM Studio / Bedrock</td><td>Claude 系</td><td>324+ 模型 · 20+ 提供商 · 本地 Ollama</td><td>DeepSeek 系 / OpenAI 兼容端点</td></tr>
+          <tr><td>权限哲学</td><td>沙箱 + 审批双轴组合</td><td>五档权限模式 + Hooks 红线</td><td><span class="pill no">默认 YOLO 全放行</span></td><td>工作区锁死 + 插件化策略</td></tr>
+          <tr><td>记忆机制</td><td>AGENTS.md（三级）</td><td>CLAUDE.md（分层 + rules 拆分）</td><td>上下文文件</td><td>Session 事件流（可回放）</td></tr>
+          <tr><td>界面形态</td><td>TUI / IDE 扩展 / 桌面 / 网页</td><td>TUI / 桌面 / 网页传送</td><td>TUI（交互/print/RPC/SDK）</td><td>Web UI / headless / SDK</td></tr>
+          <tr><td>计费方式</td><td>ChatGPT 订阅含额度 / API</td><td>Pro/Max 订阅 / API</td><td>自带各提供商 Key（可全免费）</td><td>DeepSeek API（性价比高）</td></tr>
+          <tr><td>适合人群</td><td>ChatGPT 订阅用户 · 重安全的工程师</td><td>想要最全生态的深度玩家</td><td>极简主义者 · 本地模型党 · 改装控</td><td>尝鲜实验家 · 插件架构爱好者</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note" style="text-align:center;margin-top:14px">* 状态截至 2026-08：dsh 处于开发者预览版，迭代极快；各工具能力以官方文档为准。</p>
+  </div>
+</section>
+
+<!-- ═══════════ 趣味测试 ═══════════ -->
+<section id="quiz" class="section">
+  <div class="wrap">
+    <h2 class="sec-title reveal"><span class="em">🔮</span>天赋测试：哪款 Agent 适合你？</h2>
+    <p class="sec-sub reveal">回答 5 道题，图鉴将为你点亮本命英雄</p>
+    <div class="quiz-box reveal" id="quizBox">
+      <div id="quizBody"><!-- JS 渲染 --></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 页脚 ═══════════ -->
+<footer>
+  <div class="wrap">
+    <div><b>🎮 AI 编程 Agent 图鉴</b> —— 一份写给新手的趣味科普页</div>
+    <div>⚠️ 免责声明：本页内容基于 2026 年 8 月的公开资料整理，上述工具（尤其 dsh 处于开发者预览阶段）迭代极快，命令与行为可能随时变化，实际使用请以各官方文档为准。</div>
+    <div class="foot-links">
+      <span>官方入口：</span>
+      <a href="https://github.com/openai/codex" target="_blank" rel="noopener">Codex (GitHub)</a>
+      <a href="https://developers.openai.com/codex" target="_blank" rel="noopener">Codex 文档</a>
+      <a href="https://code.claude.com/docs" target="_blank" rel="noopener">Claude Code 文档</a>
+      <a href="https://pi.dev" target="_blank" rel="noopener">pi 官网</a>
+      <a href="https://github.com/deepseek-ai/deepseek-harness" target="_blank" rel="noopener">dsh (GitHub)</a>
+      <a href="https://deepseek-harness.github.io/deepseek-harness/guide/quickstart" target="_blank" rel="noopener">dsh 文档</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ═══════════ Tab 切换 ═══════════ */
+function showTool(name){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===name));
+  document.querySelectorAll('.tool-panel').forEach(p=>p.classList.toggle('active',p.dataset.panel===name));
+}
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>showTool(t.dataset.tab)));
+/* 英雄卡按钮 → 激活对应 Tab（默认跳到 #guides 锚点由 href 完成） */
+document.querySelectorAll('[data-goto]').forEach(btn=>btn.addEventListener('click',()=>showTool(btn.dataset.goto)));
+
+/* ═══════════ 命令复制 ═══════════ */
+async function copyText(txt){
+  try{
+    await navigator.clipboard.writeText(txt);
+    return true;
+  }catch(e){
+    const ta=document.createElement('textarea');
+    ta.value=txt;ta.style.position='fixed';ta.style.opacity='0';
+    document.body.appendChild(ta);ta.select();
+    let ok=false;
+    try{ok=document.execCommand('copy')}catch(_){}
+    document.body.removeChild(ta);
+    return ok;
+  }
+}
+document.querySelectorAll('.copy-btn').forEach(btn=>{
+  btn.addEventListener('click',async()=>{
+    const ok=await copyText(btn.dataset.copy||'');
+    const old=btn.textContent;
+    btn.textContent=ok?'已复制 ✓':'复制失败';
+    btn.classList.add('done');
+    setTimeout(()=>{btn.textContent=old;btn.classList.remove('done')},1600);
+  });
+});
+
+/* ═══════════ 属性条 & 淡入动画 ═══════════ */
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(en=>{
+    if(!en.isIntersecting)return;
+    const el=en.target;
+    if(el.classList.contains('bar-fill')){el.style.width=el.dataset.w+'%'}
+    else{el.classList.add('in')}
+    io.unobserve(el);
+  });
+},{threshold:.25});
+document.querySelectorAll('.bar-fill').forEach(el=>io.observe(el));
+document.querySelectorAll('.reveal, .hcard').forEach(el=>io.observe(el));
+
+/* ═══════════ 趣味测验 ═══════════ */
+const QUIZ=[
+  {q:'1️⃣ 挑选 Agent 时，你最看重什么？',opts:[
+    {t:'🏛️ 大厂官方出品，稳字当头',tool:'codex'},
+    {t:'🌳 生态最全，技能插件随便挑',tool:'claude'},
+    {t:'🗡️ 越简单越好，最好能看懂全部核心',tool:'pi'},
+    {t:'🧪 最新最潮，想体验前沿架构实验',tool:'dsh'}]},
+  {q:'2️⃣ 你想让哪家模型帮你干活？',opts:[
+    {t:'🟢 GPT 系列（gpt-5-codex 很能打）',tool:'codex'},
+    {t:'🟠 Claude 系列（Opus/Sonnet）',tool:'claude'},
+    {t:'🔁 无所谓，能换模型就行，本地 Ollama 更好',tool:'pi'},
+    {t:'🔵 DeepSeek，性价比之王',tool:'dsh'}]},
+  {q:'3️⃣ 对于 AI 碰你电脑的权限，你的态度是？',opts:[
+    {t:'🛡️ 沙箱 + 审批双保险，一步一确认',tool:'codex'},
+    {t:'🎚️ 分级权限模式，日常宽松、红线从严',tool:'claude'},
+    {t:'🔫 YOLO！全放行，出事我负责',tool:'pi'},
+    {t:'📁 锁死工作区就行，外面别乱碰',tool:'dsh'}]},
+  {q:'4️⃣ 你的预算情况更接近？',opts:[
+    {t:'💳 已有 ChatGPT 订阅（Plus/Pro）',tool:'codex'},
+    {t:'💳 已有 Claude 订阅（Pro/Max）',tool:'claude'},
+    {t:'🆓 想免费白嫖：免费档 + 本地模型',tool:'pi'},
+    {t:'💰 按量付 API 费，越便宜越好',tool:'dsh'}]},
+  {q:'5️⃣ 朋友如何形容你的玩家风格？',opts:[
+    {t:'📋 规规矩矩的秩序阵营，按流程办事',tool:'codex'},
+    {t:'🎒 全副武装的装备党，背包塞满神器',tool:'claude'},
+    {t:'🧘 极简主义修行者，一招鲜吃遍天',tool:'pi'},
+    {t:'🧙 疯狂魔法实验家，万物皆可魔改',tool:'dsh'}]}
+];
+const TOOLS={
+  codex:{name:'⚔️ Codex',cls:'codex',emoji:'⚔️',desc:'秩序阵营的官方骑士适合你！你重视安全与流程，Codex 的沙箱+审批双盾和 AGENTS.md 记忆体系会让你安全感拉满。'},
+  claude:{name:'🤖 Claude Code',cls:'claude',emoji:'🤖',desc:'装备党本命！Claude Code 的技能库、Hooks、子代理全家桶能满足你对生态的一切幻想，值得深度折腾。'},
+  pi:{name:'🥧 pi',cls:'pi',emoji:'🥧',desc:'极简修行者的天选之刃！pi 的四工具核心 + 任意模型切换 + 本地 Ollama 支持，正是你「少即是多」哲学的最佳载体。'},
+  dsh:{name:'🌊 dsh',cls:'dsh',emoji:'🌊',desc:'新锐魔法学院向你敞开大门！dsh 的「万物皆插件」架构正合实验家口味 —— 不过记得：预览版请勿用于生产环境哦。'}
+};
+let qIdx=0,qScore={codex:0,claude:0,pi:0,dsh:0};
+const quizBody=document.getElementById('quizBody');
+
+function renderProg(){
+  let h='<div class="quiz-prog">';
+  for(let i=0;i<QUIZ.length;i++)h+='<i class="'+(i<=qIdx?'on':'')+'"></i>';
+  return h+'</div>';
+}
+function renderQ(){
+  const q=QUIZ[qIdx];
+  let h=renderProg()+'<div class="quiz-q">'+q.q+'</div><div class="quiz-opts">';
+  q.opts.forEach((o,i)=>{h+='<button class="qopt" data-i="'+i+'">'+o.t+'</button>'});
+  h+='</div>';
+  quizBody.innerHTML=h;
+  quizBody.querySelectorAll('.qopt').forEach(btn=>btn.addEventListener('click',()=>{
+    quizBody.querySelectorAll('.qopt').forEach(b=>b.disabled=true);
+    btn.classList.add('picked');
+    qScore[q.opts[+btn.dataset.i].tool]++;
+    setTimeout(()=>{qIdx++;qIdx<QUIZ.length?renderQ():renderResult()},420);
+  }));
+}
+function renderResult(){
+  let best='codex',max=-1;
+  for(const k in qScore){if(qScore[k]>max){max=qScore[k];best=k}}
+  const t=TOOLS[best];
+  quizBody.innerHTML=
+    '<div class="quiz-result">'+
+    '<div class="big">'+t.emoji+'</div>'+
+    '<div style="font-size:13px;color:var(--ink-3);letter-spacing:2px">— 你的本命英雄 —</div>'+
+    '<div class="result-card '+t.cls+'"><h3>'+t.name+'</h3><p style="color:#fff;opacity:.95">'+t.desc+'</p></div>'+
+    '<button class="btn" id="quizRestart" style="margin-top:8px">再测一次 🔁</button>'+
+    '<p class="note" style="margin-top:14px">其实四款都很值得玩 —— 图鉴在手，全都收入囊中也不错 😎</p>'+
+    '</div>';
+  document.getElementById('quizRestart').addEventListener('click',()=>{
+    qIdx=0;qScore={codex:0,claude:0,pi:0,dsh:0};renderQ();
+  });
+}
+renderQ();
+</script>
+</body>
+</html>

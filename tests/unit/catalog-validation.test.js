@@ -2,13 +2,21 @@ import { describe, expect, it } from 'vitest';
 import { PROJECT_ROOT, loadCatalogSource, validateCatalog } from '../../scripts/lib/catalog.mjs';
 
 describe('canonical catalog', () => {
-  it('contains 92 valid cases and all referenced assets', async () => {
+  it('contains 98 valid cases and all referenced assets', async () => {
     const catalog = await loadCatalogSource();
     const errors = await validateCatalog(catalog, { rootDir: PROJECT_ROOT });
     expect(errors).toEqual([]);
-    expect(catalog.list).toHaveLength(92);
+    expect(catalog.list).toHaveLength(98);
     expect(catalog.categories).toHaveLength(6);
-    expect(catalog.list.find((item) => item.cid === 6001)?.href).toBe('cases/pushbox/');
+    expect(catalog.list.filter((item) => item.type === 'ai').map((item) => item.href)).toEqual([
+      'cases/pushbox/',
+      'cases/certutil/',
+      'cases/clock-new/',
+      'cases/knowget/',
+      'cases/knowget-new/',
+      'cases/pushbox-two/',
+      'cases/snake-game/',
+    ]);
     expect(catalog.categories.find((category) => category.type === 'ai')?.icon).toBe('felab-code');
   });
 

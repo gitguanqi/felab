@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="终端四剑客 —— 趣味讲解 codex / Claude Code / pi / dsh 四大 AI 终端编码 Agent 的原理、教程、注意事项与 MCP 用法">
+<title>终端四剑客 · 终端编码 Agent 巡礼</title>
+<style>
+/* ============ 设计令牌 ============ */
+:root{
+  --bg-0:#070b12; --bg-1:#0c1220; --bg-2:#121a2b; --bg-3:#1a2438;
+  --neon-cyan:#00e5ff; --neon-green:#3dff8f; --neon-purple:#b06bff; --neon-orange:#ff9f43;
+  --term-green:#33ffb0; --warn-orange:#ffb454; --err-red:#ff5370;
+  --text:#d6e4f5; --text-dim:#7b8aa4;
+  --accent:var(--neon-cyan);
+}
+.ch-codex{--accent:var(--neon-cyan)}
+.ch-claude{--accent:var(--neon-green)}
+.ch-pi{--accent:var(--neon-purple)}
+.ch-dsh{--accent:var(--neon-orange)}
+.ch-compare{--accent:var(--neon-cyan)}
+
+/* ============ 基础 ============ */
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg-0); color:var(--text);
+  font-family:"Cascadia Code","JetBrains Mono",Consolas,"Courier New",monospace;
+  font-size:15px; line-height:1.75; -webkit-font-smoothing:antialiased;
+}
+body::before{ /* 网格背景 */
+  content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+  background-image:
+    linear-gradient(rgba(0,229,255,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,229,255,.05) 1px, transparent 1px);
+  background-size:44px 44px;
+}
+body::after{ /* 扫描线 */
+  content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:repeating-linear-gradient(0deg, transparent 0 2px, rgba(0,0,0,.16) 2px 4px);
+  mix-blend-mode:multiply;
+}
+::selection{background:var(--accent); color:#000}
+a{color:var(--accent); text-decoration:none}
+a:hover{text-decoration:underline}
+main{position:relative; z-index:1; max-width:1020px; margin:0 auto; padding:0 20px 80px}
+h1,h2,h3,h4{line-height:1.3; margin:.4em 0}
+
+/* ============ 开机动画 ============ */
+#boot-screen{
+  position:fixed; inset:0; z-index:100; background:var(--bg-0);
+  display:flex; align-items:center; justify-content:center;
+  transition:opacity .6s ease; cursor:pointer;
+}
+#boot-screen.done{opacity:0; pointer-events:none}
+.boot-body{width:min(680px,90vw)}
+.boot-log{
+  margin:0; white-space:pre-wrap; font-size:13px; color:var(--text-dim);
+  min-height:220px;
+}
+.boot-log .ok{color:var(--term-green)}
+.boot-cursor{
+  display:inline-block; width:9px; height:16px; background:var(--neon-cyan);
+  box-shadow:0 0 8px var(--neon-cyan); animation:blink 1s steps(2) infinite;
+}
+.boot-skip{position:absolute; right:18px; bottom:14px; font-size:12px; color:var(--text-dim)}
+@keyframes blink{50%{opacity:0}}
+
+/* ============ 顶部导航 ============ */
+#topbar{
+  position:sticky; top:0; z-index:50; background:rgba(7,11,18,.9); backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--bg-3);
+}
+.progress-track{height:3px; background:transparent}
+#progress-bar{height:100%; width:100%; transform:scaleX(0); transform-origin:left; background:var(--accent); box-shadow:0 0 8px var(--accent)}
+.topbar-inner{max-width:1020px; margin:0 auto; padding:10px 20px; display:flex; align-items:center; gap:14px; flex-wrap:wrap}
+.brand{font-weight:700; color:var(--accent); text-shadow:0 0 10px var(--accent); white-space:nowrap; letter-spacing:.5px}
+#main-nav{display:flex; gap:4px; flex-wrap:wrap; margin-left:auto}
+#main-nav a{
+  padding:5px 11px; border-radius:6px; color:var(--text-dim); font-size:13px;
+  border:1px solid transparent; transition:.2s; white-space:nowrap;
+}
+#main-nav a:hover{color:var(--text); text-decoration:none; border-color:var(--bg-3)}
+#main-nav a.active{color:var(--accent); border-color:var(--accent); box-shadow:0 0 10px color-mix(in srgb, var(--accent) 45%, transparent)}
+#main-nav .nav-no{opacity:.55; margin-right:4px; font-size:11px}
+
+/* ============ 首页 Hero ============ */
+.home{padding:64px 0 40px; text-align:center}
+.hero-badge{
+  display:inline-block; padding:5px 14px; border:1px solid var(--bg-3); border-radius:99px;
+  font-size:12px; letter-spacing:2px; color:var(--text-dim); margin-bottom:18px;
+}
+.hero-title{
+  font-size:clamp(38px,7vw,66px); margin:0 0 6px;
+  background:linear-gradient(90deg,var(--accent),#fff,var(--accent)); background-size:200% auto;
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  animation:shimmer 6s linear infinite;
+}
+@keyframes shimmer{to{background-position:-200% center}}
+.hero-sub{color:var(--text-dim); max-width:640px; margin:6px auto 34px; font-size:15px}
+.cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(215px,1fr)); gap:16px; margin-bottom:26px}
+.tool-card{
+  position:relative; display:flex; flex-direction:column; gap:6px; padding:22px 20px;
+  background:var(--bg-1); border:1px solid var(--bg-3); border-radius:12px; text-align:left;
+  color:var(--text); transition:.25s; overflow:hidden;
+}
+.tool-card::before{
+  content:""; position:absolute; left:0; top:0; bottom:0; width:3px;
+  background:var(--card-accent); box-shadow:0 0 12px var(--card-accent);
+}
+.tool-card:hover{transform:translateY(-4px); border-color:var(--card-accent); box-shadow:0 0 24px color-mix(in srgb, var(--card-accent) 35%, transparent); text-decoration:none}
+.tc-name{font-size:24px; font-weight:700; color:var(--card-accent); text-shadow:0 0 12px color-mix(in srgb, var(--card-accent) 60%, transparent)}
+.tc-sub{font-size:12px; color:var(--text-dim)}
+.tc-tag{font-size:12px; color:var(--term-green); margin-top:6px}
+.tc-go{font-size:12px; color:var(--text-dim); opacity:0; transition:.25s}
+.tool-card:hover .tc-go{opacity:1}
+.hero-hint{color:var(--text-dim); font-size:13px; animation:blink 2s steps(2) infinite}
+
+/* ============ 章节通用 ============ */
+.chapter{scroll-margin-top:80px; margin-top:72px}
+.chapter-header{padding:6px 0 14px; border-bottom:1px solid var(--bg-3); margin-bottom:20px}
+.ch-no{font-size:13px; letter-spacing:3px; color:var(--accent); text-shadow:0 0 8px var(--accent)}
+.ch-title{font-size:clamp(30px,5vw,46px); margin:2px 0 4px; color:var(--accent); text-shadow:0 0 8px var(--accent), 0 0 32px color-mix(in srgb, var(--accent) 55%, transparent)}
+.ch-caret{animation:blink 1s steps(2) infinite; font-weight:400}
+.ch-sub{color:var(--text-dim); margin:0 0 12px}
+.ch-badges{display:flex; gap:8px; flex-wrap:wrap}
+.badge{
+  font-size:12px; padding:3px 10px; border-radius:99px; border:1px solid var(--bg-3);
+  color:var(--text-dim); background:var(--bg-1);
+}
+
+/* 终端演示横幅 */
+.demo-term{
+  background:linear-gradient(180deg,var(--bg-1),var(--bg-0)); border:1px solid var(--bg-3);
+  border-radius:10px; padding:14px 16px; margin:6px 0 22px; cursor:pointer;
+  box-shadow:inset 0 0 30px rgba(0,0,0,.4);
+}
+.demo-term .t-bar{display:flex; gap:6px; margin-bottom:10px}
+.demo-term .t-dot{width:10px; height:10px; border-radius:50%; opacity:.9}
+.demo-term .t-dot:nth-child(1){background:#ff5f57}
+.demo-term .t-dot:nth-child(2){background:#febc2e}
+.demo-term .t-dot:nth-child(3){background:#28c840}
+.t-line{font-size:15px; word-break:break-all}
+.t-prompt{color:var(--term-green); margin-right:8px; font-weight:700}
+.t-cmd{color:var(--text)}
+.t-cmd.done{color:var(--term-green)}
+.cursor{color:var(--accent); animation:blink .9s steps(2) infinite}
+.t-out{margin-top:8px; color:var(--text-dim); font-size:13px; white-space:pre-wrap; opacity:.35; transition:opacity .4s}
+.demo-term.done .t-out{opacity:1}
+.demo-hint{text-align:right; font-size:11px; color:var(--text-dim); margin-top:6px; opacity:.7}
+
+/* 标签页 */
+.tab-shell{margin-top:8px}
+.tab-bar{display:flex; gap:6px; flex-wrap:wrap; border-bottom:1px solid var(--bg-3); padding-bottom:8px; margin-bottom:18px}
+.tab-btn{
+  background:transparent; border:1px solid var(--bg-3); color:var(--text-dim); cursor:pointer;
+  font-family:inherit; font-size:14px; padding:7px 16px; border-radius:8px; transition:.2s;
+}
+.tab-btn:hover{color:var(--text); border-color:var(--accent)}
+.tab-btn.active{color:var(--accent); border-color:var(--accent); box-shadow:0 0 12px color-mix(in srgb, var(--accent) 40%, transparent); text-shadow:0 0 6px var(--accent)}
+.panel{display:none; animation:fadein .3s ease}
+.panel.active{display:block}
+@keyframes fadein{from{opacity:0; transform:translateY(6px)} to{opacity:1}}
+.panel-title{color:var(--accent); font-size:19px; margin-top:0; text-shadow:0 0 8px color-mix(in srgb, var(--accent) 50%, transparent)}
+.panel p{color:var(--text)}
+
+/* 流程图 */
+.flow{display:flex; flex-wrap:wrap; align-items:stretch; gap:10px; margin:18px 0}
+.flow-node{
+  flex:1 1 130px; min-height:72px; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  text-align:center; background:var(--bg-2); border:1px solid var(--bg-3); border-radius:10px;
+  padding:10px 8px; font-size:14px; font-weight:700; color:var(--text); transition:.2s;
+}
+.flow-node .fn-sub{font-size:12px; font-weight:400; color:var(--text-dim); margin-top:3px}
+.flow-node.hl{border-color:var(--accent); color:var(--accent); box-shadow:0 0 14px color-mix(in srgb, var(--accent) 45%, transparent)}
+.flow-node.warn-node{border-color:var(--warn-orange); color:var(--warn-orange)}
+.flow-arrow{align-self:center; color:var(--text-dim); font-size:18px}
+.stack{display:flex; flex-direction:column; gap:8px; margin:18px 0}
+.stack-row{display:flex; align-items:center; gap:14px; padding:10px 14px; background:var(--bg-2); border:1px solid var(--bg-3); border-radius:10px}
+.stack-row .sl{width:130px; flex-shrink:0; color:var(--accent); font-weight:700; font-size:13px}
+.stack-row .sd{color:var(--text-dim); font-size:13px}
+
+/* 事实清单 */
+.fact-list{list-style:none; padding:0; margin:16px 0; display:flex; flex-direction:column; gap:10px}
+.fact-list li{position:relative; padding:12px 14px 12px 38px; background:var(--bg-1); border:1px solid var(--bg-3); border-radius:10px}
+.fact-list li::before{
+  content:"▸"; position:absolute; left:14px; color:var(--accent); font-weight:700; text-shadow:0 0 8px var(--accent);
+}
+.fact-list b{color:var(--accent)}
+.fact-list code{background:var(--bg-2); padding:1px 6px; border-radius:4px; font-size:12px; color:var(--accent)}
+
+/* 代码块 + 折叠步骤 */
+details.cmd{background:var(--bg-1); border:1px solid var(--bg-3); border-radius:10px; margin:10px 0; overflow:hidden}
+details.cmd>summary{
+  cursor:pointer; padding:12px 16px; color:var(--text); font-weight:700; list-style:none;
+  display:flex; align-items:center; gap:8px; transition:.15s;
+}
+details.cmd>summary::-webkit-details-marker{display:none}
+details.cmd>summary::before{content:"+"; width:20px; height:20px; flex-shrink:0; display:inline-flex; align-items:center; justify-content:center; border:1px solid var(--accent); border-radius:6px; color:var(--accent); font-size:13px; transition:.2s}
+details.cmd[open]>summary::before{content:"−"}
+details.cmd>summary:hover{background:var(--bg-2)}
+.cmd-inner{padding:0 16px 14px}
+.code{position:relative; background:var(--bg-0); border:1px solid var(--bg-3); border-radius:8px; padding:12px 56px 12px 14px; margin:8px 0; overflow-x:auto}
+.code pre{margin:0; white-space:pre; font-family:inherit; font-size:13.5px; color:var(--term-green)}
+.code pre .cm{color:var(--text-dim)}
+.copy-btn{
+  position:absolute; right:8px; top:8px; font-family:inherit; font-size:11px; cursor:pointer;
+  background:var(--bg-2); color:var(--text-dim); border:1px solid var(--bg-3); border-radius:6px; padding:3px 8px; transition:.15s;
+}
+.copy-btn:hover{color:var(--accent); border-color:var(--accent)}
+.copy-btn.copied{color:var(--term-green); border-color:var(--term-green)}
+.out{margin-top:6px; font-size:12.5px; color:var(--text-dim); white-space:pre-wrap}
+.tip{margin-top:10px; padding:10px 14px; border:1px dashed var(--warn-orange); border-radius:8px; color:var(--warn-orange); font-size:13px; background:rgba(255,180,84,.06)}
+.tip.good{border-color:var(--term-green); color:var(--term-green); background:rgba(51,255,176,.06)}
+
+/* 注意事项 */
+.warn-list{display:flex; flex-direction:column; gap:10px; margin:16px 0}
+.warn{display:flex; gap:12px; padding:12px 14px; background:var(--bg-1); border:1px solid var(--bg-3); border-radius:10px}
+.warn .w-icon{flex-shrink:0; width:22px; height:22px; border-radius:6px; display:inline-flex; align-items:center; justify-content:center; font-size:13px; font-weight:700}
+.warn.warn-err .w-icon{background:rgba(255,83,112,.15); color:var(--err-red); box-shadow:0 0 8px rgba(255,83,112,.4)}
+.warn.warn-mid .w-icon{background:rgba(255,180,84,.15); color:var(--warn-orange); box-shadow:0 0 8px rgba(255,180,84,.4)}
+.warn b{color:var(--text)}
+.warn .w-desc{color:var(--text-dim); font-size:13px; margin-top:2px}
+
+/* 测验 */
+.quiz{margin:34px 0 10px; background:var(--bg-1); border:1px solid var(--bg-3); border-radius:14px; padding:20px 20px 24px}
+.quiz-title{color:var(--accent); font-size:18px; margin:0 0 14px; text-shadow:0 0 8px color-mix(in srgb, var(--accent) 50%, transparent)}
+.q-meta{font-size:12px; color:var(--text-dim); margin-bottom:6px}
+.q-text{font-size:16px; margin:0 0 14px; color:var(--text)}
+.q-opts{display:flex; flex-direction:column; gap:8px}
+.q-opt{
+  text-align:left; font-family:inherit; font-size:14px; cursor:pointer; color:var(--text);
+  background:var(--bg-2); border:1px solid var(--bg-3); border-radius:9px; padding:10px 14px; transition:.15s;
+}
+.q-opt:hover{border-color:var(--accent)}
+.q-opt.right{border-color:var(--term-green); color:var(--term-green); box-shadow:0 0 10px rgba(51,255,176,.25); cursor:default}
+.q-opt.wrong{border-color:var(--err-red); color:var(--err-red); box-shadow:0 0 10px rgba(255,83,112,.25); cursor:default}
+.q-opt.disabled{opacity:.55; cursor:default}
+.q-explain{margin-top:12px; padding:10px 14px; border-radius:8px; font-size:13px; display:none; background:var(--bg-2); border:1px solid var(--bg-3)}
+.q-explain.show{display:block}
+.q-explain .ex-label{color:var(--term-green); font-weight:700}
+.q-next{
+  margin-top:14px; font-family:inherit; font-size:14px; cursor:pointer;
+  background:transparent; border:1px solid var(--accent); color:var(--accent); border-radius:8px; padding:8px 20px;
+  transition:.2s;
+}
+.q-next:hover{box-shadow:0 0 12px color-mix(in srgb, var(--accent) 40%, transparent)}
+.q-next:disabled{opacity:.4; cursor:not-allowed}
+.q-result{text-align:center; padding:16px 0 6px}
+.qr-score{font-size:26px; font-weight:700; color:var(--accent); text-shadow:0 0 12px color-mix(in srgb, var(--accent) 60%, transparent)}
+.qr-verdict{margin:10px 0 16px; color:var(--text-dim); font-size:14px}
+
+/* 章间导航 */
+.chapter-nav{display:flex; justify-content:space-between; gap:12px; margin:26px 0 0}
+.chapter-nav a{
+  padding:9px 18px; border:1px solid var(--bg-3); border-radius:9px; color:var(--text-dim); font-size:13px; transition:.2s; background:var(--bg-1);
+}
+.chapter-nav a:hover{color:var(--accent); border-color:var(--accent); text-decoration:none; box-shadow:0 0 10px color-mix(in srgb, var(--accent) 30%, transparent)}
+
+/* 对比表 */
+.table-wrap{overflow-x:auto; border:1px solid var(--bg-3); border-radius:12px; background:var(--bg-1)}
+table.cmp{border-collapse:collapse; width:100%; min-width:900px; font-size:13px}
+table.cmp th{
+  text-align:left; padding:12px 14px; background:var(--bg-2); color:var(--accent);
+  border-bottom:1px solid var(--bg-3); white-space:nowrap; font-size:13px; text-shadow:0 0 6px color-mix(in srgb, var(--accent) 40%, transparent);
+}
+table.cmp td{padding:12px 14px; border-bottom:1px solid var(--bg-3); color:var(--text-dim); vertical-align:top}
+table.cmp tbody tr{transition:.15s}
+table.cmp tbody tr:hover{background:var(--bg-2)}
+table.cmp tbody tr:hover td{color:var(--text)}
+.cmp-name{font-weight:700; font-size:14px; white-space:nowrap}
+.cmp-slogan{margin:22px 0 8px; font-size:14px; color:var(--text)}
+.cmp-slogan span{color:var(--accent)}
+.back-top{
+  display:inline-block; margin-top:10px; padding:9px 20px; border:1px solid var(--accent); color:var(--accent);
+  border-radius:9px; font-size:13px; transition:.2s; background:transparent;
+}
+.back-top:hover{box-shadow:0 0 14px color-mix(in srgb, var(--accent) 45%, transparent); text-decoration:none}
+
+/* 页脚 */
+footer{position:relative; z-index:1; border-top:1px solid var(--bg-3); text-align:center; padding:40px 20px 46px; color:var(--text-dim)}
+footer .ascii{font-size:12px; line-height:1.4; color:var(--accent); text-shadow:0 0 8px color-mix(in srgb, var(--accent) 50%, transparent); margin:0 0 12px}
+footer p{font-size:12px; margin:6px 0 0; opacity:.75}
+
+/* 响应式 */
+@media(max-width:760px){
+  .topbar-inner{gap:8px}
+  #main-nav{margin-left:0; width:100%; order:3}
+  .flow-node{flex:1 1 100px; min-height:60px; font-size:13px}
+  .stack-row{flex-direction:column; align-items:flex-start; gap:4px}
+  .stack-row .sl{width:auto}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important; transition:none!important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ 开机动画 ============ -->
+<div id="boot-screen" title="点击跳过">
+  <div class="boot-body">
+    <pre class="boot-log"></pre>
+    <span class="boot-cursor"></span>
+  </div>
+  <div class="boot-skip">[点击任意处跳过]</div>
+</div>
+
+<!-- ============ 顶部导航 ============ -->
+<header id="topbar">
+  <div class="progress-track"><div id="progress-bar"></div></div>
+  <div class="topbar-inner">
+    <span class="brand">>_ 终端四剑客</span>
+    <nav id="main-nav">
+      <a href="#home" data-nav="home" class="active">HOME</a>
+      <a href="#ch-codex" data-nav="ch-codex"><span class="nav-no">01</span>CODEX</a>
+      <a href="#ch-claude" data-nav="ch-claude"><span class="nav-no">02</span>CLAUDE</a>
+      <a href="#ch-pi" data-nav="ch-pi"><span class="nav-no">03</span>PI</a>
+      <a href="#ch-dsh" data-nav="ch-dsh"><span class="nav-no">04</span>DSH</a>
+      <a href="#ch-compare" data-nav="ch-compare"><span class="nav-no">05</span>对比</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<!-- ============ 首页 ============ -->
+<section id="home" class="home">
+  <div class="hero-badge"># TERMINAL NATIVE AGENTS</div>
+  <h1 class="hero-title">终端四剑客<span class="glow">· 终端编码 Agent 巡礼</span></h1>
+  <p class="hero-sub">codex、Claude Code、pi、dsh —— 四个住在你终端里的 AI 程序员。<br>原理 · 教程 · 避坑 · MCP，一篇讲清。</p>
+  <div class="cards">
+    <a class="tool-card" href="#ch-codex" style="--card-accent:var(--neon-cyan)">
+      <span class="tc-name">codex</span>
+      <span class="tc-sub">OpenAI 官方 · Apache-2.0 · Rust 内核</span>
+      <span class="tc-tag">$ 审批优先 + 内核级沙箱</span>
+      <span class="tc-go">进入章节 →</span>
+    </a>
+    <a class="tool-card" href="#ch-claude" style="--card-accent:var(--neon-green)">
+      <span class="tc-name">claude</span>
+      <span class="tc-sub">Anthropic · 终端原生编码 Agent</span>
+      <span class="tc-tag">$ 工具循环 + 三层架构</span>
+      <span class="tc-go">进入章节 →</span>
+    </a>
+    <a class="tool-card" href="#ch-pi" style="--card-accent:var(--neon-purple)">
+      <span class="tc-name">pi</span>
+      <span class="tc-sub">earendil-works 开源 · MIT</span>
+      <span class="tc-tag">$ 极简 ReAct + 强扩展</span>
+      <span class="tc-go">进入章节 →</span>
+    </a>
+    <a class="tool-card" href="#ch-dsh" style="--card-accent:var(--neon-orange)">
+      <span class="tc-name">dsh</span>
+      <span class="tc-sub">DeepSeek Harness · MIT · 开发者预览</span>
+      <span class="tc-tag">$ 一切皆插件</span>
+      <span class="tc-go">进入章节 →</span>
+    </a>
+  </div>
+  <div class="hero-hint">▼ 往下滚动，或点击卡片直达章节</div>
+</section>
+
+<!-- ============ 第 1 章 codex ============ -->
+<section id="ch-codex" class="chapter ch-codex">
+  <header class="chapter-header">
+    <div class="ch-no">CH 01 / CODEX</div>
+    <h2 class="ch-title">codex<span class="ch-caret">_</span></h2>
+    <p class="ch-sub">OpenAI 官方出品的终端编码 Agent —— 先给你看 diff，再动你的代码。</p>
+    <div class="ch-badges">
+      <span class="badge">Apache-2.0</span><span class="badge">Rust 内核</span><span class="badge">上手 ★★☆☆☆</span><span class="badge">适合: 批量重构 / CI</span>
+    </div>
+  </header>
+
+  <div class="demo-term">
+    <div class="t-bar"><span class="t-dot"></span><span class="t-dot"></span><span class="t-dot"></span></div>
+    <div class="t-line"><span class="t-prompt">$</span><span class="t-cmd" data-type-text="codex &quot;帮我重构用户模块，并补上测试&quot;"></span><span class="cursor">▊</span></div>
+    <div class="t-out">// 正在读取项目结构… 找到 47 个文件 → 生成 diff → 等待你审批…</div>
+    <div class="demo-hint">[ 点击横幅可跳过打字动画 ]</div>
+  </div>
+
+  <div class="tab-shell">
+    <nav class="tab-bar" role="tablist" aria-label="codex 章节板块">
+      <button class="tab-btn active" data-tab="how" role="tab">▍原理</button>
+      <button class="tab-btn" data-tab="guide" role="tab">▍使用教程</button>
+      <button class="tab-btn" data-tab="warn" role="tab">▍注意事项</button>
+      <button class="tab-btn" data-tab="ext" role="tab">▍插件 · 技能 · MCP</button>
+    </nav>
+    <div class="tab-panels">
+      <div class="panel active" data-panel="how" role="tabpanel">
+        <h3 class="panel-title">它怎么工作：三阶段 Agent 循环</h3>
+        <div class="flow">
+          <div class="flow-node">你输入任务<span class="fn-sub">自然语言描述目标</span></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node hl">READ<span class="fn-sub">扫描项目 · 定位文件</span></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node hl">PLAN<span class="fn-sub">出方案 · 生成 diff</span></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node warn-node">你审批<span class="fn-sub">approval-first 关键节点</span></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node hl">EXECUTE<span class="fn-sub">改文件 · 跑测试</span></div>
+        </div>
+        <ul class="fact-list">
+          <li><b>Read → Plan → Execute</b>：codex 先读你的代码库、找到相关文件，再规划改动，<b>先展示 diff</b>，等你确认后才动手写。</li>
+          <li><b>审批优先（approval-first）</b>：默认每个动作都要确认 —— 这是它和「全自动 agent」最大的区别，也是安全感的来源。</li>
+          <li><b>内核级沙箱</b>：macOS 用 <b>Seatbelt</b>、Linux 用 <b>bubblewrap</b>，从操作系统层隔离，默认封禁外网。</li>
+          <li><b>Rust 内核</b>：2025.4 发布、2025.6 用 Rust 重写 —— 内存约 <b>80MB</b>，token 处理 <b>240+/s</b>，启动快、适合批量。</li>
+        </ul>
+      </div>
+      <div class="panel" data-panel="guide" role="tabpanel">
+        <h3 class="panel-title">从安装到第一条任务</h3>
+        <details class="cmd" open>
+          <summary>步骤 1 · 安装</summary>
+          <div class="cmd-inner">
+            <div class="code"><button class="copy-btn" data-copy="npm install -g @openai/codex">复制</button><pre><code>npm install -g @openai/codex</code></pre></div>
+            <div class="out"># 需要 Node.js 18+，装完用 codex --version 验证</div>
+          </div>
+        </details>
+        <details class="cmd">
+          <summary>步骤 2 · 认证（二选一）</summary>
+          <div class="cmd-inner">
+            <div class="code"><button class="copy-btn" data-copy="codex auth">复制</button><pre><code>codex auth</code></pre></div>
+            <div class="out"># 方式 A：ChatGPT Plus/Pro 账号浏览器登录，计入订阅额度，最省心</div>
+            <div class="code"><button class="copy-btn" data-copy="export OPENAI_API_KEY=sk-...">复制</button><pre><code>export OPENAI_API_KEY=sk-...</code></pre></div>
+            <div class="out"># 方式 B：API key，按 token 计费</div>
+          </div>
+        </details>
+        <details class="cmd">
+          <summary>步骤 3 · 第一条任务</summary>
+          <div class="cmd-inner">
+            <div class="code"><button class="copy-btn" data-copy="codex &quot;给注册接口加上邮箱格式校验，非法返回 400&quot;">复制</button><pre><code>codex "给注册接口加上邮箱格式校验，非法返回 400"</code></pre></div>
+            <div class="out"># 先读项目 → 出方案 → 展示 diff → 你审批 → 落地</div>
+          </div>
+        </details>
+        <details class="cmd">
+          <summary>步骤 4 · 常用姿势</summary>
+          <div class="cmd-inner">
+            <div class="code"><button class="copy-btn" data-copy="codex --yes &quot;给 src/utils/ 下所有函数加 JSDoc&quot;">复制</button><pre><code>codex --yes "给 src/utils/ 下所有函数加 JSDoc"</code></pre></div>
+            <div class="out"># --yes 跳过确认，适合脚本 / CI 一次性任务</div>
+            <div class="code"><button class="copy-btn" data-copy="codex --context src/api/users.ts &quot;给这个文件写集成测试&quot;">复制</button><pre><code>codex --context src/api/users.ts "给这个文件写集成测试"</code></pre></div>
+            <div class="out"># --context 指定要参考的文件，大项目防迷路</div>
+            <div class="code"><button class="copy-btn" data-copy="cat error.log | codex &quot;分析这个报错并给出修复建议&quot;">复制</button><pre><code>cat error.log | codex "分析这个报错并给出修复建议"</code></pre></div>
+            <div class="out"># 管道把上下文喂给它</div>
+          </div>
+        </details>
+        <details class="cmd">
+          <summary>步骤 5 · 三种审批模式</summary>
+          <div class="cmd-inner">
+            <div class="code"><button class="copy-btn" data-copy="codex --approval-mode full-auto &quot;重构所有测试改用 vitest&quot;">复制</button><pre><code>codex --approval-mode full-auto "重构所有测试改用 vitest"</code></pre></div>
+            <div class="out"># suggest（默认）全部要确认 · auto-edit 自动编辑但跑命令要确认 · full-auto 全自动（适合 CI）</div>
+          </div>
+        </details>
+        <div class="tip">💡 首次使用先留在 suggest 模式，摸清它的行为再考虑升级自主权。</div>
+      </div>
+      <div class="panel" data-panel="warn" role="tabpanel">
+        <h3 class="panel-title">避坑清单</h3>
+        <div class="warn-list">
+          <div class="warn warn-err"><span class="w-icon">✖</span><div><b>默认沙箱禁外网</b><div class="w-desc">需要联网的操作（下载依赖、调外部 API）默认被挡，需显式放行。</div></div></div>
+          <div class="warn warn-mid"><span class="w-icon">⚠</span><div><b>代码质量盲测中 Claude Code 更胜</b><div class="w-desc">codex 强在快和便宜，追求复杂推理质量时它不一定是最优选。</div></div></div>
+          <div class="warn warn-err"><span class="w-icon">✖</span><div><b>full-auto 风险高</b><div class="w-desc">全自动模式适合 CI 和隔离分支，别在手边实验项目上乱开。</div></div></div>
+          <div class="warn warn-mid"><span class="w-icon">⚠</span><div><b>审批模式选错 = 误改文件</b><div class="w-desc">不熟悉时保持 suggest，让每个 diff 过你的眼睛。</div></div></div>
+        </div>
+      </div>
+      <div class="panel" data-panel="ext" role="tabpanel">
+        <h3 class="panel-title">原生 MCP，把外部工具接进来</h3>
+        <p>codex 原生支持 MCP（Model Context Protocol），可以在全局配置里声明服务器：</p>
+        <div class="code"><button class="copy-btn" data-copy="[mcp_servers.filesystem]
+command = &quot;npx&quot;
+args = [&quot;-y&quot;, &quot;@modelcontextprotocol/server-filesystem&quot;, &quot;/path/to/allowed/dir&quot;]">复制</button><pre><code><span class="cm"># ~/.codex/config.toml</span>
+[mcp_servers.filesystem]
+command = "npx"
+args = ["-y", "@modelcontextprotocol/server-filesystem", "/path/to/allowed/dir"]</code></pre></div>
+        <p>或者用命令直接添加：</p>
+        <div class="code"><button class="copy-btn" data-copy="codex mcp add filesystem npx -y @modelcontextprotocol/server-filesystem /path/to/dir">复制</button><pre><code>codex mcp add filesystem npx -y @modelcontextprotocol/server-filesystem /path/to/dir</code></pre></div>
+        <div class="tip good">💡 每个 MCP server 支持 command / args / startup_timeout_sec / tool_timeout_sec / enabled 等配置。</div>
+        <div class="tip">⚠ 项目级 .codex/config.toml 只在 trusted projects（受信任项目）中生效。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="quiz" data-ch="codex">
+    <h3 class="quiz-title">[ 章节测验 ] 答对越多，离「人剑合一」越近</h3>
+    <div class="quiz-body"></div>
+  </div>
+
+  <nav class="chapter-nav">
+    <a class="cn-prev" href="#home">← HOME</a>
+    <a class="cn-next" href="#ch-claude">下一章: claude →</a>
+  </nav>
+</section>
+<!-- ============ 第 2 章 claude ============ -->
+<section id="ch-claude" class="chapter ch-claude">
+  <header class="chapter-header">
+    <div class="ch-no">CH 02 / CLAUDE</div>
+    <h2 class="ch-title">Claude Code<span class="ch-caret">_</span></h2>
+    <p class="ch-sub">Anthropic 的终端原生编码 Agent —— 读、想、改、验证，循环往复直到搞定。</p>
+    <div class="ch-badges">
+      <span class="badge">Anthropic</span><span class="badge">三层架构</span><span class="badge">上手 ★★☆☆☆</span><span class="badge">适合: 复杂架构 / 精细 debug</span>
+    </div>
+  </header>
+
+  <div class="demo-term">
+    <div class="t-bar"><span class="t-dot"></span><span class="t-dot"></span><span class="t-dot"></span></div>
+    <div class="t-line"><span class="t-prompt">$</span><span class="t-cmd" data-type-text="claude -p &quot;这个仓库是干嘛的？用 3 句话讲清&quot;"></span><span class="cursor">▊</span></div>
+    <div class="t-out">// 读 README → 分析架构 → 3 句话回答你…</div>
+    <div class="demo-hint">[ 点击横幅可跳过打字动画 ]</div>
+  </div>
+
+  <div class="tab-shell">
+    <nav class="tab-bar" role="tablist" aria-label="claude 章节板块">
+      <button class="tab-btn active" data-tab="how" role="tab">▍原理</button>
+      <button class="tab-btn" data-tab="guide" role="tab">▍使用教程</button>
+      <button class="tab-btn" data-tab="warn" role="tab">▍注意事项</button>
+      <button class="tab-btn" data-tab="ext" role="tab">▍插件 · 技能 · MCP</button>
+    </nav>
+    <div class="tab-panels">
+      <div class="panel active" data-panel="how" role="tabpanel">
+        <h3 class="panel-title">工具驱动的「读 → 想 → 改 → 验证」循环</h3>
+        <div class="flow">
+          <div class="flow-node hl">读<span class="fn-sub">Read / Grep / Glob</span></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node hl">想<span class="fn-sub">理解上下文</span></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node hl">改<span class="fn-sub">Edit 精确编辑</span></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node hl">验证<span class="fn-sub">Bash 跑测试</span></div>
+          <div class="flow-arrow">↺</div>
+          <div class="flow-node">迭代<span class="fn-sub">失败就接着改</span></div>
+        </div>
+        <h3 class="panel-title" style="margin-top:24px">三层架构：把上下文当资源管</h3>
+        <div class="stack">
+          <div class="stack-row"><span class="sl">Core Layer</span><span class="sd">主对话上下文，共享 200K token 窗口 —— 你直接对话的地方</span></div>
+          <div class="stack-row"><span class="sl">Delegation Layer</span><span class="sd">子代理（最多 10 个并行），隔离上下文做探索，只把结论带回主对话</span></div>
+          <div class="stack-row"><span class="sl">Extension Layer</span><span class="sd">MCP · Hooks · Skills · Plugins —— 外挂能力层</span></div>
+        </div>
+        <ul class="fact-list">
+          <li><b>不是补全，是 Agent</b>：它能读文件、写文件、跑命令、看测试结果，失败了自己迭代。</li>
+          <li><b>上下文是共享的</b>：读文件、跑命令都会消耗主对话的 200K 窗口，越用越满质量越差、越贵。</li>
+          <li><b>子代理隔离</b>：探索性工作交给子代理，主对话只收结论 —— 这是高级用法的核心。</li>
+        </ul>
+      </div>
+      <div class="panel" data-panel="guide" role="tabpanel">
+        <h3 class="panel-title">从安装到第一条任务</h3>
+        <details class="cmd" open>
+          <summary>步骤 1 · 安装（二选一）</summary>
+          <div class="cmd-inner">
+            <div class="code"><button class="copy-btn" data-copy="npm install -g @anthropic-ai/claude-code">复制</button><pre><code>npm install -g @anthropic-ai/claude-code</code></pre></div>
+            <div class="out"># 需要 Node.js 18+</div>
+            <div class="code"><button class="copy-btn" data-copy="curl -fsSL https://claude.ai/install.sh | bash">复制</button><pre><code>curl -fsSL https://claude.ai/install.sh | bash</code></pre></div>
+            <div class="out"># 原生安装脚本，macOS / Linux 推荐</div>
+          </div>
+        </details>
+        <details class="cmd">
+          <summary>步骤 2 · 认证</summary>
+          <div class="cmd-inner">
+            <div class="code"><button class="copy-btn" data-copy="export ANTHROPIC_API_KEY=sk-ant-...">复制</button><pre><code>export ANTHROPIC_API_KEY=sk-ant-...</code></pre></div>
+            <div class="out"># 加到 ~/.bashrc 或 ~/.zshrc 里长期生效</div>
+          </div>
+        </details>
+        <details class="cmd">
+          <summary>步骤 3 · 进入项目开干</summary>
+          <div class="cmd-inner">
+            <div class="code"><button class="copy-btn" data-copy="claude">复制</button><pre><code>claude</code></pre></div>
+            <div class="out"># 交互 REPL 模式，像聊天一样干活</div>
+            <div class="code"><button class="copy-btn" data-copy="claude -p &quot;给 src/utils.ts 所有函数用 Vitest 补单测&quot;">复制</button><pre><code>claude -p "给 src/utils.ts 所有函数用 Vitest 补单测"</code></pre></div>
+            <div class="out"># 一次性任务，跑完即退，可接入 CI / Makefile</div>
+            <div class="code"><button class="copy-btn" data-copy="claude --continue">复制</button><pre><code>claude --continue</code></pre></div>
+            <div class="out"># 恢复上次会话，接着聊</div>
+            <div class="code"><button class="copy-btn" data-copy="claude --model opus &quot;这个架构怎么设计更稳&quot;">复制</button><pre><code>claude --model opus "这个架构怎么设计更稳"</code></pre></div>
+            <div class="out"># 硬任务切 opus，日常用 sonnet / haiku 省钱</div>
+          </div>
+        </details>
+        <details class="cmd">
+          <summary>步骤 4 · 常用斜杠命令</summary>
+          <div class="cmd-inner">
+            <div class="code"><button class="copy-btn" data-copy="/init   # 生成 CLAUDE.md 项目上下文
+/compact  # 压缩会话上下文，省 token
+/clear    # 清空对话">复制</button><pre><code>/init   # 生成 CLAUDE.md 项目上下文
+/compact  # 压缩会话上下文，省 token
+/clear    # 清空对话</code></pre></div>
+            <div class="out"># CLAUDE.md 每次会话自动加载，把项目约定写进去一劳永逸</div>
+          </div>
+        </details>
+      </div>
+      <div class="panel" data-panel="warn" role="tabpanel">
+        <h3 class="panel-title">避坑清单</h3>
+        <div class="warn-list">
+          <div class="warn warn-err"><span class="w-icon">✖</span><div><b>上下文会「越用越满」</b><div class="w-desc">200K 窗口被读完的文件、跑过的命令占满后，它记不住之前的决定，质量下滑。</div></div></div>
+          <div class="warn warn-mid"><span class="w-icon">⚠</span><div><b>长会话 = 账单飙升</b><div class="w-desc">每轮请求都要把上下文全量发给模型，按 token 计费，长会话很烧钱。</div></div></div>
+          <div class="warn warn-mid"><span class="w-icon">⚠</span><div><b>探索别占主上下文</b><div class="w-desc">把搜索/读文件这类脏活交给子代理（Delegation Layer），主对话只留结论。</div></div></div>
+          <div class="warn warn-mid"><span class="w-icon">⚠</span><div><b>别在超大 monorepo 裸跑</b><div class="w-desc">用 CLAUDE.md 声明范围 + 子代理分流，否则 context 秒满。</div></div></div>
+        </div>
+      </div>
+      <div class="panel" data-panel="ext" role="tabpanel">
+        <h3 class="panel-title">四层扩展体系</h3>
+        <div class="stack">
+          <div class="stack-row"><span class="sl">MCP</span><span class="sd">claude mcp add 命令接入 300+ 外部服务（Git、数据库、Slack…）</span></div>
+          <div class="stack-row"><span class="sl">Skills</span><span class="sd">SKILL.md 声明的领域专家能力，Claude 会自动按需应用</span></div>
+          <div class="stack-row"><span class="sl">Plugins</span><span class="sd">把 MCP + Hooks + Skills 打包成插件分发，装好即用</span></div>
+          <div class="stack-row"><span class="sl">Hooks</span><span class="sd">动作前后确定性执行的 shell 钩子，做自动化 / 审计</span></div>
+          <div class="stack-row"><span class="sl">Subagents</span><span class="sd">Task 工具编排子代理，隔离上下文并行干活</span></div>
+        </div>
+        <div class="code"><button class="copy-btn" data-copy="claude mcp add postgres --connection &quot;postgres://...&quot;">复制</button><pre><code>claude mcp add postgres --connection "postgres://..."</code></pre></div>
+        <div class="tip good">💡 项目根放一份 CLAUDE.md，把架构、约定、测试命令写进去，每次会话自动加载。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="quiz" data-ch="claude">
+    <h3 class="quiz-title">[ 章节测验 ] 答对越多，离「人剑合一」越近</h3>
+    <div class="quiz-body"></div>
+  </div>
+
+  <nav class="chapter-nav">
+    <a class="cn-prev" href="#ch-codex">← 上一章: codex</a>
+    <a class="cn-next" href="#ch-pi">下一章: pi →</a>
+  </nav>
+</section>
+<!-- ============ 第 3 章 pi ============ -->
+<section id="ch-pi" class="chapter ch-pi">
+  <header class="chapter-header">
+    <div class="ch-no">CH 03 / PI</div>
+    <h2 class="ch-title">pi<span class="ch-caret">_</span></h2>
+    <p class="ch-sub">earendil-works 开源极简编码 Agent —— 内核只有 4 个工具，其他全靠「长出来」。</p>
+    <div class="ch-badges">
+      <span class="badge">MIT 开源</span><span class="badge">ReAct 内核</span><span class="badge">上手 ★★★☆☆</span><span class="badge">适合: 想掌控一切的高级玩家</span>
+    </div>
+  </header>
+
+  <div class="demo-term">
+    <div class="t-bar"><span class="t-dot"></span><span class="t-dot"></span><span class="t-dot"></span></div>
+    <div class="t-line"><span class="t-prompt">$</span><span class="t-cmd" data-type-text="pi -p &quot;总结一下这个项目用了哪些技术栈&quot;"></span><span class="cursor">▊</span></div>
+    <div class="t-out">// 读取项目 → 定位配置文件 → 输出技术栈清单…</div>
+    <div class="demo-hint">[ 点击横幅可跳过打字动画 ]</div>
+  </div>
+
+  <div class="tab-shell">
+    <nav class="tab-bar" role="tablist" aria-label="pi 章节板块">
+      <button class="tab-btn active" data-tab="how" role="tab">▍原理</button>
+      <button class="tab-btn" data-tab="guide" role="tab">▍使用教程</button>
+      <button class="tab-btn" data-tab="warn" role="tab">▍注意事项</button>
+      <button class="tab-btn" data-tab="ext" role="tab">▍插件 · 技能 · MCP</button>
+    </nav>
+    <div class="tab-panels">
+      <div class="panel active" data-panel="how" role="tabpanel">
+        <h3 class="panel-title">内核就十几行 ReAct 循环</h3>
+        <div class="flow">
+          <div class="flow-node hl">调模型<span class="fn-sub">发出请求</span></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node hl">要工具？<span class="fn-sub">stopReason 判断</span></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node hl">执行工具<span class="fn-sub">read / write / edit / bash</span></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node hl">结果塞回<span class="fn-sub">拼进上下文</span></div>
+          <div class="flow-arrow">↺</div>
+          <div class="flow-node">再调模型<span class="fn-sub">直到不再调工具</span></div>
+        </div>
+        <ul class="fact-list">
+          <li><b>极简内核</b>：核心内置工具只有 <code>read / write / edit / bash</code> 四个，系统提示词不到 <b>1000 token</b>。</li>
+          <li><b>Turn 与 Trace</b>：一次模型调用 + 触发的工具执行 = 一个 <b>Turn</b>；一整轮完整任务 = 一个 <b>Trace</b>。循环靠 <b>stopReason</b> 驱动。</li>
+          <li><b>统一模型层（pi-ai）</b>：30+ 家模型供应商统一成 <b>12 种流式事件</b>，想换模型改一行配置。</li>
+          <li><b>能力全靠外挂</b>：extensions / skills / prompt templates / themes 都能装，甚至可自改源码 —— OpenClaw 的底层引擎就是它。</li>
+        </ul>
+      </div>
+      <div class="panel" data-panel="guide" role="tabpanel">
+        <h3 class="panel-title">从安装到第一条任务</h3>
+        <details class="cmd" open>
+          <summary>步骤 1 · 安装（二选一）</summary>
+          <div class="cmd-inner">
+            <div class="code"><button class="copy-btn" data-copy="npm install -g @mariozechner/pi-coding-agent">复制</button><pre><code>npm install -g @mariozechner/pi-coding-agent</code></pre></div>
+            <div class="out"># npm 全局安装</div>
+            <div class="code"><button class="copy-btn" data-copy="curl -fsSL https://pi.dev/install.sh | sh">复制</button><pre><code>curl -fsSL https://pi.dev/install.sh | sh</code></pre></div>
+            <div class="out"># 一键脚本（macOS / Linux）</div>
+          </div>
+        </details>
+        <details class="cmd">
+          <summary>步骤 2 · 配置模型</summary>
+          <div class="cmd-inner">
+            <div class="code"><button class="copy-btn" data-copy="pi /login">复制</button><pre><code>pi /login</code></pre></div>
+            <div class="out"># 或用 API key：export ANTHROPIC_API_KEY=... 后直接 pi</div>
+            <div class="code"><button class="copy-btn" data-copy="nano ~/.pi/agent/models.json">复制</button><pre><code><span class="cm"># 编辑 ~/.pi/agent/models.json</span>
+<span class="cm"># 支持 OpenAI / Anthropic / Google / Ollama 等任意 provider</span></code></pre></div>
+          </div>
+        </details>
+        <details class="cmd">
+          <summary>步骤 3 · 开干</summary>
+          <div class="cmd-inner">
+            <div class="code"><button class="copy-btn" data-copy="pi">复制</button><pre><code>pi</code></pre></div>
+            <div class="out"># 交互模式</div>
+            <div class="code"><button class="copy-btn" data-copy="pi -p &quot;总结这个代码库&quot;">复制</button><pre><code>pi -p "总结这个代码库"</code></pre></div>
+            <div class="out"># 一次性执行，输出到 stdout（脚本友好）</div>
+            <div class="code"><button class="copy-btn" data-copy="pi --mode json   # 结构化 JSON 事件流
+pi --mode rpc    # RPC 远程调用
+pi --mode sdk    # SDK 集成">复制</button><pre><code>pi --mode json   # 结构化 JSON 事件流
+pi --mode rpc    # RPC 远程调用
+pi --mode sdk    # SDK 集成</code></pre></div>
+            <div class="out"># 多种运行模式，喂给自动化管道很顺手</div>
+            <div class="code"><button class="copy-btn" data-copy="pi init">复制</button><pre><code>pi init   # 初始化项目配置 .pi/</code></pre></div>
+          </div>
+        </details>
+        <details class="cmd">
+          <summary>步骤 4 · 常用斜杠命令</summary>
+          <div class="cmd-inner">
+            <div class="code"><button class="copy-btn" data-copy="/login    # 登录
+/model    # 切换模型
+/resume   # 恢复会话
+/reload   # 重载扩展/配置
+/compact  # 压缩上下文
+/fork     # 分支会话
+/tree     # 查看目录树">复制</button><pre><code>/login    # 登录
+/model    # 切换模型
+/resume   # 恢复会话
+/reload   # 重载扩展/配置
+/compact  # 压缩上下文
+/fork     # 分支会话
+/tree     # 查看目录树</code></pre></div>
+          </div>
+        </details>
+      </div>
+      <div class="panel" data-panel="warn" role="tabpanel">
+        <h3 class="panel-title">避坑清单</h3>
+        <div class="warn-list">
+          <div class="warn warn-err"><span class="w-icon">✖</span><div><b>GLM Coding Plan 套餐不支持 pi</b><div class="w-desc">别用 GLM 编程套餐的钱包去充 pi，认准它支持的 provider 列表。</div></div></div>
+          <div class="warn warn-mid"><span class="w-icon">⚠</span><div><b>极简 = 学习门槛</b><div class="w-desc">不预设子代理 / 计划模式，很多东西要自己装扩展 —— 适合想掌控一切的高级用户。</div></div></div>
+          <div class="warn warn-mid"><span class="w-icon">⚠</span><div><b>生态相对年轻</b><div class="w-desc">社区扩展包在快速涌现，遇到坑时文档可能还跟不上。</div></div></div>
+          <div class="warn warn-mid"><span class="w-icon">⚠</span><div><b>扩展 API 在演进</b><div class="w-desc">写扩展前先看对应版本的文档，别照着旧示例抄。</div></div></div>
+        </div>
+      </div>
+      <div class="panel" data-panel="ext" role="tabpanel">
+        <h3 class="panel-title">扩展体系：能力全靠「长出来」</h3>
+        <div class="code"><button class="copy-btn" data-copy="// ~/.pi/agent/extensions/minimal-footer.ts
+export default function (api: ExtensionAPI) {
+  api.on('session_start', () => {
+    console.log('🟢 Agent 已启动')
+  })
+}">复制</button><pre><code><span class="cm">// ~/.pi/agent/extensions/minimal-footer.ts</span>
+export default function (api: ExtensionAPI) {
+  api.on('session_start', () => {
+    console.log('🟢 Agent 已启动')
+  })
+}
+<span class="cm"># 放进目录 → /reload → 生效</span></code></pre></div>
+        <ul class="fact-list">
+          <li><b>Extensions</b>：TypeScript 插件，放 <code>~/.pi/agent/extensions/</code>，<b>/reload</b> 后生效。</li>
+          <li><b>Skills</b>：可复用的提示模板 + 工具组合，打包成技能包安装。</li>
+          <li><b>Prompt templates / Themes</b>：提示词模板和主题皮肤，都能定制。</li>
+          <li><b>Pi 包</b>：以上所有组件打包，通过 npm / git 分享给社区。</li>
+          <li><b>会话文件</b>：持久化在 <code>~/.pi/agent/sessions/</code>，可恢复、可分支。</li>
+        </ul>
+        <div class="tip good">💡 上下文文件优先级：~/.pi/agent/AGENTS.md → 父目录链 AGENTS.md → 当前目录 AGENTS.md，且兼容读取 CLAUDE.md。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="quiz" data-ch="pi">
+    <h3 class="quiz-title">[ 章节测验 ] 答对越多，离「人剑合一」越近</h3>
+    <div class="quiz-body"></div>
+  </div>
+
+  <nav class="chapter-nav">
+    <a class="cn-prev" href="#ch-claude">← 上一章: claude</a>
+    <a class="cn-next" href="#ch-dsh">下一章: dsh →</a>
+  </nav>
+</section>
+<!-- ============ 第 4 章 dsh ============ -->
+<section id="ch-dsh" class="chapter ch-dsh">
+  <header class="chapter-header">
+    <div class="ch-no">CH 04 / DSH</div>
+    <h2 class="ch-title">DeepSeek Harness<span class="ch-caret">_</span></h2>
+    <p class="ch-sub">DeepSeek 开源的 Agent 运行时 —— 「一切皆插件」，连 agent 循环本身都能替换。</p>
+    <div class="ch-badges">
+      <span class="badge">MIT 开源</span><span class="badge">developer preview</span><span class="badge">上手 ★★★★☆</span><span class="badge">适合: 研究 Agent 架构者</span>
+    </div>
+  </header>
+
+  <div class="demo-term">
+    <div class="t-bar"><span class="t-dot"></span><span class="t-dot"></span><span class="t-dot"></span></div>
+    <div class="t-line"><span class="t-prompt">$</span><span class="t-cmd" data-type-text="npx @deepseek-ai/dsh web"></span><span class="cursor">▊</span></div>
+    <div class="t-out">// 正在启动 Web UI @ http://127.0.0.1:3080 …</div>
+    <div class="demo-hint">[ 点击横幅可跳过打字动画 ]</div>
+  </div>
+
+  <div class="tab-shell">
+    <nav class="tab-bar" role="tablist" aria-label="dsh 章节板块">
+      <button class="tab-btn active" data-tab="how" role="tab">▍原理</button>
+      <button class="tab-btn" data-tab="guide" role="tab">▍使用教程</button>
+      <button class="tab-btn" data-tab="warn" role="tab">▍注意事项</button>
+      <button class="tab-btn" data-tab="ext" role="tab">▍插件 · 技能 · MCP</button>
+    </nav>
+    <div class="tab-panels">
+      <div class="panel active" data-panel="how" role="tabpanel">
+        <h3 class="panel-title">「一切皆插件」的 Cordis 插件树</h3>
+        <div class="stack">
+          <div class="stack-row"><span class="sl">Profile</span><span class="sd">命名的运行组合（web / headless），决定装哪些 bundle</span></div>
+          <div class="stack-row"><span class="sl">Bundle</span><span class="sd">一组 Cordis 配置 + 代码，如 dsh-base / dsh-web-app</span></div>
+          <div class="stack-row"><span class="sl">Plugin</span><span class="sd">贡献服务、类型化事件、可逆副作用 —— 没有特权核心</span></div>
+        </div>
+        <ul class="fact-list">
+          <li><b>一切皆插件</b>：模型适配器、工具注册表、会话日志、甚至 <b>agent 循环</b>本身都能替换 —— 没有特权核心需要打补丁。</li>
+          <li><b>基于 Cordis</b>：元框架提供依赖注入 + 类型化事件 + 可逆副作用，插上即用、卸载即撤销。</li>
+          <li><b>turn / step 模型</b>：一个 <b>step</b> = 一次模型请求 + 触发的工具调用；一个 <b>turn</b> 可含多个 step，直到无活可干。</li>
+          <li><b>会话日志是唯一事实来源</b>：「模型可见的必须可从日志重建」—— 支持 fork、resume、回放。</li>
+          <li><b>体量</b>：约 <b>80 个插件</b>目录、<b>53 个内置工具</b>。</li>
+        </ul>
+      </div>
+      <div class="panel" data-panel="guide" role="tabpanel">
+        <h3 class="panel-title">从一条命令到 Web UI</h3>
+        <details class="cmd" open>
+          <summary>步骤 1 · 最快启动（Web UI）</summary>
+          <div class="cmd-inner">
+            <div class="code"><button class="copy-btn" data-copy="npx @deepseek-ai/dsh web">复制</button><pre><code>npx @deepseek-ai/dsh web</code></pre></div>
+            <div class="out"># 默认 http://127.0.0.1:3080</div>
+          </div>
+        </details>
+        <details class="cmd">
+          <summary>步骤 2 · 源码构建</summary>
+          <div class="cmd-inner">
+            <div class="code"><button class="copy-btn" data-copy="git clone https://github.com/deepseek-ai/deepseek-harness.git&#10;cd deepseek-harness&#10;pnpm install&#10;pnpm run build&#10;pnpm dsh web">复制</button><pre><code>git clone https://github.com/deepseek-ai/deepseek-harness.git
+cd deepseek-harness
+pnpm install
+pnpm run build
+pnpm dsh web</code></pre></div>
+            <div class="out"># 需要 Node.js 22+ / Corepack 的 pnpm</div>
+          </div>
+        </details>
+        <details class="cmd">
+          <summary>步骤 3 · 了解装配了什么</summary>
+          <div class="cmd-inner">
+            <div class="code"><button class="copy-btn" data-copy="dsh --profile web --dump-config">复制</button><pre><code>dsh --profile web --dump-config</code></pre></div>
+            <div class="out"># 打印实际启动的插件树 —— 动手前先看看机器要跑什么</div>
+          </div>
+        </details>
+        <details class="cmd">
+          <summary>步骤 4 · 运行模式</summary>
+          <div class="cmd-inner">
+            <div class="code"><button class="copy-btn" data-copy="Standard   # 完整工具套件
+PTC        # 编程式工具调用（模型生成代码编排多轮工具）
+Minimal    # 只留 shell + 文件编辑，最小验证
+Creation   # 研究运行环境，手搓新模式">复制</button><pre><code>Standard   # 完整工具套件
+PTC        # 编程式工具调用（模型生成代码编排多轮工具）
+Minimal    # 只留 shell + 文件编辑，最小验证
+Creation   # 研究运行环境，手搓新模式</code></pre></div>
+          </div>
+        </details>
+      </div>
+      <div class="panel" data-panel="warn" role="tabpanel">
+        <h3 class="panel-title">避坑清单</h3>
+        <div class="warn-list">
+          <div class="warn warn-err"><span class="w-icon">✖</span><div><b>明示会有破坏性变更</b><div class="w-desc">官方直接标注 developer preview：API 和配置会快速变化，按 v0.x 对待。</div></div></div>
+          <div class="warn warn-err"><span class="w-icon">✖</span><div><b>别当生产标准</b><div class="w-desc">现在适合评估、写插件、跑实验，不适合压上核心生产链路。</div></div></div>
+          <div class="warn warn-mid"><span class="w-icon">⚠</span><div><b>上手门槛偏高</b><div class="w-desc">要理解 profile / bundle / 插件树 的概念才玩得转。</div></div></div>
+          <div class="warn warn-mid"><span class="w-icon">⚠</span><div><b>默认沙箱只读</b><div class="w-desc">sandbox-policy 默认 workspace 只读，别惊讶于「不能写文件」。</div></div></div>
+        </div>
+      </div>
+      <div class="panel" data-panel="ext" role="tabpanel">
+        <h3 class="panel-title">接入模型与扩展点</h3>
+        <p>模型支持 <b>DeepSeek</b> + catalog providers + OpenAI-compatible 自定义端点（可接本地模型）：</p>
+        <div class="code"><button class="copy-btn" data-copy="plugins:
+  llm-deepseek:
+    apiKeyEnv: DEEPSEEK_API_KEY
+    baseURL: https://api.deepseek.com
+    thinking: enabled">复制</button><pre><code><span class="cm"># cordis.yml 片段</span>
+plugins:
+  llm-deepseek:
+    apiKeyEnv: DEEPSEEK_API_KEY
+    baseURL: https://api.deepseek.com
+    thinking: enabled</code></pre></div>
+        <ul class="fact-list">
+          <li><b>扩展点 = 事件系统</b>：模型适配器、工具注册表、会话日志、agent 循环都可插拔替换。</li>
+          <li><b>会话即制品</b>：Trajectory 视图可回放、分支、续跑 —— 调试 agent 行为的好工具。</li>
+          <li><b>可接本地模型</b>：用自定义 baseURL + 模型定义走 OpenAI-compatible 协议。</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="quiz" data-ch="dsh">
+    <h3 class="quiz-title">[ 章节测验 ] 答对越多，离「人剑合一」越近</h3>
+    <div class="quiz-body"></div>
+  </div>
+
+  <nav class="chapter-nav">
+    <a class="cn-prev" href="#ch-pi">← 上一章: pi</a>
+    <a class="cn-next" href="#ch-compare">下一章: 四剑客对比 →</a>
+  </nav>
+</section>
+<!-- ============ 第 5 章 对比 ============ -->
+<section id="ch-compare" class="chapter ch-compare">
+  <header class="chapter-header">
+    <div class="ch-no">CH 05 / COMPARE</div>
+    <h2 class="ch-title">四剑客<span class="ch-caret">对比</span></h2>
+    <p class="ch-sub">不争高下，只谈分工 —— 一张表看懂关键时刻该叫谁。</p>
+  </header>
+
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead>
+        <tr>
+          <th>工具</th><th>出品方 / 协议</th><th>一句话原理</th><th>内置工具</th><th>认证方式</th><th>上手难度</th><th>独特优势</th><th>适合人群</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="cmp-name" style="color:var(--neon-cyan)">codex</span></td>
+          <td>OpenAI / Apache-2.0</td>
+          <td>Read→Plan→Execute + 审批优先</td>
+          <td>全套终端能力</td>
+          <td>ChatGPT 账号 / API key</td>
+          <td>低</td>
+          <td>内核级沙箱、Rust 快、成本低</td>
+          <td>批量重构、脚本生成、CI</td>
+        </tr>
+        <tr>
+          <td><span class="cmp-name" style="color:var(--neon-green)">claude</span></td>
+          <td>Anthropic / 商业</td>
+          <td>工具循环 + 三层架构</td>
+          <td>20+ 工具 + 子代理</td>
+          <td>API key / 订阅</td>
+          <td>中</td>
+          <td>多文件推理最强、生态最大</td>
+          <td>复杂架构、精确 debug</td>
+        </tr>
+        <tr>
+          <td><span class="cmp-name" style="color:var(--neon-purple)">pi</span></td>
+          <td>earendil-works / MIT</td>
+          <td>极简 ReAct 内核 + 强扩展</td>
+          <td>4 个</td>
+          <td>各家模型 key</td>
+          <td>中高</td>
+          <td>极致可控、30+ 模型供应商、可自改</td>
+          <td>想掌控一切的极简主义者</td>
+        </tr>
+        <tr>
+          <td><span class="cmp-name" style="color:var(--neon-orange)">dsh</span></td>
+          <td>DeepSeek / MIT</td>
+          <td>一切皆插件（Cordis 插件树）</td>
+          <td>53 个</td>
+          <td>DeepSeek key / 自定义端点</td>
+          <td>高</td>
+          <td>全组件可插拔、会话可重放</td>
+          <td>研究 Agent 架构的开发者</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="cmp-slogan">&gt;_ 一句话：<span>批量脏活找 codex，精密手术找 claude，想要掌控感找 pi，研究架构盯 dsh。</span></div>
+  <a class="back-top" href="#home">↑ 回到顶部</a>
+</section>
+
+</main>
+
+<!-- ============ 页脚 ============ -->
+<footer>
+  <pre class="ascii">    _  _  _  _  _  _  _  _  _  _
+   |   T E R M I N A L 4 H E R O E S   |
+   |      codex · claude · pi · dsh     |
+   |_______________· 2026 ·____________|</pre>
+  <p>内容基于公开资料整理 · 这些工具迭代飞快，具体以各官方文档为准</p>
+  <p>← 使用键盘左右方向键可以在章节间穿梭</p>
+</footer>
+
+<script>
+(function(){
+'use strict';
+
+var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ============ 1. 开机动画 ============ */
+var bootScreen = document.getElementById('boot-screen');
+var bootLog = document.querySelector('.boot-log');
+var bootLines = [
+  '>_ TERMINAL 4 HEROES BIOS v2.0.26',
+  '[OK] 加载模块: 终端矩阵 ................ done',
+  '[OK] 注入字符: codex / claude / pi / dsh',
+  '[OK] 校准霓虹光晕 ...................... done',
+  '[OK] 召唤 AI 程序员 x4 ................. ready',
+  '[OK] 启动完成 → 欢迎来到终端四剑客'
+];
+var doneBoot = false;
+function finishBoot(){
+  if(doneBoot) return;
+  doneBoot = true;
+  bootScreen.classList.add('done');
+  setTimeout(function(){ if(bootScreen.parentNode) bootScreen.parentNode.removeChild(bootScreen); }, 700);
+}
+function runBoot(){
+  var i = 0;
+  function nextLine(){
+    if(i >= bootLines.length){ finishBoot(); return; }
+    var line = document.createElement('div');
+    var text = bootLines[i];
+    if(text.indexOf('[OK]') === 0){
+      line.innerHTML = text.replace('[OK]', '<span class="ok">[OK]</span>');
+    } else {
+      line.textContent = text;
+    }
+    bootLog.appendChild(line);
+    i++;
+    setTimeout(nextLine, prefersReduced ? 0 : 150);
+  }
+  nextLine();
+}
+if(prefersReduced){ finishBoot(); } else { runBoot(); }
+bootScreen.addEventListener('click', finishBoot);
+
+/* ============ 2. 打字机效果（终端演示横幅） ============ */
+function typeWriter(el){
+  if(el.dataset.done) return;
+  var text = el.getAttribute('data-type-text') || '';
+  var term = el.closest('.demo-term');
+  function finish(){
+    el.textContent = text;
+    el.classList.add('done');
+    el.dataset.done = '1';
+    if(term) term.classList.add('done');
+    var cur = el.parentNode.querySelector('.cursor');
+    if(cur) cur.style.display = 'none';
+    if(timer) clearInterval(timer);
+  }
+  if(prefersReduced){ finish(); return; }
+  var timer = null;
+  var i = 0;
+  timer = setInterval(function(){
+    i++;
+    el.textContent = text.slice(0, i);
+    if(i >= text.length){ finish(); }
+  }, 24);
+  el._stopType = finish;
+}
+function initTypers(){
+  var els = document.querySelectorAll('.t-cmd[data-type-text]');
+  if(!('IntersectionObserver' in window)){ els.forEach(typeWriter); return; }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){ typeWriter(en.target); io.unobserve(en.target); }
+    });
+  }, {rootMargin:'0px 0px -8% 0px'});
+  els.forEach(function(el){ io.observe(el); });
+  document.addEventListener('click', function(e){
+    var term = e.target.closest('.demo-term');
+    if(term){
+      var cmd = term.querySelector('.t-cmd');
+      if(cmd && cmd._stopType) cmd._stopType();
+    }
+  });
+}
+
+/* ============ 3. 标签页切换 ============ */
+document.querySelectorAll('.tab-shell').forEach(function(shell){
+  var bar = shell.querySelector('.tab-bar');
+  var panels = shell.querySelector('.tab-panels');
+  bar.addEventListener('click', function(e){
+    var btn = e.target.closest('.tab-btn');
+    if(!btn) return;
+    var tab = btn.getAttribute('data-tab');
+    bar.querySelectorAll('.tab-btn').forEach(function(b){
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+    });
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    panels.querySelectorAll('.panel').forEach(function(p){
+      p.classList.toggle('active', p.getAttribute('data-panel') === tab);
+    });
+  });
+});
+
+/* ============ 4. 复制按钮 ============ */
+function copyFallback(text, cb){
+  var ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  var ok = false;
+  try { ok = document.execCommand('copy'); } catch(err){ ok = false; }
+  document.body.removeChild(ta);
+  cb(ok);
+}
+document.addEventListener('click', function(e){
+  var btn = e.target.closest('.copy-btn');
+  if(!btn) return;
+  var text = btn.getAttribute('data-copy') || '';
+  function flash(){
+    btn.textContent = '✓ 已复制';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = '复制'; btn.classList.remove('copied'); }, 1400);
+  }
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(flash).catch(function(){ copyFallback(text, flash); });
+  } else {
+    copyFallback(text, flash);
+  }
+});
+
+/* ============ 5. 章节测验 ============ */
+var QUIZ_DATA = {
+  codex: [
+    { q: 'codex 的默认审批模式是？',
+      opts: ['suggest（每个改动都要确认）', 'auto-edit（自动编辑）', 'full-auto（全自动）', '没有审批概念'],
+      answer: 0,
+      explain: '默认是 suggest：改文件/跑命令前先展示 diff，由你确认。' },
+    { q: 'codex 在 Linux 上的沙箱基于什么？',
+      opts: ['Docker 容器', 'Seatbelt', 'bubblewrap', 'Firejail'],
+      answer: 2,
+      explain: 'macOS 用 Seatbelt、Linux 用 bubblewrap，都是内核级沙箱，默认禁外网。' },
+    { q: '想在 CI 里让 codex 无人值守全自动跑，适合哪个模式？',
+      opts: ['suggest', 'auto-edit', 'full-auto', '什么模式都行'],
+      answer: 2,
+      explain: 'full-auto 全自动执行，适合 CI / 批量任务，但别在手边实验项目上乱开。' }
+  ],
+  claude: [
+    { q: 'CLAUDE.md 文件的作用是？',
+      opts: ['记录聊天历史', '项目级上下文，会话开始时自动加载', 'MCP 服务器配置', '测试报告'],
+      answer: 1,
+      explain: 'CLAUDE.md / AGENTS.md 是项目级上下文文件，每次会话开始自动加载，省得反复解释项目。' },
+    { q: 'Claude Code 三层架构里，哪一层用「隔离上下文」跑探索性工作？',
+      opts: ['Core Layer', 'Delegation Layer', 'Extension Layer', '没有这回事'],
+      answer: 1,
+      explain: 'Delegation Layer（子代理）用干净上下文做探索，只把结论带回主对话，保护主上下文不被撑爆。' },
+    { q: '主对话上下文越用越满会导致什么？',
+      opts: ['没影响', '质量下降 + 成本升高', '速度反而变快', '自动扩容'],
+      answer: 1,
+      explain: '上下文窗口共享，越用越满 → 记不住前面的决定、质量下降，且按 token 计费成本升高。' }
+  ],
+  pi: [
+    { q: 'pi 内核默认内置几个核心工具？',
+      opts: ['2 个', '4 个', '8 个', '20 个'],
+      answer: 1,
+      explain: '核心只有 read / write / edit / bash 四个，能力全靠扩展体系长出来。' },
+    { q: '在 pi 里写了个扩展文件后，用什么命令让它生效？',
+      opts: ['/restart', '/reload', '/apply', '/update'],
+      answer: 1,
+      explain: '把扩展放进 ~/.pi/agent/extensions/ 后执行 /reload 即可加载。' },
+    { q: 'pi 的配置目录在哪个路径？',
+      opts: ['~/.pi/agent/', '~/.config/pi/', './.pi/', '/etc/pi/'],
+      answer: 0,
+      explain: '模型、扩展、技能、会话都归在 ~/.pi/agent/ 下（可用 PI_CODING_AGENT_DIR 覆盖）。' }
+  ],
+  dsh: [
+    { q: 'dsh 的核心架构理念是什么？',
+      opts: ['微内核 + 官方全家桶', '一切皆插件（Everything is a plugin）', '纯单体应用', 'Rust 高性能内核'],
+      answer: 1,
+      explain: '模型适配器、工具注册表、会话日志、agent 循环全是插件，没有特权核心。' },
+    { q: '最快启动 dsh Web UI 的命令是？',
+      opts: ['npm start', 'dsh serve', 'npx @deepseek-ai/dsh web', 'docker run dsh'],
+      answer: 2,
+      explain: '一条命令起 Web UI，默认 http://127.0.0.1:3080。' },
+    { q: 'dsh 目前处于什么阶段？',
+      opts: ['稳定 1.0', 'developer preview（会有破坏性变更）', 'beta 测试中', '已停止维护'],
+      answer: 1,
+      explain: '官方明示 developer preview，API/配置会快速变化，别当生产标准。' }
+  ]
+};
+
+var quizState = {};
+document.querySelectorAll('.quiz').forEach(function(qz){
+  var ch = qz.getAttribute('data-ch');
+  quizState[ch] = { idx: 0, score: 0, answered: false };
+});
+
+function renderQuiz(ch){
+  var qz = document.querySelector('.quiz[data-ch="' + ch + '"]');
+  var body = qz.querySelector('.quiz-body');
+  var st = quizState[ch];
+  var data = QUIZ_DATA[ch];
+  if(st.idx >= data.length){ renderResult(ch, st, data); return; }
+  var q = data[st.idx];
+  var html = '<div class="q-meta">[ 第 ' + (st.idx + 1) + ' / ' + data.length + ' 题 ] 已答对 ' + st.score + ' 题</div>';
+  html += '<p class="q-text">' + q.q + '</p>';
+  html += '<div class="q-opts">';
+  q.opts.forEach(function(opt, i){
+    html += '<button class="q-opt" data-role="opt" data-opt="' + i + '">' + opt + '</button>';
+  });
+  html += '</div>';
+  html += '<div class="q-explain"></div>';
+  html += '<button class="q-next" data-role="next" disabled>' + (st.idx === data.length - 1 ? '查看结果' : '下一题') + '</button>';
+  body.innerHTML = html;
+  body.onclick = function(e){
+    var el = e.target.closest('[data-role]');
+    if(!el) return;
+    var role = el.getAttribute('data-role');
+    if(role === 'opt' && !st.answered){ pick(ch, el); }
+    else if(role === 'next' && st.answered){ st.idx++; st.answered = false; renderQuiz(ch); }
+  };
+}
+function pick(ch, el){
+  var st = quizState[ch];
+  st.answered = true;
+  var idx = parseInt(el.getAttribute('data-opt'), 10);
+  var q = QUIZ_DATA[ch][st.idx];
+  var body = el.closest('.quiz-body');
+  var opts = body.querySelectorAll('.q-opt');
+  opts.forEach(function(o){ o.classList.add('disabled'); });
+  if(idx === q.answer){
+    el.classList.add('right');
+    st.score++;
+  } else {
+    el.classList.add('wrong');
+    opts[q.answer].classList.add('right');
+  }
+  var ex = body.querySelector('.q-explain');
+  var label = (idx === q.answer)
+    ? '✓ 答对了 · '
+    : '✗ 正确答案是「' + q.opts[q.answer] + '」 · ';
+  ex.innerHTML = '<span class="ex-label">' + label + '</span>' + q.explain;
+  ex.classList.add('show');
+  body.querySelector('.q-next').disabled = false;
+}
+function renderResult(ch, st, data){
+  var qz = document.querySelector('.quiz[data-ch="' + ch + '"]');
+  var body = qz.querySelector('.quiz-body');
+  var v;
+  if(st.score === data.length) v = '// 满分！你就是终端四剑客的传人，直接上生产吧';
+  else if(st.score >= 2) v = '// 你已经上手了 —— 去终端里练练手，还差最后一题';
+  else v = '// 别急，回炉看看上面的内容，再来一次会好很多';
+  body.innerHTML = '<div class="q-result">' +
+    '<div class="qr-score">' + st.score + ' / ' + data.length + '</div>' +
+    '<div class="qr-verdict">' + v + '</div>' +
+    '<button class="q-next" data-role="retry">重新测验</button></div>';
+  body.onclick = function(e){
+    if(e.target.closest('[data-role="retry"]')){
+      st.idx = 0; st.score = 0; st.answered = false;
+      renderQuiz(ch);
+    }
+  };
+}
+Object.keys(quizState).forEach(function(ch){ renderQuiz(ch); });
+
+/* ============ 6. 滚动进度条 ============ */
+var progressBar = document.getElementById('progress-bar');
+var ticking = false;
+function updateProgress(){
+  var doc = document.documentElement;
+  var max = doc.scrollHeight - window.innerHeight;
+  var p = max > 0 ? (window.scrollY / max) : 0;
+  progressBar.style.transform = 'scaleX(' + Math.min(1, Math.max(0, p)) + ')';
+  ticking = false;
+}
+window.addEventListener('scroll', function(){
+  if(!ticking){ requestAnimationFrame(updateProgress); ticking = true; }
+}, {passive: true});
+
+/* ============ 7. 当前章节高亮 ============ */
+var navLinks = Array.prototype.slice.call(document.querySelectorAll('#main-nav a'));
+var ORDER = ['home', 'ch-codex', 'ch-claude', 'ch-pi', 'ch-dsh', 'ch-compare'];
+var secEls = ORDER.map(function(id){ return document.getElementById(id); });
+if('IntersectionObserver' in window){
+  var navIO = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){
+        navLinks.forEach(function(a){
+          a.classList.toggle('active', a.getAttribute('data-nav') === en.target.id);
+        });
+      }
+    });
+  }, {rootMargin: '-40% 0px -55% 0px'});
+  secEls.forEach(function(s){ if(s) navIO.observe(s); });
+}
+
+/* ============ 8. 键盘翻章 ============ */
+document.addEventListener('keydown', function(e){
+  if(e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+  var t = e.target;
+  if(t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+  var cur = ORDER[0];
+  for(var i = 0; i < ORDER.length; i++){
+    var el = document.getElementById(ORDER[i]);
+    if(el && el.getBoundingClientRect().top <= window.innerHeight * 0.4) cur = ORDER[i];
+  }
+  var idx = ORDER.indexOf(cur);
+  if(e.key === 'ArrowRight') idx = Math.min(ORDER.length - 1, idx + 1);
+  else idx = Math.max(0, idx - 1);
+  var target = document.getElementById(ORDER[idx]);
+  if(target) target.scrollIntoView({behavior: prefersReduced ? 'auto' : 'smooth'});
+});
+
+initTypers();
+})();
+</script>
+
+</body>
+</html>

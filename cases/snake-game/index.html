@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0e1114">
+  <title>霓虹贪吃蛇</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app-shell">
+    <header class="game-header">
+      <div class="brand-block">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <h1>霓虹贪吃蛇</h1>
+      </div>
+
+      <div class="score-row" aria-label="成绩">
+        <div class="score-card">
+          <span class="score-label">得分</span>
+          <strong class="score-value" id="scoreValue">0</strong>
+        </div>
+        <div class="score-card">
+          <span class="score-label">最高分</span>
+          <strong class="score-value" id="highScoreValue">0</strong>
+        </div>
+      </div>
+
+      <div class="action-row">
+        <button class="action-button primary" id="pauseButton" type="button" aria-label="开始游戏">开始</button>
+        <button class="action-button" id="restartButton" type="button" aria-label="重新开始">重开</button>
+      </div>
+    </header>
+
+    <section class="game-stage" aria-label="贪吃蛇游戏区域">
+      <canvas id="gameCanvas" width="630" height="630" tabindex="0" aria-label="贪吃蛇棋盘"></canvas>
+      <div class="overlay is-hidden" id="overlay">
+        <div class="overlay-content">
+          <h2 id="overlayTitle">游戏结束</h2>
+          <p id="overlayMessage"></p>
+          <button class="action-button primary overlay-button" id="overlayButton" type="button">再玩一次</button>
+        </div>
+      </div>
+    </section>
+
+    <p class="status-line" id="statusText" aria-live="polite">等待开始</p>
+  </main>
+
+  <script src="game.js"></script>
+</body>
+</html>

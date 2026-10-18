@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CertUtil Hash Tool</title>
+<script src="crypto-js.min.js"></script>
+<style>
+:root {
+  --bg: #f5f6fa;
+  --card-bg: #ffffff;
+  --text: #2d3436;
+  --text-secondary: #636e72;
+  --border: #dfe6e9;
+  --border-dashed: #b2bec3;
+  --primary: #6c5ce7;
+  --primary-light: #a29bfe;
+  --success: #00b894;
+  --danger: #d63031;
+  --warning: #fdcb6e;
+  --shadow: 0 2px 12px rgba(0,0,0,0.08);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --transition: 0.2s ease;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.container {
+  width: 100%;
+  max-width: 780px;
+  margin-top: 20px;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.header .icon { font-size: 40px; }
+.header h1 {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text);
+  margin-top: 4px;
+}
+.header p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+/* Card */
+.card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 24px;
+  margin-bottom: 16px;
+}
+
+/* Drop Zone */
+.drop-zone {
+  border: 2px dashed var(--border-dashed);
+  border-radius: var(--radius);
+  padding: 48px 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--transition);
+  position: relative;
+}
+.drop-zone:hover,
+.drop-zone.drag-over {
+  border-color: var(--primary);
+  background: rgba(108, 92, 231, 0.04);
+}
+.drop-zone .drop-icon {
+  font-size: 48px;
+  margin-bottom: 8px;
+}
+.drop-zone .drop-text {
+  font-size: 15px;
+  color: var(--text-secondary);
+}
+.drop-zone .drop-hint {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+  opacity: 0.7;
+}
+
+/* File Info */
+.file-info {
+  display: none;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: #f8f9fc;
+  border-radius: var(--radius-sm);
+  margin-top: 16px;
+}
+.file-info.show { display: flex; }
+.file-info .file-icon { font-size: 28px; }
+.file-info .file-details { flex: 1; min-width: 0; }
+.file-info .file-name {
+  font-weight: 600;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.file-info .file-meta {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+.file-info .file-clear {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: var(--text-secondary);
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: color var(--transition);
+}
+.file-info .file-clear:hover { color: var(--danger); }
+
+/* Progress Bar */
+.progress-bar-wrap {
+  display: none;
+  margin-top: 12px;
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.progress-bar-wrap.show { display: block; }
+.progress-bar-fill {
+  height: 100%;
+  background: var(--primary);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+  width: 0%;
+}
+
+/* Hash Table */
+.hash-section { display: none; }
+.hash-section.show { display: block; }
+
+.hash-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.hash-table th {
+  text-align: left;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+}
+.hash-table td {
+  padding: 10px;
+  font-size: 13px;
+  border-bottom: 1px solid #f1f2f6;
+}
+.hash-table .alg-col { width: 90px; }
+.hash-table .hash-col { width: auto; }
+.hash-table .copy-col { width: 60px; text-align: center; }
+
+.alg-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+}
+.alg-badge.md5    { background: #ffeaa7; color: #856404; }
+.alg-badge.sha1   { background: #fab1a0; color: #6d1a00; }
+.alg-badge.sha256 { background: #81ecec; color: #004040; }
+.alg-badge.sha384 { background: #a29bfe; color: #2d0060; }
+.alg-badge.sha512 { background: #fd79a8; color: #4a0020; }
+
+.hash-value {
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 12px;
+  word-break: break-all;
+  color: var(--text);
+  cursor: pointer;
+  user-select: all;
+  transition: background var(--transition);
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+.hash-value:hover { background: #f0f0f5; }
+.hash-value.highlight { background: #c8ffbe; }
+
+.alg-row.highlight-row td { background: #f0fff0; }
+
+.copy-btn {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+.copy-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+.copy-btn.copied {
+  border-color: var(--success);
+  color: var(--success);
+  background: #e6fff7;
+}
+
+/* Compare Section */
+.compare-section { display: none; }
+.compare-section.show { display: block; }
+
+.compare-label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.compare-label .section-icon { margin-right: 4px; }
+
+.compare-input-row {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.compare-input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 13px;
+  outline: none;
+  transition: border-color var(--transition);
+}
+.compare-input:focus { border-color: var(--primary); }
+.compare-input.match-success { border-color: var(--success); background: #f0fff8; }
+.compare-input.match-fail    { border-color: var(--danger); background: #fff5f5; }
+
+.compare-btn {
+  padding: 10px 20px;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+.compare-btn:hover { background: #5f50e0; transform: translateY(-1px); }
+.compare-btn:active { transform: translateY(0); }
+
+.compare-result {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 600;
+}
+.compare-result.success {
+  background: #e6fff7;
+  color: #007a56;
+  border: 1px solid #b2f0d0;
+}
+.compare-result.fail {
+  background: #fff5f5;
+  color: #b00020;
+  border: 1px solid #f5c6cb;
+}
+.compare-result.info {
+  background: #f0f4ff;
+  color: #3a4d99;
+  border: 1px solid #c5cdff;
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: #2d3436;
+  color: #fff;
+  padding: 10px 24px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  opacity: 0;
+  transition: all 0.3s ease;
+  z-index: 100;
+  pointer-events: none;
+}
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Spinner */
+.spinner {
+  display: none;
+  width: 20px;
+  height: 20px;
+  border: 3px solid var(--border);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  margin: 0 auto;
+}
+.spinner.show { display: block; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Responsive */
+@media (max-width: 600px) {
+  .container { margin-top: 10px; }
+  .card { padding: 16px; }
+  .drop-zone { padding: 32px 16px; }
+  .hash-value { font-size: 11px; }
+  .compare-input-row { flex-direction: column; }
+  .compare-btn { width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Header -->
+  <div class="header">
+    <div class="icon">🔐</div>
+    <h1>CertUtil Hash Tool</h1>
+    <p>拖拽文件计算哈希值 · 支持 MD5 / SHA-1 / SHA-256 / SHA-384 / SHA-512</p>
+  </div>
+
+  <!-- Drop Zone -->
+  <div class="card">
+    <div class="drop-zone" id="dropZone">
+      <div class="drop-icon">📁</div>
+      <div class="drop-text">拖拽文件到此处，或点击选择文件</div>
+      <div class="drop-hint">支持任意文件类型</div>
+    </div>
+    <input type="file" id="fileInput" style="display:none">
+
+    <!-- File Info -->
+    <div class="file-info" id="fileInfo">
+      <div class="file-icon" id="fileIcon">📄</div>
+      <div class="file-details">
+        <div class="file-name" id="fileName">-</div>
+        <div class="file-meta" id="fileMeta">-</div>
+      </div>
+      <button class="file-clear" id="fileClear" title="清除文件">&times;</button>
+    </div>
+
+    <!-- Progress -->
+    <div class="progress-bar-wrap" id="progressWrap">
+      <div class="progress-bar-fill" id="progressFill"></div>
+    </div>
+
+    <!-- Hash Table -->
+    <div class="hash-section" id="hashSection">
+      <table class="hash-table">
+        <thead>
+          <tr>
+            <th class="alg-col">算法</th>
+            <th class="hash-col">哈希值</th>
+            <th class="copy-col">复制</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="alg-row" data-alg="MD5">
+            <td><span class="alg-badge md5">MD5</span></td>
+            <td><span class="hash-value" id="hash-MD5" data-alg="MD5">-</span></td>
+            <td><button class="copy-btn" data-alg="MD5">📋</button></td>
+          </tr>
+          <tr class="alg-row" data-alg="SHA-1">
+            <td><span class="alg-badge sha1">SHA-1</span></td>
+            <td><span class="hash-value" id="hash-SHA-1" data-alg="SHA-1">-</span></td>
+            <td><button class="copy-btn" data-alg="SHA-1">📋</button></td>
+          </tr>
+          <tr class="alg-row" data-alg="SHA-256">
+            <td><span class="alg-badge sha256">SHA-256</span></td>
+            <td><span class="hash-value" id="hash-SHA-256" data-alg="SHA-256">-</span></td>
+            <td><button class="copy-btn" data-alg="SHA-256">📋</button></td>
+          </tr>
+          <tr class="alg-row" data-alg="SHA-384">
+            <td><span class="alg-badge sha384">SHA-384</span></td>
+            <td><span class="hash-value" id="hash-SHA-384" data-alg="SHA-384">-</span></td>
+            <td><button class="copy-btn" data-alg="SHA-384">📋</button></td>
+          </tr>
+          <tr class="alg-row" data-alg="SHA-512">
+            <td><span class="alg-badge sha512">SHA-512</span></td>
+            <td><span class="hash-value" id="hash-SHA-512" data-alg="SHA-512">-</span></td>
+            <td><button class="copy-btn" data-alg="SHA-512">📋</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Compare Section -->
+  <div class="card compare-section show" id="compareSection">
+    <div class="compare-label"><span class="section-icon">🔍</span>哈希值校验比对</div>
+    <div class="compare-input-row">
+      <input
+        type="text"
+        class="compare-input"
+        id="compareInput"
+        placeholder="在此粘贴发布者提供的 Hash 值（自动识别算法）"
+        autocomplete="off"
+      >
+      <button class="compare-btn" id="compareBtn">比对</button>
+    </div>
+    <div class="compare-result" id="compareResult" style="display:none"></div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+(function() {
+  'use strict';
+
+  // ── DOM refs ──────────────────────────────────────────────
+  const dropZone    = document.getElementById('dropZone');
+  const fileInput   = document.getElementById('fileInput');
+  const fileInfo    = document.getElementById('fileInfo');
+  const fileName    = document.getElementById('fileName');
+  const fileMeta    = document.getElementById('fileMeta');
+  const fileIcon    = document.getElementById('fileIcon');
+  const fileClear   = document.getElementById('fileClear');
+  const progressWrap = document.getElementById('progressWrap');
+  const progressFill = document.getElementById('progressFill');
+  const hashSection = document.getElementById('hashSection');
+  const compareSection = document.getElementById('compareSection');
+  const compareInput  = document.getElementById('compareInput');
+  const compareBtn    = document.getElementById('compareBtn');
+  const compareResult = document.getElementById('compareResult');
+  const toast       = document.getElementById('toast');
+
+  let currentFile   = null;
+  let computedHashes = {};     // { 'MD5': 'd41d8...', 'SHA-256': 'e3b0...', ... }
+  let toastTimer    = null;
+
+  // ── Algorithm definitions ─────────────────────────────────
+  const ALGORITHMS = [
+    { id: 'MD5',     label: 'MD5',     hexLen: 32,  cssClass: 'md5'    },
+    { id: 'SHA-1',   label: 'SHA-1',   hexLen: 40,  cssClass: 'sha1'   },
+    { id: 'SHA-256', label: 'SHA-256', hexLen: 64,  cssClass: 'sha256' },
+    { id: 'SHA-384', label: 'SHA-384', hexLen: 96,  cssClass: 'sha384' },
+    { id: 'SHA-512', label: 'SHA-512', hexLen: 128, cssClass: 'sha512' },
+  ];
+
+  // Map certutil-style names to Web Crypto names
+  const WEB_CRYPTO_MAP = {
+    'SHA-1':   'SHA-1',
+    'SHA-256': 'SHA-256',
+    'SHA-384': 'SHA-384',
+    'SHA-512': 'SHA-512',
+  };
+
+  // ── Toast ──────────────────────────────────────────────────
+  function showToast(msg) {
+    if (toastTimer) clearTimeout(toastTimer);
+    toast.textContent = msg;
+    toast.classList.add('show');
+    toastTimer = setTimeout(function() {
+      toast.classList.remove('show');
+    }, 1800);
+  }
+
+  // ── Format bytes ──────────────────────────────────────────
+  function formatBytes(bytes) {
+    if (bytes === 0) return '0 B';
+    var units = ['B', 'KB', 'MB', 'GB', 'TB'];
+    var i = Math.floor(Math.log(bytes) / Math.log(1024));
+    if (i >= units.length) i = units.length - 1;
+    return (bytes / Math.pow(1024, i)).toFixed(i === 0 ? 0 : 1) + ' ' + units[i];
+  }
+
+  // ── File icon by extension ────────────────────────────────
+  function getFileIcon(name) {
+    var ext = (name || '').split('.').pop().toLowerCase();
+    var map = {
+      exe:'🖥️', dll:'🔧', msi:'📦', sys:'⚙️',
+      zip:'🗜️', rar:'🗜️', gz:'🗜️', tar:'🗜️',
+      pdf:'📕', doc:'📝', docx:'📝', xls:'📊', xlsx:'📊', ppt:'📽️', pptx:'📽️',
+      jpg:'🖼️', jpeg:'🖼️', png:'🖼️', gif:'🖼️', bmp:'🖼️', svg:'🖼️', webp:'🖼️',
+      mp4:'🎬', avi:'🎬', mkv:'🎬', mov:'🎬',
+      mp3:'🎵', wav:'🎵', flac:'🎵', aac:'🎵',
+      js:'📜', ts:'📜', py:'📜', html:'🌐', css:'🎨', json:'📋',
+      txt:'📄', md:'📄', log:'📄',
+      iso:'💿', img:'💿',
+    };
+    map['7z'] = '🗜️';
+    return map[ext] || '📄';
+  }
+
+  // ── Convert ArrayBuffer to hex string ─────────────────────
+  function bufferToHex(buffer) {
+    var arr = new Uint8Array(buffer);
+    var hex = '';
+    for (var i = 0; i < arr.length; i++) {
+      hex += arr[i].toString(16).padStart(2, '0');
+    }
+    return hex;
+  }
+
+  // ── MD5 via CryptoJS ──────────────────────────────────────
+  function computeMD5(arrayBuffer) {
+    // Convert ArrayBuffer → Uint8Array → CryptoJS WordArray
+    var u8 = new Uint8Array(arrayBuffer);
+    var wordArray = CryptoJS.lib.WordArray.create(u8);
+    return CryptoJS.MD5(wordArray).toString();
+  }
+
+  // ── SHA via Web Crypto API ────────────────────────────────
+  function computeSHA(arrayBuffer, algo) {
+    return crypto.subtle.digest(algo, arrayBuffer).then(function(hashBuffer) {
+      return bufferToHex(hashBuffer);
+    });
+  }
+
+  // ── Compute all hashes ────────────────────────────────────
+  function computeAllHashes(arrayBuffer) {
+    var promises = [];
+
+    // MD5 (sync via CryptoJS, wrap in Promise for consistency)
+    promises.push(
+      new Promise(function(resolve) {
+        resolve(computeMD5(arrayBuffer));
+      })
+    );
+
+    // SHA family (async via Web Crypto)
+    Object.keys(WEB_CRYPTO_MAP).forEach(function(algo) {
+      promises.push(computeSHA(arrayBuffer, WEB_CRYPTO_MAP[algo]));
+    });
+
+    return Promise.all(promises).then(function(results) {
+      var hashes = {};
+      hashes['MD5'] = results[0];
+      var idx = 1;
+      Object.keys(WEB_CRYPTO_MAP).forEach(function(algo) {
+        hashes[algo] = results[idx++];
+      });
+      return hashes;
+    });
+  }
+
+  // ── Update hash table display ─────────────────────────────
+  function updateHashTable(hashes) {
+    computedHashes = hashes;
+    ALGORITHMS.forEach(function(alg) {
+      var el = document.getElementById('hash-' + alg.id);
+      if (el) {
+        el.textContent = hashes[alg.id] || '-';
+        el.classList.remove('highlight');
+      }
+    });
+  }
+
+  // ── Show loading state ────────────────────────────────────
+  function setLoading(loading) {
+    var algRows = document.querySelectorAll('.alg-row');
+    algRows.forEach(function(row) {
+      var hashEl = row.querySelector('.hash-value');
+      if (hashEl && loading) hashEl.textContent = '计算中...';
+    });
+  }
+
+  // ── Process a file ────────────────────────────────────────
+  function processFile(file) {
+    if (!file) return;
+
+    currentFile = file;
+
+    // Check Web Crypto support
+    if (!window.crypto || !window.crypto.subtle) {
+      showToast('⚠️ 浏览器不支持 Web Crypto API，请使用最新版 Chrome/Edge/Firefox');
+      return;
+    }
+
+    // Check CryptoJS
+    if (typeof CryptoJS === 'undefined' || typeof CryptoJS.MD5 === 'undefined') {
+      showToast('⚠️ CryptoJS 加载失败，请检查网络连接');
+      return;
+    }
+
+    // Update UI — file info
+    fileName.textContent = file.name;
+    fileMeta.textContent = formatBytes(file.size);
+    fileIcon.textContent = getFileIcon(file.name);
+    fileInfo.classList.add('show');
+    hashSection.classList.add('show');
+    setLoading(true);
+
+    // Reset comparison highlights but keep the user's input
+    clearComparisonHighlights();
+
+    // Show progress for large files
+    var isLarge = file.size > 50 * 1024 * 1024; // > 50MB
+    if (isLarge) {
+      progressWrap.classList.add('show');
+      progressFill.style.width = '0%';
+    }
+
+    var reader = new FileReader();
+
+    reader.onprogress = function(e) {
+      if (e.lengthComputable && isLarge) {
+        var pct = Math.round((e.loaded / e.total) * 100);
+        progressFill.style.width = pct + '%';
+      }
+    };
+
+    reader.onload = function(e) {
+      var arrayBuffer = e.target.result;
+
+      if (isLarge) {
+        progressFill.style.width = '100%';
+      }
+
+      // Compute all hashes
+      computeAllHashes(arrayBuffer).then(function(hashes) {
+        updateHashTable(hashes);
+
+        if (isLarge) {
+          setTimeout(function() {
+            progressWrap.classList.remove('show');
+            progressFill.style.width = '0%';
+          }, 400);
+        }
+
+        // Auto-compare if input has content
+        autoCompare();
+      }).catch(function(err) {
+        showToast('❌ 计算哈希时出错: ' + err.message);
+        setLoading(false);
+        if (isLarge) progressWrap.classList.remove('show');
+      });
+    };
+
+    reader.onerror = function() {
+      showToast('❌ 读取文件失败，请重试');
+      if (isLarge) progressWrap.classList.remove('show');
+    };
+
+    reader.readAsArrayBuffer(file);
+  }
+
+  // ── Clear file ────────────────────────────────────────────
+  function clearFile() {
+    currentFile = null;
+    computedHashes = {};
+    fileInfo.classList.remove('show');
+    hashSection.classList.remove('show');
+    progressWrap.classList.remove('show');
+    fileInput.value = '';
+    clearComparisonHighlights();
+    compareResult.style.display = 'none';
+    compareInput.className = 'compare-input';
+  }
+
+  // ── Copy hash ─────────────────────────────────────────────
+  function copyHash(algId) {
+    var hash = computedHashes[algId];
+    if (!hash || hash === '-') {
+      showToast('⚠️ 请先选择文件');
+      return;
+    }
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(hash).then(function() {
+        showToast('✅ ' + algId + ' 已复制到剪贴板');
+      }).catch(function() {
+        fallbackCopy(hash, algId);
+      });
+    } else {
+      fallbackCopy(hash, algId);
+    }
+  }
+
+  function fallbackCopy(text, algId) {
+    var textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.position = 'fixed';
+    textarea.style.left = '-9999px';
+    document.body.appendChild(textarea);
+    textarea.select();
+    try {
+      document.execCommand('copy');
+      showToast('✅ ' + algId + ' 已复制到剪贴板');
+    } catch (e) {
+      showToast('⚠️ 复制失败，请手动选择并复制');
+    }
+    document.body.removeChild(textarea);
+  }
+
+  // ── Detect algorithm from hex string ─────────────────────
+  function detectAlgorithm(hexStr) {
+    var cleaned = hexStr.replace(/[\s\-:]/g, '').toLowerCase();
+    if (!/^[0-9a-f]+$/.test(cleaned)) return null;
+    for (var i = 0; i < ALGORITHMS.length; i++) {
+      if (cleaned.length === ALGORITHMS[i].hexLen) {
+        return { alg: ALGORITHMS[i].id, cleaned: cleaned };
+      }
+    }
+    return null;
+  }
+
+  // ── Compare ───────────────────────────────────────────────
+  function runComparison() {
+    var input = compareInput.value.trim();
+    if (!input) {
+      compareResult.style.display = 'none';
+      clearHighlights();
+      return;
+    }
+
+    var detection = detectAlgorithm(input);
+    if (!detection) {
+      compareResult.style.display = 'flex';
+      compareResult.className = 'compare-result info';
+      compareResult.innerHTML = 'ℹ️ 无法识别的哈希格式，请检查输入内容';
+      compareInput.className = 'compare-input';
+      clearHighlights();
+      return;
+    }
+
+    if (!computedHashes[detection.alg]) {
+      compareResult.style.display = 'flex';
+      compareResult.className = 'compare-result info';
+      compareResult.innerHTML = 'ℹ️ 请先选择文件以计算哈希值';
+      compareInput.className = 'compare-input';
+      clearHighlights();
+      return;
+    }
+
+    var computed = computedHashes[detection.alg].toLowerCase();
+    var isMatch = computed === detection.cleaned;
+
+    // Highlight matching row
+    highlightRow(detection.alg);
+
+    if (isMatch) {
+      compareResult.style.display = 'flex';
+      compareResult.className = 'compare-result success';
+      compareResult.innerHTML = '✅ <strong>一致！</strong>哈希值完全匹配（' + detection.alg + '）';
+      compareInput.className = 'compare-input match-success';
+    } else {
+      compareResult.style.display = 'flex';
+      compareResult.className = 'compare-result fail';
+      compareResult.innerHTML = '❌ <strong>不匹配！</strong>哈希值不一致（' + detection.alg + '）';
+      compareInput.className = 'compare-input match-fail';
+    }
+  }
+
+  function autoCompare() {
+    if (compareInput.value.trim()) runComparison();
+  }
+
+  function clearComparison() {
+    compareResult.style.display = 'none';
+    compareInput.className = 'compare-input';
+    compareInput.value = '';
+    clearHighlights();
+  }
+
+  function clearComparisonHighlights() {
+    compareResult.style.display = 'none';
+    compareInput.className = 'compare-input';
+    clearHighlights();
+  }
+
+  function clearHighlights() {
+    var rows = document.querySelectorAll('.alg-row');
+    rows.forEach(function(r) { r.classList.remove('highlight-row'); });
+    var vals = document.querySelectorAll('.hash-value');
+    vals.forEach(function(v) { v.classList.remove('highlight'); });
+  }
+
+  function highlightRow(algId) {
+    clearHighlights();
+    var row = document.querySelector('.alg-row[data-alg="' + algId + '"]');
+    if (row) row.classList.add('highlight-row');
+    var val = document.getElementById('hash-' + algId);
+    if (val) val.classList.add('highlight');
+  }
+
+  // ── Event Listeners ───────────────────────────────────────
+
+  // ============================================================
+  // CRITICAL: preventDefault on document-level dragenter tells
+  // the browser this page IS a valid drop target. Without it,
+  // browsers open .txt/.pdf in-tab instead of dropping them.
+  // ============================================================
+  ['dragenter', 'dragover', 'drop'].forEach(function(evt) {
+    document.addEventListener(evt, function(e) {
+      e.preventDefault();
+    }, false);
+  });
+
+  // Click drop zone → open file picker
+  dropZone.addEventListener('click', function(e) {
+    e.stopPropagation();
+    fileInput.click();
+  });
+
+  // File chosen via picker
+  fileInput.addEventListener('change', function() {
+    if (fileInput.files && fileInput.files.length > 0) {
+      processFile(fileInput.files[0]);
+      // Reset input so re-selecting the same file works
+      fileInput.value = '';
+    }
+  });
+
+  // Visual feedback: highlight drop zone on drag over page
+  document.addEventListener('dragover', function() {
+    dropZone.classList.add('drag-over');
+  });
+
+  document.addEventListener('dragleave', function(e) {
+    // Only remove highlight when drag truly leaves the page
+    if (e.relatedTarget === null) {
+      dropZone.classList.remove('drag-over');
+    }
+  });
+
+  // Handle drop anywhere on the page
+  document.addEventListener('drop', function(e) {
+    dropZone.classList.remove('drag-over');
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      processFile(e.dataTransfer.files[0]);
+    }
+  });
+
+  // Clear file
+  fileClear.addEventListener('click', function(e) {
+    e.stopPropagation();
+    clearFile();
+  });
+
+  // Copy buttons (event delegation on card)
+  document.querySelector('.card').addEventListener('click', function(e) {
+    var btn = e.target.closest('.copy-btn');
+    if (!btn) return;
+    var algId = btn.getAttribute('data-alg');
+    copyHash(algId);
+
+    // Visual feedback on button
+    btn.classList.add('copied');
+    btn.textContent = '✅';
+    setTimeout(function() {
+      btn.classList.remove('copied');
+      btn.textContent = '📋';
+    }, 1500);
+  });
+
+  // Compare button
+  compareBtn.addEventListener('click', runComparison);
+
+  // Auto-compare on input (debounced)
+  var inputTimer = null;
+  compareInput.addEventListener('input', function() {
+    if (inputTimer) clearTimeout(inputTimer);
+    compareResult.style.display = 'none';
+    compareInput.className = 'compare-input';
+    clearHighlights();
+
+    var val = compareInput.value.trim();
+    if (!val) return;
+
+    // Only auto-compare when input matches a known hash length
+    var detection = detectAlgorithm(val);
+    if (detection && computedHashes[detection.alg]) {
+      inputTimer = setTimeout(runComparison, 300);
+    }
+  });
+
+  // Paste event for immediate comparison
+  compareInput.addEventListener('paste', function() {
+    // Delay to allow the value to populate
+    setTimeout(runComparison, 100);
+  });
+
+  // Keyboard shortcut: Ctrl+V on the page when compare input is focused
+  // (handled automatically by browser input events)
+
+  // ── Initial check ─────────────────────────────────────────
+  if (!window.crypto || !window.crypto.subtle) {
+    showToast('⚠️ 浏览器不支持 Web Crypto API，部分功能可能不可用');
+  }
+
+  console.log('🔐 CertUtil Hash Tool ready');
+  console.log('   支持算法: MD5, SHA-1, SHA-256, SHA-384, SHA-512');
+  console.log('   拖拽文件或点击区域开始使用');
+})();
+</script>
+</body>
+</html>

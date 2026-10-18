@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-const EXPECTED_CASE_COUNT = '92';
+const EXPECTED_CASE_COUNT = '98';
 
 /** @param {import('@playwright/test').Page} page */
 async function readCachedRevision(page) {
@@ -35,6 +35,10 @@ test(`loads the catalog, renders ${EXPECTED_CASE_COUNT} cases, and writes Indexe
   await expect(page.locator('#count')).toHaveText(EXPECTED_CASE_COUNT);
   await expect(page.locator('#catalog-sections .catalog-section')).toHaveCount(6);
   await expect(page.locator('.catalog-card')).toHaveCount(Number(EXPECTED_CASE_COUNT));
+  await expect(page.locator('.catalog-card-media').first()).toHaveCSS(
+    'background-image',
+    /linear-gradient/,
+  );
   await expect.poll(() => readCachedRevision(page)).toMatch(/^[a-f0-9]{12}$/);
   expect(errors).toEqual([]);
 });
@@ -119,13 +123,21 @@ test('validates external links by cid without redirecting automatically', async 
   await expect(page).toHaveURL(/\/link\/check\/\?cid=2008$/);
 });
 
-test('renders the AI category and pushbox case', async ({ page }) => {
+test('renders all AI category cases', async ({ page }) => {
   await page.goto('/');
   const section = page.locator('#category-ai');
   await expect(section).toBeVisible();
-  await expect(section.locator('.catalog-card')).toHaveCount(1);
-  await expect(section.locator('.catalog-card-title')).toHaveText('推箱子');
-  await expect(section.locator('.catalog-card-link')).toHaveAttribute(
+  await expect(section.locator('.catalog-card')).toHaveCount(7);
+  await expect(section.locator('.catalog-card-title')).toHaveText([
+    '推箱子',
+    'CertUtil 哈希工具',
+    'Canvas 时钟（新版）',
+    '终端四剑客',
+    'AI 编程 Agent 图鉴',
+    '推箱子 2',
+    '霓虹贪吃蛇',
+  ]);
+  await expect(section.locator('.catalog-card-link').first()).toHaveAttribute(
     'href',
     /\/cases\/pushbox\/$/,
   );

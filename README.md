@@ -68,7 +68,9 @@ The home page reads `assets/mock/list.min.json` and validates its schema at runt
 
 On every visit the cached catalog is rendered first, then the network copy is checked in the background. A changed `revision` replaces the rendered catalog. If the network fails, cached cases remain searchable. The application does not fall back to `localStorage` and does not install a Service Worker.
 
-External case links open `/link/check/?cid=<cid>`. The confirmation page resolves the destination from the trusted catalog, displays it, and requires an explicit click before leaving the site.
+External case links open `/link/check/?cid=<cid>`. The same confirmation page also accepts
+`/link/check/?outlink=<encoded-url>` for direct external links. Both entry points validate the
+destination, display its host and full URL, and require an explicit click before leaving the site.
 
 ## Contribution
 

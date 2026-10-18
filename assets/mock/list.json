@@ -33,6 +33,12 @@
       "cidPrefix": 4
     },
     {
+      "type": "ai",
+      "title": "AI案例",
+      "icon": "felab-code",
+      "cidPrefix": 6
+    },
+    {
       "type": "link",
       "title": "友情链接",
       "icon": "felab-link",
@@ -1286,6 +1292,21 @@
       "update_time": "2022-09-28"
     },
     {
+      "cid": 6001,
+      "name": "推箱子",
+      "description": "推箱子是一个简易的网页小游戏，过关拿分。",
+      "href": "cases/pushbox/",
+      "picUrl": "./assets/img/cover/pushbox.png",
+      "type": "ai",
+      "tags": [
+        "AI案例",
+        "游戏",
+        "推箱子"
+      ],
+      "create_time": "2026-10-18",
+      "update_time": "2026-10-18"
+    },
+    {
       "cid": 5001,
       "name": "我的博客",
       "description": "我的博客是一个个人技术博客的站点。",
@@ -1370,5 +1391,5 @@
       "update_time": "2020-03-13"
     }
   ],
-  "revision": "6f1818f08393"
+  "revision": "d93af931337e"
 }

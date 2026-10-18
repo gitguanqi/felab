@@ -13,6 +13,7 @@ const safeError = document.getElementById('safe-error');
 const continueButton = document.getElementById('continue-button');
 const backLink = document.getElementById('back-link');
 const loading = document.getElementById('safe-loading');
+const supportedParams = new Set(['cid', 'outlink']);
 
 if (backLink instanceof HTMLAnchorElement) {
   backLink.href = siteRootUrl.href;
@@ -32,9 +33,31 @@ async function getCatalogItem(cid) {
   return payload.list.find((item) => item.cid === cid) ?? null;
 }
 
-async function initialize() {
-  const cidValue = new URLSearchParams(window.location.search).get('cid') ?? '';
-  if (!/^\d{4}$/.test(cidValue)) {
+/**
+ * @returns {Promise<URL>}
+ */
+async function resolveTarget() {
+  const params = new URLSearchParams(window.location.search);
+  for (const key of params.keys()) {
+    if (!supportedParams.has(key)) {
+      throw new Error('链接参数无效');
+    }
+  }
+
+  const cidValue = params.get('cid');
+  const outlinkValue = params.get('outlink');
+  if (cidValue !== null && outlinkValue !== null) {
+    throw new Error('链接参数冲突');
+  }
+
+  if (outlinkValue !== null) {
+    if (outlinkValue.trim().length === 0) {
+      throw new Error('链接参数无效');
+    }
+    return resolveExternalTarget(outlinkValue, new URL(window.location.href));
+  }
+
+  if (!cidValue || !/^\d{4}$/.test(cidValue)) {
     throw new Error('链接参数无效');
   }
 
@@ -42,7 +65,11 @@ async function initialize() {
   if (!item) {
     throw new Error('未找到对应案例');
   }
-  const target = resolveExternalTarget(item.href, new URL(window.location.href));
+  return resolveExternalTarget(item.href, new URL(window.location.href));
+}
+
+async function initialize() {
+  const target = await resolveTarget();
 
   if (targetHost) {
     targetHost.textContent = target.host;

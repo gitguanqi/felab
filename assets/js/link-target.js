@@ -31,6 +31,10 @@ export function isExternalHref(href) {
  * @returns {URL}
  */
 export function resolveExternalTarget(rawHref, pageUrl) {
+  if (rawHref.length === 0 || rawHref.length > 2048) {
+    throw new Error('外链地址无效');
+  }
+
   let target;
   try {
     target = new URL(rawHref);

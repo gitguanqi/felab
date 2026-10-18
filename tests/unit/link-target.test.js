@@ -13,6 +13,9 @@ describe('external targets', () => {
     );
     expect(() => resolveExternalTarget('javascript:alert(1)', pageUrl)).toThrow();
     expect(() => resolveExternalTarget('https://user:pass@example.com/', pageUrl)).toThrow();
+    expect(() =>
+      resolveExternalTarget(`https://example.com/${'a'.repeat(2030)}`, pageUrl),
+    ).toThrow();
   });
 
   it('maps localhost case hosts to the current deployment suffix', () => {

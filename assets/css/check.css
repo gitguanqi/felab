@@ -140,15 +140,33 @@ html.is-mourn {
 
 .primary-button {
   color: #fff;
+  border: 1px solid #0e57c0;
   background: var(--blue);
+  box-shadow: 0 2px 0 rgb(14 87 192 / 18%);
+  cursor: pointer;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
 }
 
-.primary-button:hover {
+.primary-button:hover:not(:disabled) {
   background: #0e57c0;
+  border-color: #0a4aa8;
+  box-shadow: 0 8px 18px rgb(14 87 192 / 24%);
+  transform: translateY(-2px);
+}
+
+.primary-button:active:not(:disabled) {
+  box-shadow: 0 2px 6px rgb(14 87 192 / 20%);
+  transform: translateY(0);
 }
 
 .primary-button:disabled {
   cursor: wait;
+  border-color: #8fb4ed;
+  box-shadow: none;
   opacity: 0.55;
 }
 

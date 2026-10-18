@@ -15,9 +15,9 @@
     "covers:check": "node scripts/build-covers.mjs --check",
     "case:add": "node scripts/add-case.mjs",
     "typecheck": "tsc -p tsconfig.json",
-    "lint": "eslint assets/js/main.js assets/js/catalog-utils.js assets/js/catalog-store.js assets/js/link-target.js assets/js/check-link.js assets/js/mourn.js scripts tests eslint.config.js playwright.config.js vitest.config.js",
-    "format": "prettier --write package.json index.html link/check/index.html link/browser/index.html assets/css/main.css assets/css/check.css assets/js/main.js assets/js/catalog-utils.js assets/js/catalog-store.js assets/js/link-target.js assets/js/check-link.js assets/js/mourn.js scripts tests eslint.config.js playwright.config.js vitest.config.js README.md zh-CN.md",
-    "format:check": "prettier --check package.json index.html link/check/index.html link/browser/index.html assets/css/main.css assets/css/check.css assets/js/main.js assets/js/catalog-utils.js assets/js/catalog-store.js assets/js/link-target.js assets/js/check-link.js assets/js/mourn.js scripts tests eslint.config.js playwright.config.js vitest.config.js README.md zh-CN.md",
+    "lint": "eslint assets/js/main.js assets/js/catalog-utils.js assets/js/catalog-store.js assets/js/link-target.js assets/js/check-link.js assets/js/mourn.js scripts tests eslint.config.js playwright.config.js vite.config.js",
+    "format": "prettier --write package.json index.html link/check/index.html link/browser/index.html assets/css/main.css assets/css/check.css assets/js/main.js assets/js/catalog-utils.js assets/js/catalog-store.js assets/js/link-target.js assets/js/check-link.js assets/js/mourn.js scripts tests eslint.config.js playwright.config.js vite.config.js README.md zh-CN.md",
+    "format:check": "prettier --check package.json index.html link/check/index.html link/browser/index.html assets/css/main.css assets/css/check.css assets/js/main.js assets/js/catalog-utils.js assets/js/catalog-store.js assets/js/link-target.js assets/js/check-link.js assets/js/mourn.js scripts tests eslint.config.js playwright.config.js vite.config.js README.md zh-CN.md",
     "test": "vitest run",
     "test:e2e": "playwright test",
     "verify": "pnpm format:check && pnpm typecheck && pnpm lint && pnpm catalog:check && pnpm covers:check && pnpm test && pnpm test:e2e"

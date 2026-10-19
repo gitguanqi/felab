@@ -169,12 +169,21 @@ function createCard(item) {
     picture.append(source);
   }
   const image = document.createElement('img');
+  image.className = 'catalog-card-cover';
   image.src = resolveAssetUrl(item.picUrl, SITE_ROOT_URL);
   image.alt = item.name;
   image.width = 480;
   image.height = 300;
   image.loading = 'lazy';
   image.decoding = 'async';
+  image.addEventListener(
+    'load',
+    () => {
+      image.classList.add('is-loaded');
+      media.classList.add('is-loaded');
+    },
+    { once: true },
+  );
   picture.append(image);
   media.append(picture);
 

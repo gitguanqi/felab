@@ -11,6 +11,8 @@ export default [
       'assets/js/catalog-store.js',
       'assets/js/link-target.js',
       'assets/js/check-link.js',
+      'assets/js/case-source.js',
+      'assets/js/case.js',
       'assets/js/mourn.js',
     ],
     languageOptions: {

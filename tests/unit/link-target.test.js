@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   getCaseHref,
+  isLocalCaseHref,
   resolveExternalTarget,
   resolveLocalTarget,
 } from '../../assets/js/link-target.js';
@@ -63,5 +64,26 @@ describe('case links', () => {
         siteRootUrl: new URL('https://example.com/felab/'),
       }),
     ).toBe('https://example.com/felab/link/check/?cid=2008');
+  });
+
+  it('routes only cases under the cases directory to the shared viewer', () => {
+    expect(isLocalCaseHref('cases/chart/')).toBe(true);
+    expect(isLocalCaseHref('./cases/clock')).toBe(true);
+    expect(isLocalCaseHref('projects/ddw/')).toBe(false);
+    expect(
+      getCaseHref(
+        { ...item, cid: 2001, href: 'cases/chart/' },
+        { siteRootUrl: new URL('https://example.com/felab/') },
+      ),
+    ).toBe('https://example.com/felab/case/?cid=2001');
+  });
+
+  it('keeps project links direct', () => {
+    expect(
+      getCaseHref(
+        { ...item, cid: 1001, href: 'projects/ddw/' },
+        { siteRootUrl: new URL('https://example.com/felab/') },
+      ),
+    ).toBe('https://example.com/felab/projects/ddw/');
   });
 });

@@ -139,6 +139,7 @@ html.is-mourn {
 }
 
 .primary-button {
+  gap: 8px;
   color: #fff;
   border: 1px solid #0e57c0;
   background: var(--blue);
@@ -149,6 +150,16 @@ html.is-mourn {
     border-color 160ms ease,
     box-shadow 160ms ease,
     transform 160ms ease;
+}
+
+.primary-button svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
 }
 
 .primary-button:hover:not(:disabled) {

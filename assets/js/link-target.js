@@ -26,6 +26,14 @@ export function isExternalHref(href) {
 }
 
 /**
+ * @param {string} href
+ * @returns {boolean}
+ */
+export function isLocalCaseHref(href) {
+  return href.replace(/^\.\//, '').startsWith('cases/');
+}
+
+/**
  * @param {string} rawHref
  * @param {URL} pageUrl
  * @returns {URL}
@@ -104,6 +112,11 @@ export function getCaseHref(item, { siteRootUrl }) {
     const checkUrl = new URL('link/check/', siteRootUrl);
     checkUrl.searchParams.set('cid', String(item.cid));
     return checkUrl.href;
+  }
+  if (isLocalCaseHref(item.href)) {
+    const detailUrl = new URL('case/', siteRootUrl);
+    detailUrl.searchParams.set('cid', String(item.cid));
+    return detailUrl.href;
   }
   return resolveLocalTarget(item.href, siteRootUrl).href;
 }

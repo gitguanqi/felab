@@ -37,10 +37,32 @@ test(`loads the catalog, renders ${EXPECTED_CASE_COUNT} cases, and writes Indexe
   await expect(page.locator('.catalog-card')).toHaveCount(Number(EXPECTED_CASE_COUNT));
   await expect(page.locator('.catalog-card-media').first()).toHaveCSS(
     'background-image',
-    /linear-gradient/,
+    /cover-backdrop\.webp/,
   );
   await expect.poll(() => readCachedRevision(page)).toMatch(/^[a-f0-9]{12}$/);
   expect(errors).toEqual([]);
+});
+
+test('keeps the holder visible until the lazy cover finishes loading', async ({ page }) => {
+  /** @type {(() => void) | undefined} */
+  let releaseCover;
+  const coverGate = new Promise((resolve) => {
+    releaseCover = () => resolve(undefined);
+  });
+  await page.route('**/assets/img/cover/thumbs/ddw.jpg.webp', async (route) => {
+    await coverGate;
+    await route.continue();
+  });
+
+  await page.goto('/', { waitUntil: 'domcontentloaded' });
+  await expect(page.locator('#count')).toHaveText(EXPECTED_CASE_COUNT);
+  const media = page.locator('.catalog-card-media').first();
+  const cover = media.locator('img');
+  await expect(media).toHaveCSS('background-image', /holder\.png/);
+  await expect(cover).not.toHaveClass(/is-loaded/);
+
+  releaseCover?.();
+  await expect(cover).toHaveClass(/is-loaded/);
 });
 
 test('keeps the catalog grid at no more than four columns', async ({ page, isMobile }) => {
@@ -57,7 +79,21 @@ test('keeps the catalog grid at no more than four columns', async ({ page, isMob
     );
 
   expect(columns).toBeLessThanOrEqual(4);
-  expect(columns).toBe(isMobile ? 1 : 4);
+  expect(columns).toBe(isMobile ? 2 : 4);
+});
+
+test('routes only cases directory cards to the shared viewer', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('#count')).toHaveText(EXPECTED_CASE_COUNT);
+
+  const caseLink = page.locator('#category-html .catalog-card-link').first();
+  const projectLink = page.locator('#category-project .catalog-card-link').first();
+  const externalLink = page.locator('#category-project .catalog-card-link').nth(2);
+
+  await expect(caseLink).toHaveAttribute('href', /\/case\/\?cid=\d{4}$/);
+  await expect(projectLink).toHaveAttribute('href', /\/projects\/ddw\/$/);
+  await expect(projectLink).toHaveAttribute('target', '_blank');
+  await expect(externalLink).toHaveAttribute('href', /\/link\/check\/\?cid=1003$/);
 });
 
 test('filters the in-memory catalog without another network request', async ({ page }) => {
@@ -139,9 +175,9 @@ test('renders all AI category cases', async ({ page }) => {
   ]);
   await expect(section.locator('.catalog-card-link').first()).toHaveAttribute(
     'href',
-    /\/cases\/pushbox\/$/,
+    /\/case\/\?cid=6001$/,
   );
-  await expect(section.locator('h2 .felab')).toHaveClass(/felab-code/);
+  await expect(section.locator('h2 .felab')).toHaveClass(/felab-ai-line/);
 });
 
 test('validates outlink parameters and confirms before navigating', async ({ page }) => {
@@ -160,6 +196,7 @@ test('validates outlink parameters and confirms before navigating', async ({ pag
   await expect(page.locator('#target-host')).toHaveText('example.com');
   await expect(page.locator('#target-url')).toHaveText('https://example.com/path');
   await expect(continueButton).toBeEnabled();
+  await expect(continueButton).toContainText('继续');
   await expect(continueButton).toHaveCSS('border-top-style', 'solid');
   await expect(continueButton).toHaveCSS('cursor', 'pointer');
   await page.waitForTimeout(300);

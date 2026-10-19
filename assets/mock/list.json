@@ -35,7 +35,7 @@
     {
       "type": "ai",
       "title": "AI案例",
-      "icon": "felab-code",
+      "icon": "felab-ai-line",
       "cidPrefix": 6
     },
     {
@@ -1481,5 +1481,5 @@
       "update_time": "2020-03-13"
     }
   ],
-  "revision": "fc19bb0ff6ae"
+  "revision": "e43b8461ffbc"
 }

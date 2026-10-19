@@ -1,0 +1,93 @@
+{
+  "id": "3679512",
+  "name": "felab",
+  "font_family": "felab",
+  "css_prefix_text": "felab-",
+  "description": "felab",
+  "glyphs": [
+    {
+      "icon_id": "42737307",
+      "name": "ai-line",
+      "font_class": "ai-line",
+      "unicode": "e7c2",
+      "unicode_decimal": 59330
+    },
+    {
+      "icon_id": "1261160",
+      "name": "bars",
+      "font_class": "bars",
+      "unicode": "e63c",
+      "unicode_decimal": 58940
+    },
+    {
+      "icon_id": "27363333",
+      "name": "chevron-up",
+      "font_class": "chevron-up",
+      "unicode": "eb0f",
+      "unicode_decimal": 60175
+    },
+    {
+      "icon_id": "27364028",
+      "name": "times",
+      "font_class": "times",
+      "unicode": "ebb1",
+      "unicode_decimal": 60337
+    },
+    {
+      "icon_id": "7656259",
+      "name": "logo-javascript",
+      "font_class": "js",
+      "unicode": "e799",
+      "unicode_decimal": 59289
+    },
+    {
+      "icon_id": "10931883",
+      "name": "css3-line",
+      "font_class": "css",
+      "unicode": "e644",
+      "unicode_decimal": 58948
+    },
+    {
+      "icon_id": "29371888",
+      "name": "outline-html-5",
+      "font_class": "html",
+      "unicode": "e702",
+      "unicode_decimal": 59138
+    },
+    {
+      "icon_id": "23563216",
+      "name": "PROJECT",
+      "font_class": "project",
+      "unicode": "ea42",
+      "unicode_decimal": 59970
+    },
+    {
+      "icon_id": "4766975",
+      "name": "tags",
+      "font_class": "tags",
+      "unicode": "e7e5",
+      "unicode_decimal": 59365
+    },
+    {
+      "icon_id": "1117099",
+      "name": "link",
+      "font_class": "link",
+      "unicode": "e63d",
+      "unicode_decimal": 58941
+    },
+    {
+      "icon_id": "1567513",
+      "name": "code",
+      "font_class": "code",
+      "unicode": "e654",
+      "unicode_decimal": 58964
+    },
+    {
+      "icon_id": "11398905",
+      "name": "flask",
+      "font_class": "flask",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    }
+  ]
+}

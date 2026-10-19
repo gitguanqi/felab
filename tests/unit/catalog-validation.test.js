@@ -17,7 +17,9 @@ describe('canonical catalog', () => {
       'cases/pushbox-two/',
       'cases/snake-game/',
     ]);
-    expect(catalog.categories.find((category) => category.type === 'ai')?.icon).toBe('felab-code');
+    expect(catalog.categories.find((category) => category.type === 'ai')?.icon).toBe(
+      'felab-ai-line',
+    );
   });
 
   it('rejects duplicate ids and unsafe external credentials', async () => {

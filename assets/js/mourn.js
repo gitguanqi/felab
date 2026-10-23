@@ -1,16 +1,12 @@
 // @ts-check
 
-const configuredScript = document.querySelector('script[data-mourn-dates]');
-const configuredDates = configuredScript?.getAttribute('data-mourn-dates') ?? '7.7';
-const memorialDates = new Set(
-  configuredDates
-    .split(',')
-    .map((value) => value.trim())
-    .filter(Boolean),
-);
-const now = new Date();
-const dateKey = `${now.getMonth() + 1}.${now.getDate()}`;
+(() => {
+  const MOURNING_DATES = new Set(['7.7', '9.18', '9.30', '11.30', '12.13']);
+  const SHANGHAI_UTC_OFFSET_MS = 8 * 60 * 60 * 1000;
+  const shanghaiNow = new Date(Date.now() + SHANGHAI_UTC_OFFSET_MS);
+  const dateKey = `${shanghaiNow.getUTCMonth() + 1}.${shanghaiNow.getUTCDate()}`;
 
-if (memorialDates.has(dateKey)) {
-  document.documentElement.classList.add('is-mourn');
-}
+  if (MOURNING_DATES.has(dateKey)) {
+    document.documentElement.classList.add('mourning-mode');
+  }
+})();

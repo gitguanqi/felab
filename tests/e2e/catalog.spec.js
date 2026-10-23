@@ -43,6 +43,27 @@ test(`loads the catalog, renders ${EXPECTED_CASE_COUNT} cases, and writes Indexe
   expect(errors).toEqual([]);
 });
 
+test('applies mourning mode only on Shanghai memorial dates', async ({ page }) => {
+  /** @type {string[]} */
+  const errors = [];
+  page.on('pageerror', (error) => errors.push(error.message));
+  page.on('console', (message) => {
+    if (message.type() === 'error') {
+      errors.push(message.text());
+    }
+  });
+
+  await page.clock.install({ time: '2026-07-06T16:30:00Z' });
+  await page.goto('/link/browser/');
+  await expect(page.locator('html')).toHaveClass(/mourning-mode/);
+  await expect(page.locator('html')).toHaveCSS('filter', 'grayscale(1)');
+
+  await page.clock.setFixedTime('2026-07-07T16:30:00Z');
+  await page.reload();
+  await expect(page.locator('html')).not.toHaveClass(/mourning-mode/);
+  expect(errors).toEqual([]);
+});
+
 test('keeps the holder visible until the lazy cover finishes loading', async ({ page }) => {
   /** @type {(() => void) | undefined} */
   let releaseCover;

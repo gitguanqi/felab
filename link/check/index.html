@@ -8,14 +8,34 @@
       content="default-src 'self'; img-src 'self' data:; script-src 'self'; style-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"
     />
     <script src="../../assets/js/mourn.js"></script>
+    <script src="../../assets/js/theme.js"></script>
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>站外链接确认 - 前端实验室</title>
     <link rel="stylesheet" href="../../assets/css/iconfont.css" />
     <link rel="stylesheet" href="../../assets/css/reset.min.css" />
+    <link rel="stylesheet" href="../../assets/css/theme.css" />
     <link rel="stylesheet" href="../../assets/css/check.css" />
   </head>
   <body>
     <main class="safe-page">
+      <button
+        class="theme-toggle safe-theme-toggle"
+        type="button"
+        data-theme-toggle
+        aria-label="切换到暗黑模式"
+        aria-pressed="false"
+        title="切换到暗黑模式"
+      >
+        <svg class="theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"></circle>
+          <path
+            d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41"
+          ></path>
+        </svg>
+        <svg class="theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M20.8 13.2A8.6 8.6 0 1 1 10.8 3.2a7 7 0 0 0 10 10Z"></path>
+        </svg>
+      </button>
       <a class="safe-brand" href="../../">
         <i class="felab felab-flask" aria-hidden="true"></i>
         前端实验室

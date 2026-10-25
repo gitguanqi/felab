@@ -72,6 +72,10 @@ External case links open `/link/check/?cid=<cid>`. The same confirmation page al
 `/link/check/?outlink=<encoded-url>` for direct external links. Both entry points validate the
 destination, display its host and full URL, and require an explicit click before leaving the site.
 
+## Dark Mode
+
+The home page, shared case viewer shell, and external-link confirmation page use `assets/js/theme.js`. The first visit follows `prefers-color-scheme`; a manual choice is stored as `felab-theme` in `localStorage`. Embedded case content is not restyled.
+
 ## Contribution
 
 [@gitguanqi](https://github.com/gitguanqi)

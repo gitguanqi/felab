@@ -5,6 +5,17 @@ playwright-report/
 test-results/
 coverage/
 
+# Local-only catalog admin
+/admin/
+/assets/css/admin.css
+/assets/js/admin.js
+/assets/js/catalog-editor.js
+/scripts/admin-server.mjs
+/scripts/lib/admin.mjs
+/tests/e2e/admin.spec.js
+/tests/unit/admin.test.js
+/tests/unit/catalog-editor.test.js
+
 # Editor directories and files
 .idea
 .vscode

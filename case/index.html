@@ -9,8 +9,10 @@
     />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>案例预览 - 前端实验室</title>
+    <script src="../assets/js/theme.js"></script>
     <link rel="stylesheet" href="../assets/css/iconfont.css" />
     <link rel="stylesheet" href="../assets/css/reset.min.css" />
+    <link rel="stylesheet" href="../assets/css/theme.css" />
     <link rel="stylesheet" href="../assets/css/case.css" />
   </head>
   <body>
@@ -84,6 +86,24 @@
             </svg>
             <span class="case-control-label">分享</span>
           </button>
+          <button
+            class="theme-toggle case-theme-toggle"
+            type="button"
+            data-theme-toggle
+            aria-label="切换到暗黑模式"
+            aria-pressed="false"
+            title="切换到暗黑模式"
+          >
+            <svg class="theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="4"></circle>
+              <path
+                d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41"
+              ></path>
+            </svg>
+            <svg class="theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M20.8 13.2A8.6 8.6 0 1 1 10.8 3.2a7 7 0 0 0 10 10Z"></path>
+            </svg>
+          </button>
         </div>
       </header>
 
@@ -151,7 +171,7 @@
             <iframe
               id="preview-frame"
               title="案例预览"
-              sandbox="allow-scripts allow-same-origin allow-forms allow-modals allow-popups allow-downloads"
+              sandbox="allow-scripts allow-forms allow-modals allow-popups allow-downloads"
               referrerpolicy="no-referrer"
             ></iframe>
             <div class="preview-loading" role="status">

@@ -1,11 +1,6 @@
 import { createInterface } from 'node:readline/promises';
 import { stdin as input, stdout as output } from 'node:process';
-import {
-  CatalogValidationError,
-  loadCatalogSource,
-  validateCatalog,
-  writeCatalogFiles,
-} from './lib/catalog.mjs';
+import { getNextCatalogCid, loadCatalogSource, writeCatalogFiles } from './lib/catalog.mjs';
 
 const readline = createInterface({ input, output });
 
@@ -49,14 +44,7 @@ try {
     .map((tag) => tag.trim())
     .filter(Boolean);
 
-  const prefix = Number(category.cidPrefix);
-  const nextNumber =
-    catalog.list
-      .filter((item) => Number.isInteger(item.cid) && String(item.cid).startsWith(String(prefix)))
-      .map((item) => Number(String(item.cid).slice(1)))
-      .sort((a, b) => a - b)
-      .at(-1) ?? 0;
-  const cid = Number(`${prefix}${String(nextNumber + 1).padStart(3, '0')}`);
+  const cid = getNextCatalogCid(catalog, category.type);
   const now = new Date();
   const today = [
     now.getFullYear(),
@@ -76,11 +64,7 @@ try {
   };
 
   catalog.list.push(item);
-  const errors = await validateCatalog(catalog);
-  if (errors.length > 0) {
-    throw new CatalogValidationError(errors);
-  }
-  const result = await writeCatalogFiles();
+  const result = await writeCatalogFiles({ catalog });
   console.log(`Added case ${cid}. Catalog revision: ${result.revision}.`);
   console.log('Run pnpm covers:build if the cover is new.');
 } catch (error) {

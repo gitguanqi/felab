@@ -1,7 +1,6 @@
 @charset "utf-8";
 
 :root {
-  color-scheme: light;
   --ink: #17212b;
   --muted: #5e6b78;
   --line: #d9e0e7;
@@ -16,6 +15,13 @@ body {
 body {
   color: var(--ink);
   background: #f3f6f8;
+}
+
+.safe-theme-toggle {
+  position: fixed;
+  top: 24px;
+  right: max(20px, calc((100vw - 720px) / 2));
+  z-index: 2;
 }
 
 html.mourning-mode {
@@ -213,6 +219,82 @@ html.mourning-mode {
   font-weight: normal;
 }
 
+html[data-theme='dark'] {
+  --ink: #e5edf5;
+  --muted: #9cafbf;
+  --line: #2b3a47;
+  --blue: #68aaff;
+}
+
+html[data-theme='dark'] body {
+  background: #0d141b;
+}
+
+html[data-theme='dark'] .safe-brand {
+  color: #b4d0ea;
+}
+
+html[data-theme='dark'] .safe-panel {
+  background: #131d26;
+  box-shadow: 0 18px 52px rgb(0 0 0 / 38%);
+}
+
+html[data-theme='dark'] .safe-kicker {
+  color: #e1a258;
+}
+
+html[data-theme='dark'] .safe-host-label,
+html[data-theme='dark'] .safe-url-label {
+  color: #8799aa;
+}
+
+html[data-theme='dark'] .safe-host {
+  color: #9ac6f4;
+}
+
+html[data-theme='dark'] .safe-url {
+  color: #c3d1dc;
+  border-color: #2d3d4a;
+  background: #101820;
+}
+
+html[data-theme='dark'] .primary-button {
+  color: #071422;
+  border-color: #82bbff;
+  background: #82bbff;
+  box-shadow: 0 2px 0 rgb(0 0 0 / 24%);
+}
+
+html[data-theme='dark'] .primary-button:hover:not(:disabled) {
+  color: #071422;
+  border-color: #a2ceff;
+  background: #a2ceff;
+}
+
+html[data-theme='dark'] .secondary-button {
+  color: #a8c6df;
+  border-color: #3b4d5c;
+  background: #17232d;
+}
+
+html[data-theme='dark'] .secondary-button:hover {
+  border-color: #61788d;
+}
+
+html[data-theme='dark'] .safe-error {
+  color: #efb27b;
+  border-color: #60452f;
+  background: #281e16;
+}
+
+html[data-theme='dark'] ::-webkit-scrollbar {
+  background: #111a22;
+}
+
+html[data-theme='dark'] ::-webkit-scrollbar-thumb {
+  background: #47657f;
+}
+
 @media (max-width: 540px) {
   .safe-page {
     padding: 24px 14px 40px;
@@ -224,5 +306,10 @@ html.mourning-mode {
 
   .safe-panel h1 {
     font-size: 28px;
+  }
+
+  .safe-theme-toggle {
+    top: 18px;
+    right: 14px;
   }
 }

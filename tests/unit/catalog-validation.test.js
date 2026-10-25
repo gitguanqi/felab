@@ -7,7 +7,7 @@ describe('canonical catalog', () => {
     const errors = await validateCatalog(catalog, { rootDir: PROJECT_ROOT });
     expect(errors).toEqual([]);
     expect(catalog.list).toHaveLength(98);
-    expect(catalog.categories).toHaveLength(6);
+    expect(catalog.categories).toHaveLength(7);
     expect(catalog.list.filter((item) => item.type === 'ai').map((item) => item.href)).toEqual([
       'cases/pushbox/',
       'cases/certutil/',
@@ -20,6 +20,12 @@ describe('canonical catalog', () => {
     expect(catalog.categories.find((category) => category.type === 'ai')?.icon).toBe(
       'felab-ai-line',
     );
+    expect(catalog.categories.find((category) => category.type === 'node')).toEqual({
+      type: 'node',
+      title: 'Node案例',
+      icon: 'felab-nodejs',
+      cidPrefix: 7,
+    });
   });
 
   it('rejects duplicate ids and unsafe external credentials', async () => {

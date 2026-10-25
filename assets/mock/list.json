@@ -39,6 +39,12 @@
       "cidPrefix": 6
     },
     {
+      "type": "node",
+      "title": "Node案例",
+      "icon": "felab-nodejs",
+      "cidPrefix": 7
+    },
+    {
       "type": "link",
       "title": "友情链接",
       "icon": "felab-link",
@@ -75,36 +81,6 @@
       "update_time": "2019-10-18"
     },
     {
-      "cid": 1003,
-      "name": "【nodejs】小奇便签",
-      "description": "小奇便签是一个关于nodejs学习的，包括各种nodejs和express框架的内容，包括便签分类用户接口用户管理的一个案例站点。",
-      "href": "https://github.com/gitguanqi/xqnote",
-      "picUrl": "./assets/img/cover/xqnote.jpg",
-      "type": "project",
-      "tags": [
-        "nodejs",
-        "express",
-        "小奇便签"
-      ],
-      "create_time": "2019-10-18",
-      "update_time": "2019-10-18"
-    },
-    {
-      "cid": 1004,
-      "name": "【APICloud】Markerapp",
-      "description": "Markerapp是一个关于混合式App开发的博客写作app，包括登录，注册，找回密码，密保问题，查看个人主页，写博客，查看博客，关注，评论，点赞等功能的一个手机应用。",
-      "href": "https://github.com/gitguanqi/markerapp",
-      "picUrl": "./assets/img/cover/markerapp.jpg",
-      "type": "project",
-      "tags": [
-        "App",
-        "apicloud",
-        "博客写作"
-      ],
-      "create_time": "2019-10-18",
-      "update_time": "2019-10-18"
-    },
-    {
       "cid": 1005,
       "name": "【vuejs】小奇工具箱",
       "description": "【vuejs】小奇工具箱是一个vuejs的常用工具项目。",
@@ -119,7 +95,7 @@
       "update_time": "2019-10-18"
     },
     {
-      "cid": 1007,
+      "cid": 1014,
       "name": "【nodejs】KDAPI",
       "description": "【nodejs】KDAPI是一个nodejs+mysql+redis搭建的api接口服务器项目。",
       "href": "https://api.localhost/",
@@ -130,7 +106,7 @@
         "api"
       ],
       "create_time": "2019-10-18",
-      "update_time": "2019-10-18"
+      "update_time": "2026-10-25"
     },
     {
       "cid": 1008,
@@ -202,20 +178,6 @@
       ],
       "create_time": "2021-11-28",
       "update_time": "2021-11-28"
-    },
-    {
-      "cid": 1013,
-      "name": "【Vuejs】小奇聊天室",
-      "description": "【Vuejs】小奇聊天室是一个基于Vue3+vite3+GPT的在线聊天室，提供机器人聊天功能等功能。",
-      "href": "https://chat.localhost/",
-      "picUrl": "./assets/img/cover/xqchat.jpg",
-      "type": "project",
-      "tags": [
-        "vuejs",
-        "chat"
-      ],
-      "create_time": "2023-05-03",
-      "update_time": "2023-05-03"
     },
     {
       "cid": 2001,
@@ -1479,7 +1441,51 @@
       ],
       "create_time": "2020-03-13",
       "update_time": "2020-03-13"
+    },
+    {
+      "cid": 7001,
+      "name": "【nodejs】小奇便签",
+      "description": "小奇便签是一个关于nodejs学习的，包括各种nodejs和express框架的内容，包括便签分类用户接口用户管理的一个案例站点。",
+      "href": "https://github.com/gitguanqi/xqnote",
+      "picUrl": "./assets/img/cover/xqnote.jpg",
+      "type": "node",
+      "tags": [
+        "nodejs",
+        "express",
+        "小奇便签"
+      ],
+      "create_time": "2019-10-18",
+      "update_time": "2026-10-25"
+    },
+    {
+      "cid": 7002,
+      "name": "【APICloud】Markerapp",
+      "description": "Markerapp是一个关于混合式App开发的博客写作app，包括登录，注册，找回密码，密保问题，查看个人主页，写博客，查看博客，关注，评论，点赞等功能的一个手机应用。",
+      "href": "https://github.com/gitguanqi/markerapp",
+      "picUrl": "./assets/img/cover/markerapp.jpg",
+      "type": "node",
+      "tags": [
+        "App",
+        "apicloud",
+        "博客写作"
+      ],
+      "create_time": "2019-10-18",
+      "update_time": "2026-10-25"
+    },
+    {
+      "cid": 1013,
+      "name": "【Vuejs】小奇聊天室",
+      "description": "【Vuejs】小奇聊天室是一个基于Vue3+vite3+GPT的在线聊天室，提供机器人聊天功能等功能。",
+      "href": "https://chat.localhost/",
+      "picUrl": "./assets/img/cover/xqchat.jpg",
+      "type": "project",
+      "tags": [
+        "vuejs",
+        "chat"
+      ],
+      "create_time": "2023-05-03",
+      "update_time": "2023-05-03"
     }
   ],
-  "revision": "e43b8461ffbc"
+  "revision": "a80bde07befd"
 }

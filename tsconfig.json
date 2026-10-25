@@ -20,6 +20,7 @@
     "assets/js/case-source.js",
     "assets/js/case.js",
     "assets/js/mourn.js",
+    "assets/js/theme.js",
     "scripts/**/*.mjs",
     "tests/unit/**/*.js",
     "tests/e2e/**/*.js"

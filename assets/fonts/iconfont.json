@@ -6,6 +6,13 @@
   "description": "felab",
   "glyphs": [
     {
+      "icon_id": "22115432",
+      "name": "logo-nodejs",
+      "font_class": "nodejs",
+      "unicode": "e9e2",
+      "unicode_decimal": 59874
+    },
+    {
       "icon_id": "42737307",
       "name": "ai-line",
       "font_class": "ai-line",

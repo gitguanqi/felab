@@ -14,12 +14,12 @@
 /* 图标样式 */
 @font-face {
   font-family: "felab"; /* Project id 3679512 */
-  src: url("../fonts/iconfont.eot?t=1792366936498"); /* IE9 */
-  src: url("../fonts/iconfont.eot?t=1792366936498#iefix") format("embedded-opentype"),
-    /* IE6-IE8 */ url("../fonts/iconfont.woff2?t=1792366936498") format("woff2"),
-    url("../fonts/iconfont.woff?t=1792366936498") format("woff"),
-    url("../fonts/iconfont.ttf?t=1792366936498") format("truetype"),
-    url("../fonts/iconfont.svg?t=1792366936498#felab") format("svg");
+  src: url("../fonts/iconfont.eot?t=1792931817591"); /* IE9 */
+  src: url("../fonts/iconfont.eot?t=1792931817591#iefix") format("embedded-opentype"),
+    /* IE6-IE8 */ url("../fonts/iconfont.woff2?t=1792931817591") format("woff2"),
+    url("../fonts/iconfont.woff?t=1792931817591") format("woff"),
+    url("../fonts/iconfont.ttf?t=1792931817591") format("truetype"),
+    url("../fonts/iconfont.svg?t=1792931817591#felab") format("svg");
 }
 
 .felab {
@@ -28,6 +28,10 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.felab-nodejs:before {
+  content: "\e9e2";
 }
 
 .felab-ai-line:before {

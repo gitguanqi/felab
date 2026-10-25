@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { access, readFile, writeFile, mkdir } from 'node:fs/promises';
+import { access, mkdir, readFile, rename, unlink, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -8,8 +8,10 @@ import { fileURLToPath } from 'node:url';
  */
 
 export const PROJECT_ROOT = path.resolve(fileURLToPath(new URL('../..', import.meta.url)));
-export const CATALOG_SOURCE_PATH = path.join(PROJECT_ROOT, 'assets/mock/list.json');
-export const CATALOG_OUTPUT_PATH = path.join(PROJECT_ROOT, 'assets/mock/list.min.json');
+export const CATALOG_SOURCE_RELATIVE_PATH = 'assets/mock/list.json';
+export const CATALOG_OUTPUT_RELATIVE_PATH = 'assets/mock/list.min.json';
+export const CATALOG_SOURCE_PATH = path.join(PROJECT_ROOT, CATALOG_SOURCE_RELATIVE_PATH);
+export const CATALOG_OUTPUT_PATH = path.join(PROJECT_ROOT, CATALOG_OUTPUT_RELATIVE_PATH);
 
 const REQUIRED_TOP_LEVEL = ['schemaVersion', 'name', 'description', 'categories', 'list'];
 const REQUIRED_CASE_FIELDS = [
@@ -383,26 +385,71 @@ export function buildCatalogOutput(catalog) {
   };
 }
 
-/** @returns {Promise<Catalog>} */
-export async function loadCatalogSource() {
-  const text = await readFile(CATALOG_SOURCE_PATH, 'utf8');
+/**
+ * @param {{ rootDir?: string }} [options]
+ * @returns {Promise<Catalog>}
+ */
+export async function loadCatalogSource({ rootDir = PROJECT_ROOT } = {}) {
+  const text = await readFile(path.join(rootDir, CATALOG_SOURCE_RELATIVE_PATH), 'utf8');
   return /** @type {Catalog} */ (JSON.parse(text));
 }
 
 /**
- * @param {{ check?: boolean }} [options]
+ * @param {Catalog} catalog
+ * @param {string} categoryType
+ * @returns {number}
  */
-export async function writeCatalogFiles({ check = false } = {}) {
-  const sourceText = await readFile(CATALOG_SOURCE_PATH, 'utf8');
-  const catalog = /** @type {Catalog} */ (JSON.parse(sourceText));
-  const errors = await validateCatalog(catalog);
+export function getNextCatalogCid(catalog, categoryType) {
+  const category = catalog.categories.find((item) => item.type === categoryType);
+  if (!category) {
+    throw new Error(`Unknown category: ${categoryType}`);
+  }
+
+  const prefix = Number(category.cidPrefix);
+  const nextNumber =
+    catalog.list
+      .filter((item) => Number.isInteger(item.cid) && String(item.cid).startsWith(String(prefix)))
+      .map((item) => Number(String(item.cid).slice(1)))
+      .sort((a, b) => a - b)
+      .at(-1) ?? 0;
+  return Number(`${prefix}${String(nextNumber + 1).padStart(3, '0')}`);
+}
+
+/**
+ * @param {{ check?: boolean, rootDir?: string, catalog?: Catalog, list?: Catalog['list'], baseRevision?: string }} [options]
+ */
+export async function writeCatalogFiles({
+  check = false,
+  rootDir = PROJECT_ROOT,
+  catalog: candidateCatalog,
+  list,
+  baseRevision,
+} = {}) {
+  const sourcePath = path.join(rootDir, CATALOG_SOURCE_RELATIVE_PATH);
+  const outputPath = path.join(rootDir, CATALOG_OUTPUT_RELATIVE_PATH);
+  const sourceText = await readFile(sourcePath, 'utf8');
+  const sourceCatalog = /** @type {Catalog} */ (JSON.parse(sourceText));
+
+  if (baseRevision !== undefined) {
+    const currentRevision = computeCatalogRevision(sourceCatalog);
+    if (baseRevision !== currentRevision) {
+      const conflict = new Error('Catalog revision has changed.');
+      conflict.name = 'CatalogRevisionConflict';
+      throw conflict;
+    }
+  }
+
+  const catalog =
+    candidateCatalog ??
+    (list ? /** @type {Catalog} */ ({ ...sourceCatalog, list }) : sourceCatalog);
+  const errors = await validateCatalog(catalog, { rootDir });
   if (errors.length > 0) {
     throw new CatalogValidationError(errors);
   }
 
   const output = buildCatalogOutput(catalog);
   if (check) {
-    const currentOutput = await readFile(CATALOG_OUTPUT_PATH, 'utf8');
+    const currentOutput = await readFile(outputPath, 'utf8');
     const stale = [];
     if (sourceText !== output.sourceText) {
       stale.push('assets/mock/list.json');
@@ -416,9 +463,20 @@ export async function writeCatalogFiles({ check = false } = {}) {
     return { catalog: output.catalog, revision: output.revision, count: catalog.list.length };
   }
 
-  await mkdir(path.dirname(CATALOG_OUTPUT_PATH), { recursive: true });
-  await writeFile(CATALOG_SOURCE_PATH, output.sourceText, 'utf8');
-  await writeFile(CATALOG_OUTPUT_PATH, output.minifiedText, 'utf8');
+  await mkdir(path.dirname(outputPath), { recursive: true });
+  const nonce = `${process.pid}-${Date.now()}`;
+  const sourceTempPath = `${sourcePath}.${nonce}.tmp`;
+  const outputTempPath = `${outputPath}.${nonce}.tmp`;
+  try {
+    await Promise.all([
+      writeFile(sourceTempPath, output.sourceText, 'utf8'),
+      writeFile(outputTempPath, output.minifiedText, 'utf8'),
+    ]);
+    await rename(sourceTempPath, sourcePath);
+    await rename(outputTempPath, outputPath);
+  } finally {
+    await Promise.allSettled([unlink(sourceTempPath), unlink(outputTempPath)]);
+  }
   return { catalog: output.catalog, revision: output.revision, count: catalog.list.length };
 }
 

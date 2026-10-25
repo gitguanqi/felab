@@ -14,6 +14,7 @@ export default [
       'assets/js/case-source.js',
       'assets/js/case.js',
       'assets/js/mourn.js',
+      'assets/js/theme.js',
     ],
     languageOptions: {
       ecmaVersion: 2022,

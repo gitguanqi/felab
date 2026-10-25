@@ -1,6 +1,13 @@
 import { expect, test } from '@playwright/test';
 
 test('renders the shared case viewer in split mode', async ({ page }) => {
+  /** @type {string[]} */
+  const securityMessages = [];
+  page.on('console', (message) => {
+    if (/content security policy|allow-scripts and allow-same-origin/i.test(message.text())) {
+      securityMessages.push(message.text());
+    }
+  });
   await page.goto('/case/?cid=2010');
 
   await expect(page.locator('.case-title')).toHaveText('案例预览');
@@ -14,8 +21,13 @@ test('renders the shared case viewer in split mode', async ({ page }) => {
   await expect(page.locator('.code-panel')).toBeVisible();
   await expect(page.locator('.preview-panel')).toBeVisible();
   await expect(page.locator('#preview-frame')).toHaveAttribute('src', /\/cases\/xqclip\/$/);
+  await expect(page.locator('#preview-frame')).not.toHaveAttribute('sandbox', /allow-same-origin/);
+  await expect(
+    page.frameLocator('#preview-frame').getByRole('heading', { name: 'XqClip图片裁切案例' }),
+  ).toBeVisible();
   await expect(page.locator('#source-code')).toContainText('<!DOCTYPE html>');
   await expect(page).toHaveURL(/\/case\/\?cid=2010$/);
+  expect(securityMessages).toEqual([]);
 });
 
 test('returns to the catalog from the case title', async ({ page }) => {

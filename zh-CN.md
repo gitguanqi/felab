@@ -70,6 +70,10 @@ pnpm dev
 
 站外案例统一进入 `/link/check/?cid=<cid>`。确认页也支持通过 `/link/check/?outlink=<编码后的地址>` 直接打开外部链接。两种入口都会校验目标、展示目标域名和完整地址，并由用户主动确认后离开本站。
 
+## 暗黑模式
+
+首页、案例预览外壳和外链确认页共用 `assets/js/theme.js`。首次访问跟随 `prefers-color-scheme`，用户手动选择后写入 `localStorage` 的 `felab-theme`。被嵌入 iframe 的案例内容不应用主题样式。
+
 ## 贡献
 
 [@gitguanqi](https://github.com/gitguanqi)

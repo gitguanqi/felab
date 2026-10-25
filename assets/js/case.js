@@ -229,8 +229,7 @@ async function copyText(text) {
   const textarea = document.createElement('textarea');
   textarea.value = text;
   textarea.setAttribute('readonly', '');
-  textarea.style.position = 'fixed';
-  textarea.style.opacity = '0';
+  textarea.className = 'copy-fallback-input';
   document.body.append(textarea);
   textarea.select();
   const copied = document.execCommand('copy');

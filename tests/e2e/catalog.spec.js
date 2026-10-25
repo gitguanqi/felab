@@ -33,7 +33,7 @@ test(`loads the catalog, renders ${EXPECTED_CASE_COUNT} cases, and writes Indexe
   });
   await page.goto('/');
   await expect(page.locator('#count')).toHaveText(EXPECTED_CASE_COUNT);
-  await expect(page.locator('#catalog-sections .catalog-section')).toHaveCount(6);
+  await expect(page.locator('#catalog-sections .catalog-section')).toHaveCount(7);
   await expect(page.locator('.catalog-card')).toHaveCount(Number(EXPECTED_CASE_COUNT));
   await expect(page.locator('.catalog-card-media').first()).toHaveCSS(
     'background-image',
@@ -252,4 +252,35 @@ test('opens and closes the mobile navigation with the keyboard', async ({ page, 
   await page.keyboard.press('Escape');
   await expect(page.locator('#site-nav')).toHaveAttribute('aria-hidden', 'true');
   await expect(page.locator('#nav-toggle')).toBeFocused();
+});
+
+test('persists the selected theme across site shell pages', async ({ page }) => {
+  await page.emulateMedia({ colorScheme: 'dark' });
+  await page.goto('/');
+
+  const html = page.locator('html');
+  await expect(html).toHaveAttribute('data-theme', 'dark');
+  const toggle = page.locator('[data-theme-toggle]:visible');
+  await expect(toggle).toHaveAttribute('aria-pressed', 'true');
+  await expect(toggle).toHaveAttribute('aria-label', '切换到浅色模式');
+
+  await toggle.click();
+  await expect(html).toHaveAttribute('data-theme', 'light');
+  await expect
+    .poll(() => page.evaluate(() => globalThis.localStorage.getItem('felab-theme')))
+    .toBe('light');
+
+  await page.reload();
+  await expect(html).toHaveAttribute('data-theme', 'light');
+
+  await page.goto('/case/?cid=2001');
+  await expect(html).toHaveAttribute('data-theme', 'light');
+  await expect(page.locator('[data-theme-toggle]:visible')).toHaveAttribute(
+    'aria-pressed',
+    'false',
+  );
+
+  await page.goto('/link/check/?cid=2008');
+  await expect(html).toHaveAttribute('data-theme', 'light');
+  await expect(page.locator('[data-theme-toggle]:visible')).toBeVisible();
 });

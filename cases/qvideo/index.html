@@ -1,91 +1,92 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>自定义视频播放器</title>
-    <link rel="stylesheet" href="./styles/video.min.css">
-    <link href="https://cdn.bootcss.com/font-awesome/5.10.0-12/css/all.min.css" rel="stylesheet">
-</head>
-<body>
+    <link rel="stylesheet" href="./styles/video.css" />
+  </head>
+  <body>
     <div class="qvideo">
-        <video class="qvideo-box" id="qvideo" poster="./images/hl.jpg">
-            <source src="https://www.runoob.com/try/demo_source/movie.mp4" type="video/mp4">
-            <p>您的游览器不支持html5 video元素!</p>
-        </video>
-        <div class="qvideo-title"><strong>小猪佩奇(第一集)</strong></div>
-        <div class="qvideo-controls">
-            <div class="qvideo-progress">
-                <span class="qvideo-progress-current"></span>
-            </div>
-            <div class="qvideo-set">
-                <div class="qvideo-set-left">
-                    <button class="qvideo-play"><i id="play-icon" class="fa fa-play" title="播放/暂停"></i></button>
-                    <button class="qvideo-reload"><i id="reload-icon" class="fa fa-redo" title="重载"></i></button>
-                    <div class="qvideo-time">
-                        <span class="qvideo-startTime">00:00:00</span>
-                        <span class="qvideo-time-line">/</span>
-                        <span class="qvideo-endTime">00:00:00</span>
-                    </div>
-                </div>
-                <div class="qvideo-set-right">
-                    <div class="qvideo-volume">
-                        <button class="qvideo-volume-btn"><i id="volume-icon" class="fa fa-volume-up"></i></button>
-                        <div class="qvideo-volume-progress" id="volLen">
-                            <span class="qvideo-volume-progress-current" id="volCur"></span>
-                        </div>
-                    </div>
-                    <button class="qvideo-fullscreen-btn"><i class="fa fa-compress" title="全屏"></i></button>
-                </div>
-            </div>
+      <video
+        class="qvideo-box"
+        id="qvideo"
+        poster="./images/demo-poster.jpg"
+        preload="metadata"
+        playsinline
+      >
+        <source src="./media/demo.mp4" type="video/mp4" />
+        <p>您的浏览器不支持 HTML5 视频。</p>
+      </video>
+      <div class="qvideo-title"><strong>本地视频播放器示例</strong></div>
+      <div class="qvideo-controls">
+        <div class="qvideo-progress">
+          <span class="qvideo-progress-current"></span>
         </div>
-        <div class="qvideo-loading-box show">
-            <div class="qvideo-loading"></div>
+        <div class="qvideo-set">
+          <div class="qvideo-set-left">
+            <button class="qvideo-play" type="button" aria-label="播放视频" data-state="paused">
+              <svg class="qvideo-icon qvideo-icon-play" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m8 5 11 7-11 7V5Z"></path>
+              </svg>
+              <svg class="qvideo-icon qvideo-icon-pause" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M8 5v14M16 5v14"></path>
+              </svg>
+            </button>
+            <button class="qvideo-reload" type="button" aria-label="重新加载视频">
+              <svg class="qvideo-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"></path>
+              </svg>
+            </button>
+            <div class="qvideo-time">
+              <span class="qvideo-startTime">00:00:00</span>
+              <span class="qvideo-time-line">/</span>
+              <span class="qvideo-endTime">00:00:00</span>
+            </div>
+          </div>
+          <div class="qvideo-set-right">
+            <div class="qvideo-volume">
+              <button class="qvideo-volume-btn" type="button" aria-label="静音" data-state="on">
+                <svg class="qvideo-icon qvideo-icon-volume" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M11 5 6 9H3v6h3l5 4V5ZM15 9a4 4 0 0 1 0 6M18 6a8 8 0 0 1 0 12"></path>
+                </svg>
+                <svg class="qvideo-icon qvideo-icon-muted" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M11 5 6 9H3v6h3l5 4V5ZM16 9l5 6M21 9l-5 6"></path>
+                </svg>
+              </button>
+              <div
+                class="qvideo-volume-progress"
+                id="volLen"
+                role="slider"
+                aria-label="音量"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="100"
+                tabindex="0"
+              >
+                <span class="qvideo-volume-progress-current" id="volCur"></span>
+              </div>
+            </div>
+            <button class="qvideo-fullscreen-btn" type="button" aria-label="切换全屏">
+              <svg class="qvideo-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"></path>
+              </svg>
+            </button>
+          </div>
         </div>
+      </div>
+      <div class="qvideo-loading-box show" role="status">
+        <div class="qvideo-loading-content">
+          <div class="qvideo-loading"></div>
+          <span class="qvideo-error" hidden>视频加载失败，请刷新后重试。</span>
+        </div>
+      </div>
     </div>
 
-    <script src="./scripts/video.min.js"></script>
+    <script src="./scripts/player.js"></script>
     <script>
-        let qVideo = getDom('#qvideo');
-        let progress = getDom('.qvideo-progress');
-        let currentProgress = getDom('.qvideo-progress-current');
-        let play = getDom('.qvideo-play');
-        let playIcon = getDom('#play-icon');
-        let reload = getDom('.qvideo-reload');
-        let startTime = getDom('.qvideo-startTime');
-        let endTime = getDom('.qvideo-endTime');
-        let volumeBtn = getDom('.qvideo-volume-btn');
-        let volumeIcon = getDom('#volume-icon');
-        let volumePro = getDom('.qvideo-volume-progress');
-        let volumeCur = getDom('.qvideo-volume-progress-current');
-        let fullscreenBtn = getDom('.qvideo-fullscreen-btn');
-        let qvideoLoading = getDom('.qvideo-loading-box');
-        /**
-         *获取单个元素
-        *
-        * @param {*} name
-        * @returns
-        */
-        function getDom(name) {
-        return document.querySelector(name);
-        }
-        new $qvideo(
-            qVideo,
-            progress,
-            currentProgress,
-            play,
-            playIcon,
-            reload,
-            startTime,
-            endTime,
-            volumeBtn,
-            volumeIcon,
-            volumePro,
-            volumeCur,
-            fullscreenBtn,
-            qvideoLoading,
-        );
+      new QVideo(document.querySelector('.qvideo'));
     </script>
-</body>
+  </body>
 </html>

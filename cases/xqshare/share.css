@@ -1,0 +1,97 @@
+@charset "utf-8";
+
+:root {
+  color: #18232d;
+  background: #eef3f6;
+  font-family: 'Microsoft YaHei', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 280px;
+  min-height: 100vh;
+  margin: 0;
+}
+
+button {
+  font: inherit;
+}
+
+.share-demo {
+  width: min(100% - 32px, 680px);
+  margin: 0 auto;
+  padding: 48px 0;
+}
+
+.share-demo-heading {
+  margin-bottom: 22px;
+}
+
+.share-demo-kicker {
+  margin: 0 0 6px;
+  color: #3674a8;
+  font-size: 11px;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.share-demo h1 {
+  margin: 0;
+  font-size: clamp(24px, 5vw, 36px);
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.share-open {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 16px;
+  color: #fff;
+  border: 0;
+  border-radius: 6px;
+  background: #1769e0;
+  box-shadow: 0 5px 14px rgb(23 105 224 / 20%);
+  cursor: pointer;
+}
+
+.share-open:hover {
+  background: #0e57c0;
+}
+
+.share-open svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.share-open:focus-visible {
+  outline: 3px solid rgb(23 105 224 / 28%);
+  outline-offset: 2px;
+}
+
+.demo-status {
+  min-height: 20px;
+  margin: 14px 0 0;
+  color: #26754b;
+  font-size: 12px;
+}
+
+.demo-status[data-tone='error'] {
+  color: #a13e31;
+}
+
+@media (max-width: 520px) {
+  .share-demo {
+    padding: 30px 0;
+  }
+}

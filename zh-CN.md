@@ -72,7 +72,7 @@ pnpm dev
 
 ## 暗黑模式
 
-首页、案例预览外壳和外链确认页共用 `assets/js/theme.js`。首次访问跟随 `prefers-color-scheme`，用户手动选择后写入 `localStorage` 的 `felab-theme`。被嵌入 iframe 的案例内容不应用主题样式。
+首页、案例预览外壳和外链确认页共用 `assets/js/theme.js`。主题菜单支持浅色、深色和跟随系统三种模式，选择结果写入 `localStorage` 的 `felab-theme`；跟随系统模式会响应 `prefers-color-scheme` 变化。被嵌入 iframe 的案例内容不应用主题样式。
 
 ## 贡献
 

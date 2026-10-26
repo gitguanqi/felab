@@ -74,7 +74,7 @@ destination, display its host and full URL, and require an explicit click before
 
 ## Dark Mode
 
-The home page, shared case viewer shell, and external-link confirmation page use `assets/js/theme.js`. The first visit follows `prefers-color-scheme`; a manual choice is stored as `felab-theme` in `localStorage`. Embedded case content is not restyled.
+The home page, shared case viewer shell, and external-link confirmation page use `assets/js/theme.js`. Users can select light, dark, or system mode from the shared theme menu. The selection is stored as `felab-theme` in `localStorage`; system mode follows `prefers-color-scheme` changes. Embedded case content is not restyled.
 
 ## Contribution
 

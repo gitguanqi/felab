@@ -33,16 +33,16 @@
       "cidPrefix": 4
     },
     {
-      "type": "ai",
-      "title": "AI案例",
-      "icon": "felab-ai-line",
-      "cidPrefix": 6
-    },
-    {
       "type": "node",
       "title": "Node案例",
       "icon": "felab-nodejs",
       "cidPrefix": 7
+    },
+    {
+      "type": "ai",
+      "title": "AI案例",
+      "icon": "felab-ai-line",
+      "cidPrefix": 6
     },
     {
       "type": "link",
@@ -1487,5 +1487,5 @@
       "update_time": "2023-05-03"
     }
   ],
-  "revision": "a80bde07befd"
+  "revision": "7acd7378d19f"
 }

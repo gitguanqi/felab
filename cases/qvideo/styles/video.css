@@ -104,7 +104,9 @@ body {
 .qvideo-reload,
 .qvideo-fullscreen-btn,
 .qvideo-volume-btn {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     width: 30px;
     height: 30px;
     line-height: 30px;
@@ -115,12 +117,28 @@ body {
     cursor: pointer;
 }
 
-.qvideo-play .fa,
-.qvideo-reload .fa,
-.qvideo-fullscreen-btn .fa,
-.qvideo-volume-btn .fa {
-    font-size: 18px;
+.qvideo-icon {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2;
     color: #fff;
+}
+
+.qvideo-icon-pause,
+.qvideo-volume-btn[data-state='muted'] .qvideo-icon-volume,
+.qvideo-volume-btn[data-state='on'] .qvideo-icon-muted,
+.qvideo-play[data-state='paused'] .qvideo-icon-pause,
+.qvideo-play[data-state='playing'] .qvideo-icon-play {
+    display: none;
+}
+
+.qvideo-play[data-state='playing'] .qvideo-icon-pause,
+.qvideo-volume-btn[data-state='muted'] .qvideo-icon-muted {
+    display: block;
 }
 
 .qvideo-time {
@@ -171,6 +189,18 @@ body {
     background-color: rgba(0, 0, 0, 0.6);
 }
 
+.qvideo-loading-content {
+    display: grid;
+    justify-items: center;
+    gap: 12px;
+    color: #fff;
+    font-size: 13px;
+}
+
+.qvideo-error {
+    color: #ffd1c8;
+}
+
 .qvideo-loading {
     display: inline-block;
     width: 50px;
@@ -203,7 +233,7 @@ body {
     .qvideo {
         width: 100%;
         height: 17.5rem;
-        border: .0625rem solid #333;
+        border: 0.0625rem solid #333;
     }
 
     .qvideo-box {
@@ -213,31 +243,31 @@ body {
     }
 
     .qvideo-title {
-        padding: 0 .625rem;
+        padding: 0 0.625rem;
         width: 100%;
         height: 1.875rem;
         line-height: 1.875rem;
-        font-size: .75rem;
+        font-size: 0.75rem;
     }
 
     .qvideo-controls {
         height: 2.8125rem;
-        line-height: 2.8125rem
+        line-height: 2.8125rem;
     }
 
     .qvideo-progress {
         width: 100%;
-        height: .3125rem;
+        height: 0.3125rem;
     }
 
     .qvideo-progress-current {
-        width: .125rem;
-        height: .3125rem;
+        width: 0.125rem;
+        height: 0.3125rem;
     }
 
     .qvideo-set {
-        top: .5rem;
-        padding: .1875rem;
+        top: 0.5rem;
+        padding: 0.1875rem;
         box-sizing: border-box;
         width: 100%;
         height: 2.1875rem;
@@ -267,20 +297,18 @@ body {
         line-height: 1.25rem;
     }
 
-    .qvideo-play .fa,
-    .qvideo-reload .fa,
-    .qvideo-fullscreen-btn .fa,
-    .qvideo-volume-btn .fa {
-        font-size: .875rem;
+    .qvideo-icon {
+        width: 0.875rem;
+        height: 0.875rem;
     }
 
     .qvideo-time {
-        padding: 0 0 0 .625rem;
+        padding: 0 0 0 0.625rem;
         width: auto;
         max-width: 12.5rem;
         height: 1.875rem;
         line-height: 1.875rem;
-        font-size: .625rem;
+        font-size: 0.625rem;
     }
 
     .qvideo-volume {
@@ -290,17 +318,17 @@ body {
     .qvideo-volume-progress {
         top: -0.25rem;
         width: 3.125rem;
-        height: .3125rem;
+        height: 0.3125rem;
     }
 
     .qvideo-volume-progress-current {
         width: 3.125rem;
-        height: .3125rem;
+        height: 0.3125rem;
     }
 
     .qvideo-fullscreen-btn {
         position: relative;
-        top: .3125rem;
+        top: 0.3125rem;
     }
 
     .qvideo-loading-box {
@@ -314,7 +342,7 @@ body {
     .qvideo-loading {
         width: 3.125rem;
         height: 3.125rem;
-        border: .1875rem solid #ccc;
+        border: 0.1875rem solid #ccc;
         border-left-color: #7983ff;
     }
 }

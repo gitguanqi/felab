@@ -187,8 +187,9 @@ export async function loadCaseSource(entryUrl, { fetchImpl = globalThis.fetch } 
   const pageUrl = normalizeCasePageUrl(entryUrl);
   const entryDocumentUrl = resolveEntryDocumentUrl(pageUrl);
   const html = await fetchText(entryDocumentUrl, { fetchImpl });
-  const document = new DOMParser().parseFromString(html, 'text/html');
-  const sourceElements = [...document.querySelectorAll('style, link[rel], script')];
+  const template = document.createElement('template');
+  template.innerHTML = html;
+  const sourceElements = [...template.content.querySelectorAll('style, link[rel], script')];
 
   const cssParts = await Promise.all(
     sourceElements

@@ -17,7 +17,7 @@ body {
   background: #f3f6f8;
 }
 
-.safe-theme-toggle {
+.safe-theme-control {
   position: fixed;
   top: 24px;
   right: max(20px, calc((100vw - 720px) / 2));
@@ -308,7 +308,7 @@ html[data-theme='dark'] ::-webkit-scrollbar-thumb {
     font-size: 28px;
   }
 
-  .safe-theme-toggle {
+  .safe-theme-control {
     top: 18px;
     right: 14px;
   }

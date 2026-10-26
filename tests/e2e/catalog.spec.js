@@ -114,7 +114,7 @@ test('routes only cases directory cards to the shared viewer', async ({ page }) 
   await expect(caseLink).toHaveAttribute('href', /\/case\/\?cid=\d{4}$/);
   await expect(projectLink).toHaveAttribute('href', /\/projects\/ddw\/$/);
   await expect(projectLink).toHaveAttribute('target', '_blank');
-  await expect(externalLink).toHaveAttribute('href', /\/link\/check\/\?cid=1003$/);
+  await expect(externalLink).toHaveAttribute('href', /\/link\/check\/\?cid=\d{4}$/);
 });
 
 test('filters the in-memory catalog without another network request', async ({ page }) => {
@@ -254,33 +254,91 @@ test('opens and closes the mobile navigation with the keyboard', async ({ page, 
   await expect(page.locator('#nav-toggle')).toBeFocused();
 });
 
-test('persists the selected theme across site shell pages', async ({ page }) => {
+test('persists the selected theme mode across site shell pages', async ({ page }) => {
   await page.emulateMedia({ colorScheme: 'dark' });
   await page.goto('/');
 
   const html = page.locator('html');
   await expect(html).toHaveAttribute('data-theme', 'dark');
-  const toggle = page.locator('[data-theme-toggle]:visible');
-  await expect(toggle).toHaveAttribute('aria-pressed', 'true');
-  await expect(toggle).toHaveAttribute('aria-label', '切换到浅色模式');
+  await expect(html).toHaveAttribute('data-theme-mode', 'system');
+  const control = page.locator('[data-theme-control]:visible');
+  const toggle = control.locator('[data-theme-toggle]');
+  const menu = control.locator('[data-theme-menu]');
+  await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+  await expect(control.locator('[data-theme-value="system"]')).toHaveAttribute(
+    'aria-checked',
+    'true',
+  );
 
   await toggle.click();
+  await expect(menu).toBeVisible();
+  await expect(control.getByRole('menuitemradio', { name: '跟随系统' })).toHaveAttribute(
+    'aria-checked',
+    'true',
+  );
+  await control.getByRole('menuitemradio', { name: '深色' }).click();
+  await expect(html).toHaveAttribute('data-theme', 'dark');
+  await expect(html).toHaveAttribute('data-theme-mode', 'dark');
+  await expect
+    .poll(() => page.evaluate(() => globalThis.localStorage.getItem('felab-theme')))
+    .toBe('dark');
+
+  await page.emulateMedia({ colorScheme: 'light' });
+  await expect(html).toHaveAttribute('data-theme', 'dark');
+
+  await toggle.click();
+  await control.getByRole('menuitemradio', { name: '浅色' }).click();
   await expect(html).toHaveAttribute('data-theme', 'light');
+  await expect(html).toHaveAttribute('data-theme-mode', 'light');
   await expect
     .poll(() => page.evaluate(() => globalThis.localStorage.getItem('felab-theme')))
     .toBe('light');
 
   await page.reload();
   await expect(html).toHaveAttribute('data-theme', 'light');
+  await expect(html).toHaveAttribute('data-theme-mode', 'light');
 
   await page.goto('/case/?cid=2001');
   await expect(html).toHaveAttribute('data-theme', 'light');
-  await expect(page.locator('[data-theme-toggle]:visible')).toHaveAttribute(
-    'aria-pressed',
-    'false',
-  );
+  await expect(
+    page.locator('[data-theme-control]:visible').locator('[data-theme-value="light"]'),
+  ).toHaveAttribute('aria-checked', 'true');
 
   await page.goto('/link/check/?cid=2008');
   await expect(html).toHaveAttribute('data-theme', 'light');
   await expect(page.locator('[data-theme-toggle]:visible')).toBeVisible();
+});
+
+test('supports keyboard theme selection and returns to system mode', async ({ page }) => {
+  await page.emulateMedia({ colorScheme: 'dark' });
+  await page.goto('/');
+
+  const html = page.locator('html');
+  const control = page.locator('[data-theme-control]:visible');
+  const toggle = control.locator('[data-theme-toggle]');
+  const menu = control.locator('[data-theme-menu]');
+
+  await toggle.focus();
+  await page.keyboard.press('Enter');
+  await expect(menu).toBeVisible();
+  await expect(control.getByRole('menuitemradio', { name: '跟随系统' })).toBeFocused();
+  await page.keyboard.press('ArrowUp');
+  await expect(control.getByRole('menuitemradio', { name: '深色' })).toBeFocused();
+  await page.keyboard.press('Enter');
+  await expect(html).toHaveAttribute('data-theme-mode', 'dark');
+
+  await toggle.click();
+  await page.keyboard.press('ArrowDown');
+  await expect(control.getByRole('menuitemradio', { name: '跟随系统' })).toBeFocused();
+  await page.keyboard.press('Enter');
+  await expect(html).toHaveAttribute('data-theme-mode', 'system');
+  await expect(html).toHaveAttribute('data-theme', 'dark');
+
+  await page.emulateMedia({ colorScheme: 'light' });
+  await expect(html).toHaveAttribute('data-theme', 'light');
+
+  await toggle.click();
+  await page.keyboard.press('Escape');
+  await expect(menu).toBeHidden();
+  await expect(toggle).toBeFocused();
 });

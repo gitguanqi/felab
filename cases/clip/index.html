@@ -1,97 +1,161 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>js获取剪切板内容</title>
     <style>
-        .paste {
-            margin: 0 auto;
-            max-width: 320px;
-        }
+      .paste {
+        margin: 0 auto;
+        max-width: 320px;
+      }
 
-        select {
-            width: 80px;
-            height: 30px;
-        }
+      select {
+        width: 80px;
+        height: 30px;
+      }
 
-        input {
-            width: 225px;
-            height: 25px;
-        }
+      input {
+        width: 225px;
+        height: 25px;
+      }
 
-        #view {
-            padding: 10px;
-            border: 2px dotted pink;
-        }
-        #view img {
-            max-width: 300px;
-        }
+      #view {
+        padding: 10px;
+        border: 2px dotted pink;
+      }
+      #view img {
+        max-width: 300px;
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="paste">
-        <select name="type" id="type">
-            <option value="text">文本</option>
-            <option value="richText">富文本</option>
-            <option value="img">图片</option>
-        </select>
-        <input id="content" type="text" placeholder="请输入粘贴内容">
-        <p>您粘贴的内容是： </p>
-        <p id="view"></p>
-        <div>
-            测试内容：<a href="https://www.baidu.com/">https://www.baidu.com/</a>
-        </div>
+      <select name="type" id="type">
+        <option value="text">文本</option>
+        <option value="richText">富文本</option>
+        <option value="img">图片</option>
+      </select>
+      <input id="content" type="text" placeholder="请输入粘贴内容" />
+      <p>您粘贴的内容是：</p>
+      <p id="view"></p>
+      <div>测试内容：<a href="https://www.baidu.com/">https://www.baidu.com/</a></div>
     </div>
     <script>
-        let type = document.querySelector('#type');
-        let content = document.querySelector('#content');
-        let view = document.querySelector('#view');
-        showClip(type.value, content, view);
+      const typeSelect = document.querySelector('#type');
+      const contentInput = document.querySelector('#content');
+      const view = document.querySelector('#view');
+      const allowedRichTextTags = new Set([
+        'A',
+        'B',
+        'BLOCKQUOTE',
+        'BR',
+        'CODE',
+        'DIV',
+        'EM',
+        'I',
+        'LI',
+        'OL',
+        'P',
+        'PRE',
+        'S',
+        'SPAN',
+        'STRONG',
+        'U',
+        'UL',
+      ]);
 
-        type.addEventListener('change', function (e) {
-            let currentType = e.target.value;
-            content.value = '';
-            view.innerText = '';
-            showClip(currentType, content, view);
-        })
+      typeSelect.addEventListener('change', function () {
+        contentInput.value = '';
+        view.replaceChildren();
+      });
 
-        function showClip(type, content, view) {
-            content.addEventListener('paste', function (event) {
-                let clipboardData = event.clipboardData || event.originEvent.clipboardData;
-                let items = clipboardData.items;
-                if (type == 'text') {
-                    if (items.length > 0 && items[0].kind == 'string') {
-                        items[0].getAsString(function (e) {
-                            view.innerText = e;
-                        })
-                    }
-                }
-                if (type == 'richText') {
-                    if (items.length > 0 && items[1].kind == 'string') {
-                        items[1].getAsString(function (e) {
-                            view.innerHTML = e;
-                        })
-                    }
-                }
-                if (type == 'img') {
-                    if (items.length > 0 && items[0].kind == 'file') {
-                        let blob = items[0].getAsFile();
-                        let reader = new FileReader();
-                        reader.readAsDataURL(blob);
-                        reader.onload = function (e) {
-                            let img = document.createElement('img');
-                            img.src = e.target.result;
-                            view.appendChild(img);
-                        }
-                    }
-                }
-            })
+      contentInput.addEventListener('paste', function (event) {
+        const clipboardData = event.clipboardData;
+        if (!clipboardData) {
+          return;
         }
-    </script>
-</body>
 
+        if (typeSelect.value === 'text') {
+          event.preventDefault();
+          view.textContent = clipboardData.getData('text/plain');
+          return;
+        }
+
+        if (typeSelect.value === 'richText') {
+          event.preventDefault();
+          view.replaceChildren(
+            sanitizeRichText(
+              clipboardData.getData('text/html') || clipboardData.getData('text/plain'),
+            ),
+          );
+          return;
+        }
+
+        const imageItem = [...clipboardData.items].find(function (item) {
+          return item.kind === 'file' && item.type.startsWith('image/');
+        });
+        if (!imageItem) {
+          view.textContent = '剪贴板中没有可显示的图片。';
+          return;
+        }
+
+        event.preventDefault();
+        const imageFile = imageItem.getAsFile();
+        if (!imageFile) {
+          view.textContent = '无法读取剪贴板中的图片。';
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.addEventListener('load', function () {
+          const image = document.createElement('img');
+          image.alt = '从剪贴板粘贴的图片';
+          image.src = String(reader.result);
+          view.replaceChildren(image);
+        });
+        reader.addEventListener('error', function () {
+          view.textContent = '图片读取失败，请重新复制后再试。';
+        });
+        reader.readAsDataURL(imageFile);
+      });
+
+      function sanitizeRichText(html) {
+        const template = document.createElement('template');
+        template.innerHTML = html;
+
+        for (const element of [...template.content.querySelectorAll('*')].reverse()) {
+          if (!allowedRichTextTags.has(element.tagName)) {
+            element.replaceWith(...element.childNodes);
+            continue;
+          }
+
+          for (const attribute of [...element.attributes]) {
+            if (element.tagName !== 'A' || attribute.name !== 'href') {
+              element.removeAttribute(attribute.name);
+            }
+          }
+
+          if (element.tagName === 'A') {
+            try {
+              const url = new URL(element.getAttribute('href') || '', document.baseURI);
+              if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+                element.removeAttribute('href');
+              } else {
+                element.href = url.href;
+              }
+            } catch {
+              element.removeAttribute('href');
+            }
+          }
+        }
+
+        const fragment = document.createDocumentFragment();
+        fragment.append(...template.content.childNodes);
+        return fragment;
+      }
+    </script>
+  </body>
 </html>

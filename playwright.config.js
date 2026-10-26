@@ -8,6 +8,9 @@ export default defineConfig({
   reporter: [['list']],
   use: {
     baseURL: 'http://127.0.0.1:4011',
+    launchOptions: {
+      args: ['--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream'],
+    },
     screenshot: 'only-on-failure',
     trace: 'retain-on-failure',
   },

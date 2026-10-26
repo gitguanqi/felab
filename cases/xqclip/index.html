@@ -1,32 +1,29 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>canvas图片裁切案例</title>
-    <link rel="stylesheet" href="https://xqgj.cc/xqcdn/libs/xqclip/0.0.1/css/clip.min.css">
-    <link rel="stylesheet" href="css/demo.css">
-</head>
-<body>
+    <link rel="stylesheet" href="vendor/css/xqclip.min.css" />
+    <link rel="stylesheet" href="css/demo.css" />
+  </head>
+  <body>
     <h2>XqClip图片裁切案例</h2>
     <p>使用方法：</p>
     <ul>
-        <li>
-            1.引入css和js
-        </li>
-        <li>
-            2.new一个方法，传入参数
-        </li>
-        <li>
-            3.开始体验。
-        </li>
+      <li>1.引入css和js</li>
+      <li>2.new一个方法，传入参数</li>
+      <li>3.开始体验。</li>
     </ul>
     <div class="corp"></div>
-    <img id="preview-img" class="clip-bg">
+    <img id="preview-img" class="clip-bg" />
+    <p id="clip-error" class="clip-error" role="alert" hidden>
+      图片裁切组件加载失败，请刷新后重试。
+    </p>
     <button id="change">切换图片</button>
     <a id="download">下载图片</a>
-    <script src="https://xqgj.cc/xqcdn/libs/xqclip/0.0.1/js/clip.min.js"></script>
+    <script src="vendor/js/xqclip.min.js"></script>
     <script src="js/demo.js"></script>
-</body>
+  </body>
 </html>

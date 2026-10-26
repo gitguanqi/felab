@@ -249,6 +249,11 @@ img {
   gap: 10px;
 }
 
+.heading-theme-control,
+.mobile-theme-control {
+  display: inline-flex;
+}
+
 .mobile-theme-toggle {
   display: none;
 }
@@ -904,8 +909,13 @@ html[data-theme='dark'] ::-webkit-scrollbar-thumb {
     margin-top: 16px;
   }
 
+  .heading-theme-control,
   .heading-theme-toggle {
     display: none;
+  }
+
+  .mobile-theme-control {
+    display: inline-flex;
   }
 
   .mobile-theme-toggle {

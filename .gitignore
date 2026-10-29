@@ -25,3 +25,4 @@ coverage/
 *.sln
 *.svn
 node_modules
+deploy.sh
